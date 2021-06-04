@@ -1,11 +1,12 @@
 # This file is used to describe the usage StartJaconto Project
 
 startJacinto project is used to manage the Jacinto6 and Jacinto7 SDK. 
-    - manage different SDK. 
-    - update image to SD card. 
-    - AUTO download and install SDK.
-    - manage develop resouces
-    - etc.  
+
+-  manage different SDK. 
+-  update image to SD card. 
+-  AUTO download and install SDK.
+- manage develop resouces
+- etc.  
 If you have any suggestions, please share, we can work together to make this tools eaiser , smart. Thanks. 
 
 
