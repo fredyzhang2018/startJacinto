@@ -5,16 +5,11 @@
 # Modify this string to --force <platname> if platform detection fails
 FORCE_PLAT="J7 TDA4VM"
 
-# Set this variable to 1 when running against an Android Build
-# The android shell has limited functionality. So this script runs
-# omapconf via adb and parses the output on the host.
-
 # Define a function that wraps omapconf calls and removes the usual warning
 # messages
 oc_func() {
         K3CONF1="k3conf"
         echo "    Platform: $FORCE_PLAT  "
-        echo "    Command:  $K3CONF1  "
         echo "    Command:  $K3CONF1  "
 }
 
@@ -225,9 +220,6 @@ check_CPSW9G_status() {
 
 # check the CPSW9G status
 check_CPSW9G_status
-#
-#CPSW_MDIO_ALIVE_REG
-#CTRLMMR_ENET_x_CTRL
 
 
 
