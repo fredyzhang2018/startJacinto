@@ -1,0 +1,255 @@
+diff --git a/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_ethernet_config.c b/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_ethernet_config.c
+index 575b2e2d..02d103d7 100755
+--- a/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_ethernet_config.c
++++ b/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_ethernet_config.c
+@@ -711,7 +711,7 @@ Board_STATUS Board_ethConfigCpsw9g(void)
+     {
+         if ( 0U == portNum ||
+              2U == portNum ||
+-             3U == portNum ||
++             //3U == portNum || ^M
+              7U == portNum )
+         {
+             status = Board_cpsw9gEthConfig(portNum, RGMII);
+@@ -722,6 +722,10 @@ Board_STATUS Board_ethConfigCpsw9g(void)
+             {
+                 status = Board_cpsw9gEthConfig(portNum, QSGMII);
+             }
++            else if(3U == portNum)^M
++            {^M
++                  status = Board_cpsw9gEthConfig(portNum, SGMII);^M
++            }^M
+             else
+             {
+                 status = Board_cpsw9gEthConfig(portNum, QSGMII_SUB);
+diff --git a/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_serdes_cfg.c b/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_serdes_cfg.c
+index c100b000..763aad54 100755
+--- a/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_serdes_cfg.c
++++ b/pdk_jacinto_07_03_00_29/packages/ti/board/src/j721e_evm/board_serdes_cfg.c
+@@ -50,8 +50,8 @@ static Board_STATUS Board_CfgSgmii(void)
+     memset(&serdesLane0EnableParams, 0, sizeof(serdesLane0EnableParams));
+ 
+     /* SGMII Config */
+-    serdesLane0EnableParams.serdesInstance    = (CSL_SerdesInstance)SGMII_SERDES_INSTANCE;
+-    serdesLane0EnableParams.baseAddr          = CSL_SERDES_16G0_BASE;
++    serdesLane0EnableParams.serdesInstance    = (CSL_SerdesInstance)CSL_SIERRA_SERDES1;
++    serdesLane0EnableParams.baseAddr          = CSL_SERDES_16G1_BASE;^M
+     serdesLane0EnableParams.refClock          = CSL_SERDES_REF_CLOCK_100M;
+     serdesLane0EnableParams.refClkSrc         = CSL_SERDES_REF_CLOCK_INT;
+     serdesLane0EnableParams.linkRate          = CSL_SERDES_LINK_RATE_1p25G;
+@@ -76,7 +76,7 @@ static Board_STATUS Board_CfgSgmii(void)
+                        serdesLane0EnableParams.phyType,
+                        serdesLane0EnableParams.phyInstanceNum,
+                        serdesLane0EnableParams.serdesInstance,
+-                       SGMII_LANE_NUM);
++                       3U);
+ 
+ 
+     result = CSL_serdesRefclkSel(CSL_CTRL_MMR0_CFG0_BASE,
+diff --git a/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/V1/enet_appboardutils_j721e_evm.c b/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/V1/enet_appboardutils_j721e_evm.c
+index 387b4670..feced3dc 100644
+--- a/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/V1/enet_appboardutils_j721e_evm.c
++++ b/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/V1/enet_appboardutils_j721e_evm.c
+@@ -97,7 +97,7 @@
+ /*                          Function Definitions                              */
+ /* ========================================================================== */
+ 
+-#if !defined(ENETAPPUTILS_BYPASS_I2C) && defined(BUILD_MCU2_0)
++#if !defined(ENETAPPUTILS_BYPASS_I2C) && defined(BUILD_MCU2_0) 
+ static void EnetBoard_enetExpCfg(void)
+ {
+     Board_STATUS boardStatus;
+@@ -115,12 +115,20 @@ static void EnetBoard_enetExpCfg(void)
+ }
+ #endif
+ 
+-#if !defined(ENETAPPUTILS_BYPASS_QSGMII) && defined(BUILD_MCU2_0)
++//#if !defined(ENETAPPUTILS_BYPASS_QSGMII) && defined(BUILD_MCU2_0)
+ #if defined (SOC_J721E)
+-static void EnetBoard_configSierra0Clks(void)
+-{
++static void EnetBoard_configSierraClks(void) 
+     uint32_t moduleId, clkId, clkRateHz;
+     /* Configure the required PLLs for SERDES0 */
+     moduleId  = TISCI_DEV_SERDES_16G0;
+     clkId     = TISCI_DEV_SERDES_16G0_CORE_REF1_CLK;
+@@ -130,6 +138,24 @@ static void EnetBoard_configSierra0Clks(void)
+     clkId     = TISCI_DEV_SERDES_16G0_CORE_REF_CLK;
+     clkRateHz = 100000000U;
+     EnetAppUtils_clkRateSet(moduleId, clkId, clkRateHz);
++    EnetAppUtils_setDeviceState(moduleId, TISCI_MSG_VALUE_DEVICE_SW_STATE_ON, 0U);
++    
++       /* Configure the required PLLs for SERDES1 */
++    moduleId  = TISCI_DEV_SERDES_16G1;
++    clkId     = TISCI_DEV_SERDES_16G1_CORE_REF1_CLK;
++    clkRateHz = 100000000U;
++    EnetAppUtils_clkRateSet(moduleId, clkId, clkRateHz);
++
++    clkId     = TISCI_DEV_SERDES_16G1_CORE_REF_CLK;
++    clkRateHz = 100000000U;
++    EnetAppUtils_clkRateSet(moduleId, clkId, clkRateHz);
++    EnetAppUtils_setDeviceState(moduleId, TISCI_MSG_VALUE_DEVICE_SW_STATE_ON, 0U);
++    
++       /* Configure the required PLLs for SERDES0 */
++    moduleId  = TISCI_DEV_SERDES_10G0;
++    clkId     = TISCI_DEV_SERDES_10G0_CORE_REF_CLK;
++    clkRateHz = 100000000U;
++    EnetAppUtils_clkRateSet(moduleId, clkId, clkRateHz);
+     EnetAppUtils_setDeviceState(moduleId, TISCI_MSG_VALUE_DEVICE_SW_STATE_ON, 0U);
+ }
+ #endif
+@@ -152,8 +178,7 @@ static void EnetBoard_configTorrentClks(void)
+     EnetAppUtils_setDeviceState(moduleId, TISCI_MSG_VALUE_DEVICE_SW_STATE_ON, 0U);
+ }
+ #endif
+-#endif
+-
++//#endif 
+ static void EnetBoard_boardInit(Board_initCfg *boardCfg)
+ {
+     Board_STATUS status;
+@@ -185,7 +210,7 @@ static void EnetBoard_boardInit(Board_initCfg *boardCfg)
+ 
+     status = Board_init(*boardCfg);
+     EnetAppUtils_assert(status == BOARD_SOK);
+-
++    
+     /* Avoid I2C conflicts between EthFw and u-boot */
+ #if !defined(ENETAPPUTILS_BYPASS_I2C)
+     if (Board_detectBoard(BOARD_ID_GESI))
+@@ -256,10 +281,11 @@ void EnetBoard_initEthFw(void)
+     EnetBoard_enetExpCfg();
+ #endif
+ 
+-#if !defined(ENETAPPUTILS_BYPASS_QSGMII) && defined(BUILD_MCU2_0)
++//#if !defined(ENETAPPUTILS_BYPASS_QSGMII) && defined(BUILD_MCU2_0)
+ #if defined (SOC_J721E)
+     /* On J721E EVM, port 1 (SERDES0, lane 1) is brought for SGMII */
+-    EnetBoard_configSierra0Clks();
++    EnetBoard_configSierraClks();
++    
+ #endif
+ #if defined (SOC_J7200)
+     /* On J721E EVM, port 1 (SERDES0, lane 1) is brought for SGMII */
+@@ -271,7 +297,7 @@ void EnetBoard_initEthFw(void)
+         status = Board_serdesCfgQsgmii();
+         EnetAppUtils_assert(status == BOARD_SOK);
+     }
+-#endif
++//#endif
+ }
+ 
+ uint32_t EnetBoard_getPhyAddr(Enet_Type enetType,
+@@ -405,7 +431,7 @@ void EnetBoard_setPhyConfigSgmii(Enet_MacPort portNum,
+ 
+     /* Override the ENET control set by board lib */
+ #if defined (SOC_J721E)
+-    EnetAppUtils_assert(portNum == ENET_MAC_PORT_2);
++    EnetAppUtils_assert(portNum == ENET_MAC_PORT_4);
+     enetType = ENET_CPSW_9G;
+     instId   = 0U;
+ #elif defined (SOC_J7200)
+@@ -416,20 +442,26 @@ void EnetBoard_setPhyConfigSgmii(Enet_MacPort portNum,
+ 
+     /* Override the ENET control set by board lib */
+     EnetBoard_setEnetControl(enetType, instId, portNum, SGMII);
+-
+     boardStatus = Board_serdesCfgSgmii();
+     EnetAppUtils_assert(boardStatus == BOARD_SOK);
+ 
+     EnetPhy_initCfg(phyCfg);
+-    phyCfg->phyAddr = EnetBoard_getSgmiiPhyAddr();
+-    phyCfg->skipExtendedCfg = true;
+-
++    //phyCfg->phyAddr = EnetBoard_getSgmiiPhyAddr(); //zhang_yao-neu disable two line
++    //phyCfg->skipExtendedCfg = true;
++    phyCfg->phyAddr = ENETPHY_INVALID_PHYADDR;
++    //phyCfg->nwayCaps = 0;
+     /* RGMII interface type */
+     interface->layerType    = ENET_MAC_LAYER_GMII;
+     interface->sublayerType = ENET_MAC_SUBLAYER_SERIAL;
+     interface->variantType  = ENET_MAC_VARIANT_NONE;
++#if 1 //master
++       macCfg->sgmiiMode = ENET_MAC_SGMIIMODE_SGMII_AUTONEG_MASTER;
++#endif
++    
+ 
+-    macCfg->sgmiiMode = ENET_MAC_SGMIIMODE_SGMII_WITH_PHY;
++#if 0 //slave
++       macCfg->sgmiiMode = ENET_MAC_SGMIIMODE_SGMII_AUTONEG_SLAVE;
++#endif
+ }
+ 
+ void EnetBoard_setPhyConfigQsgmii(Enet_Type enetType,
+@@ -625,22 +657,31 @@ void EnetBoard_setPhyConfig(Enet_Type enetType,
+         case ENET_CPSW_9G:
+             if ( ENET_MAC_PORT_1 == portNum ||
+                  ENET_MAC_PORT_3 == portNum ||
+-                 ENET_MAC_PORT_4 == portNum ||
++                 //ENET_MAC_PORT_4 == portNum)  
+                  ENET_MAC_PORT_8 == portNum )
+             {
+                 EnetBoard_setPhyConfigRgmii(enetType,
+-                                                    portNum,
+-                                                    macCfg,
+-                                                    interface,
+-                                                    phyCfg);
++                                                   portNum,
++                                                   macCfg,
++                                                   interface,
++                                                   phyCfg);        
+             }
++                       else if(ENET_MAC_PORT_4 == portNum)//zhang_yao-neu add this
++                       {
++                EnetBoard_setPhyConfigSgmii(portNum, 
++                                                     macCfg,
++                                                     interface,
++                                                     phyCfg);
++                       }
+             else
+             {
+-                EnetBoard_setPhyConfigQsgmii(enetType,
++                /*EnetBoard_setPhyConfigQsgmii(enetType,
+                                                      portNum,
+                                                      macCfg,
+                                                      interface,
+-                                                     phyCfg);
++                                                     phyCfg);*/
++             
++                EnetAppUtils_print("#Port %u is not connected on this board\n", ENET_MACPORT_ID(portNum));
+             }
+             break;
+ 
+diff --git a/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/enet_board_j7xevm.c b/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/enet_board_j7xevm.c
+index b186c0ae..36c76d7d 100644
+--- a/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/enet_board_j7xevm.c
++++ b/pdk_jacinto_07_03_00_29/packages/ti/drv/enet/examples/utils/enet_board_j7xevm.c
+@@ -1313,6 +1313,7 @@ void EnetBoard_getMacAddrList(uint8_t macAddr[][ENET_MAC_ADDR_LEN],
+      * addresses in Linux builds. For RTOS build, MAC addresses will still
+      * be read from EEPROM as such I2C contention isn't an problem.
+      */
++#if 1 //Master
+     uint8_t macAddrBuf[][ENET_MAC_ADDR_LEN] =
+     {
+         { 0x70U, 0xFFU, 0x76U, 0x1DU, 0x92U, 0xC1U },
+@@ -1325,6 +1326,21 @@ void EnetBoard_getMacAddrList(uint8_t macAddr[][ENET_MAC_ADDR_LEN],
+         { 0x70U, 0xFFU, 0x76U, 0x1DU, 0X8BU, 0xC6U },
+         { 0x70U, 0xFFU, 0x76U, 0x1DU, 0X8BU, 0xC7U },
+     };
++#endif
++#if 0 //slave
++    uint8_t macAddrBuf[][ENET_MAC_ADDR_LEN] =
++    {
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0x92U, 0xB1U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0x92U, 0xB2U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0x92U, 0xB3U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0x92U, 0xB4U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0x92U, 0xB5U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0X8BU, 0xB4U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0X8BU, 0xB5U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0X8BU, 0xB6U },
++        { 0x70U, 0xFFU, 0x76U, 0x1DU, 0X8BU, 0xB7U },
++    };
++#endif
+     uint32_t macAddrCnt = ENET_ARRAYSIZE(macAddrBuf);
+ /* Save only those required to meet the max number of MAC entries */

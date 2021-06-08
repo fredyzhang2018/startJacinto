@@ -1,0 +1,149 @@
+diff --git a/ethfw/apps/app_remoteswitchcfg_server/mcu_2_0/main_tirtos.c b/ethfw/apps/app_remoteswitchcfg_server/mcu_2_0/main_tirtos.c
+index afef5c703..c41b42a64 100644
+--- a/ethfw/apps/app_remoteswitchcfg_server/mcu_2_0/main_tirtos.c
++++ b/ethfw/apps/app_remoteswitchcfg_server/mcu_2_0/main_tirtos.c
+@@ -249,6 +249,7 @@ static Cpsw_MacPort gCpswMainAppMacPorts[] =
+     CPSW_MAC_PORT_0,
+ #elif defined(SOC_J721E)
+ #if (defined(MM_PROJ_SMARTCAR))
++    CPSW_MAC_PORT_3,
+     CPSW_MAC_PORT_4,
+ #else
+     CPSW_MAC_PORT_2,
+@@ -508,6 +509,11 @@ static void CpswApp_initLinkArgs(Cpsw_OpenPortLinkInArgs *linkArgs,
+         linkConfig->duplexity = CPSW_DUPLEX_AUTO;
+ 
+ #if (defined(MM_PROJ_SMARTCAR))
++        if(CPSW_MAC_PORT_3 == macPort)
++        {
++            linkConfig->speed = CPSW_SPEED_1GBIT;
++            linkConfig->duplexity = CPSW_DUPLEX_FULL;
++        }
+         if(CPSW_MAC_PORT_4 == macPort)
+         {
+             linkConfig->speed = CPSW_SPEED_100MBIT;
+diff --git a/pdk/packages/ti/board/src/j721e_evm/board_ethernet_config.c b/pdk/packages/ti/board/src/j721e_evm/board_ethernet_config.c
+index 360b0eed6..973d985a5 100755
+--- a/pdk/packages/ti/board/src/j721e_evm/board_ethernet_config.c
++++ b/pdk/packages/ti/board/src/j721e_evm/board_ethernet_config.c
+@@ -557,7 +557,7 @@ Board_STATUS Board_icssEthPhyConfig(void)
+  *
+  * \return  BOARD_SOK in case of success or appropriate error code
+  */
+-static Board_STATUS Board_cpsw9gEthConfig(uint32_t portNum, uint8_t mode)
++Board_STATUS Board_cpsw9gEthConfig(uint32_t portNum, uint8_t mode)
+ {
+     uint32_t status;
+     uintptr_t modeSel;
+@@ -566,10 +566,10 @@ static Board_STATUS Board_cpsw9gEthConfig(uint32_t portNum, uint8_t mode)
+     modeSel = CSL_CTRL_MMR0_CFG0_BASE + CSL_MAIN_CTRL_MMR_CFG0_ENET1_CTRL + (portNum * 0x04);
+     regData = CSL_REG32_RD(modeSel);
+     regData = mode;
+-    if (RGMII == mode)
+-    {
+-        regData |= (RGMII_ID_DISABLE_MASK);
+-    }
++    // if (RGMII == mode)
++    // {
++    //     regData |= (RGMII_ID_DISABLE_MASK);
++    // }
+     CSL_REG32_WR(modeSel , regData);
+     status = CSL_REG32_RD(modeSel);
+     if (status != regData)
+diff --git a/pdk/packages/ti/board/src/j721e_evm/include/board_ethernet_config.h b/pdk/packages/ti/board/src/j721e_evm/include/board_ethernet_config.h
+index 63a90afb5..f50729820 100755
+--- a/pdk/packages/ti/board/src/j721e_evm/include/board_ethernet_config.h
++++ b/pdk/packages/ti/board/src/j721e_evm/include/board_ethernet_config.h
+@@ -41,9 +41,9 @@
+ #ifndef _BOARD_ETHERNET_CONFIG_H_
+ #define _BOARD_ETHERNET_CONFIG_H_
+ 
+-#include "board.h"
+-#include "board_i2c_io_exp.h"
+-#include "board_control.h"
++#include <ti/board/board.h>
++#include <ti/board/src/j721e_evm/include/board_i2c_io_exp.h>
++#include <ti/board/src/j721e_evm/include/board_control.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -131,7 +131,7 @@ Board_STATUS Board_icssEthPhyConfig(void);
+  *
+  * \return  BOARD_SOK in case of success or appropriate error code
+  */
+-static Board_STATUS Board_cpsw9gEthConfig(uint32_t portNum, uint8_t mode);
++Board_STATUS Board_cpsw9gEthConfig(uint32_t portNum, uint8_t mode);
+ 
+ /**
+  * \brief  Configures the CPSW2G Subsytem for RGMII mode
+diff --git a/pdk/packages/ti/drv/cpsw/examples/cpsw_apputils/V1/cpsw_appboardutils_j721e.c b/pdk/packages/ti/drv/cpsw/examples/cpsw_apputils/V1/cpsw_appboardutils_j721e.c
+index 42a86f614..5459e31dc 100644
+--- a/pdk/packages/ti/drv/cpsw/examples/cpsw_apputils/V1/cpsw_appboardutils_j721e.c
++++ b/pdk/packages/ti/drv/cpsw/examples/cpsw_apputils/V1/cpsw_appboardutils_j721e.c
+@@ -54,6 +54,7 @@
+ #include <ti/board/src/j721e_evm/include/board_pinmux.h>
+ #include <ti/board/src/j721e_evm/include/board_utils.h>
+ #include <ti/board/src/j721e_evm/include/board_control.h>
++#include <ti/board/src/j721e_evm/include/board_ethernet_config.h>
+ #include <ti/drv/cpsw/cpsw.h>
+ 
+ #include <ti/drv/cpsw/examples/cpsw_apputils/inc/cpsw_apputils.h>
+@@ -101,6 +102,7 @@ static void CpswAppBoardUtils_initPhyIO(void);
+ /* ========================================================================== */
+ /*                          Function Definitions                              */
+ /* ========================================================================== */
++extern Board_STATUS Board_cpsw9gEthConfig(uint32_t portNum, uint8_t mode);
+ 
+ /* Hack to run EthFw with Linux
+  * We do only limited pinmux configuration and also don't configure RMII and MDIO board muxes
+@@ -199,6 +201,9 @@ uint32_t CpswAppBoardUtils_getPhyAddr(Cpsw_Type cpswType,
+             switch (portNum)
+             {
+ #if (defined(MM_PROJ_SMARTCAR))
++                case CPSW_MAC_PORT_3:
++                    phyAddr = CPSW_PHY_INVALID_PHYADDR;
++                    break;
+                 case CPSW_MAC_PORT_4:
+                     phyAddr = 0x00U;
+                     break;
+@@ -242,14 +247,20 @@ void CpswAppBoardUtils_setPhyConfig(Cpsw_Type cpswType,
+ #if (defined(MM_PROJ_SMARTCAR)) 
++            if(CPSW_MAC_PORT_3 == portNum)
++            {
++                Board_cpsw9gEthConfig(portNum, RGMII);                                    
++                CpswAppUtils_setNoPhyCfgRgmii(interface, phyConfig);
+             }
+ #endif
+-            /* RGMII interface type */
+-            interface->layerType    = CPSW_MAC_LAYER_GMII;
+-            interface->sublayerType = CPSW_MAC_SUBLAYER_REDUCED;
+-            interface->variantType  = CPSW_MAC_VARIANT_NONE;
+             break;
+     }
+ }
+diff --git a/pdk/packages/ti/drv/cpsw/src/cpsw.c b/pdk/packages/ti/drv/cpsw/src/cpsw.c
+index 697723fda..f97a2ca86 100644
+--- a/pdk/packages/ti/drv/cpsw/src/cpsw.c
++++ b/pdk/packages/ti/drv/cpsw/src/cpsw.c
+@@ -2574,6 +2574,8 @@ static int32_t Cpsw_openPortLinkNoPhy(Cpsw_Handle hCpsw,
+ 
+     hCpsw->phy[portNum] = NULL;
+ 
++    CPSWTRACE_ERROR("speed:%d, duplexity:%d\n", linkConfig->speed, linkConfig->duplexity);
++
+     /* Explicit speed and duplexity must be provided, can't be discovered */
+     if ((linkConfig->speed == CPSW_SPEED_AUTO) ||
+         (linkConfig->duplexity == CPSW_DUPLEX_AUTO))
+diff --git a/pdk/packages/ti/drv/cpsw/src/cpsw_macport.c b/pdk/packages/ti/drv/cpsw/src/cpsw_macport.c
+index 2203024a6..a8360a692 100644
+--- a/pdk/packages/ti/drv/cpsw/src/cpsw_macport.c
++++ b/pdk/packages/ti/drv/cpsw/src/cpsw_macport.c
+@@ -1308,6 +1308,8 @@ static int32_t CpswMacPort_enablePort(CpswMacPort_Handle hPort,
+ 
+         status = CPSW_EINVALID_PARAMS;
+ 
++        CPSWTRACE_ERROR("port：%d, speed:%d, duplexity:%d\n", hPort->portNum, cfg->speed, cfg->duplexity);
++
+         switch (enetLayer)
+         {
+             /* MII layer type */
