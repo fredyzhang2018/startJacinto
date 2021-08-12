@@ -1,51 +1,33 @@
 ########################################################
 #                                                      #
 #  Edit this file to suit your specific build needs    #
-#  Utility makefile to build Vison SDK libraries       #
+#  Utility makefile to build Vison SDK libraries    
 #                                                      #
 ########################################################
-la-install_0601:
-	echo "install PSDKLA 0601"
-	mkdir -p ./temp_0601
-	echo "1. downlaod the SDK"
-	cd ./temp_0601/ && wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/06_01_00_05/exports/ti-processor-sdk-linux-automotive-j7-evm-06_01_00_05-Linux-x86-Install.bin
-	echo "2. run sdk setup scripts"
-	cd $(PSDKLA_PATH) && ./sdk-install.sh
-	echo "3. run the setup environment"
-	cd $(PSDKLA_PATH) && ./setup.sh
-	echo "setup done"
 
-la-install_0602:
-	echo "install PSDKLA 0602"
-	mkdir -p ./temp_0602
-	echo "1. downlaod the SDK"
-	cd ./temp_0700/ && wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/06_02_00_07/exports/ti-processor-sdk-linux-automotive-j7-evm-06_02_00-Linux-x86-Install.bin
-	echo "2. run setup scripts"
+la-install-ubuntu-lib:
+	sudo apt-get install build-essential autoconf automake bison flex libssl-dev bc u-boot-tools python diffstat texinfo gawk chrpath dos2unix wget unzip socat doxygen libc6:i386 libncurses5:i386 libstdc++6:i386 libz1:i386 g++-multilib
+	echo "Congure your ENV Dash (Be sure to select “No” when you are asked to use dash as the default system shell.): " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;
+	sudo dpkg-reconfigure dash
+	echo "configure done !!!"
 
-la-install_07_02_00_07: check_paths_downloads
-	echo "install PSDKLA 07 02 00 07"
+la-install-sdk: check_paths_downloads la-install-ubuntu-lib
+	echo "install $(PSDKLA_PATH)"
 	echo "1. downlaod the SDK"
-	cd $(DOWNLOADS_PATH) && wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/07_02_00_07/exports/ti-processor-sdk-linux-j7-evm-07_02_00_07-Linux-x86-Install.bin
-	echo "2. run setup scripts"
-	cd $(DOWNLOADS_PATH) && chmod a+x ./ti-processor-sdk-linux-j7-evm-07_02_00_07-Linux-x86-Install.bin 
-	cd $(DOWNLOADS_PATH) && ./ti-processor-sdk-linux-j7-evm-07_02_00_07-Linux-x86-Install.bin
-	echo "please run the setup scripts "
+	$(Q)if [ ! -d $(PSDKLA_PATH) ] ; then \
+		if [ ! -f $(DOWNLOADS_PATH)/`echo $(PSDKLA_SDK_URL) | cut -d / -f 9` ] ; then \
+			cd $(DOWNLOADS_PATH) && wget $(PSDKLA_SDK_URL); \
+		fi; \
+		echo "2. run setup scripts"; \
+		cd $(DOWNLOADS_PATH) && chmod a+x ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin; \
+		echo "please set your install PATH: $(PSDKLA_PATH) " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;\
+		cd $(DOWNLOADS_PATH) && ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin; \
+		echo "please run the setup scripts " ; \
+		cd $(PSDKLA_PATH) &&  ./setup.sh
+	else \
+		echo "sdk already installed, continue..."; \
+	fi
 
-la-install_07_03_00_05: check_paths_downloads
-	echo "install PSDKLA 07 03 00 05"
-	echo "1. downlaod the SDK"
-	cd $(DOWNLOADS_PATH) && wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/07_03_00_05/exports/ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin
-	echo "2. run setup scripts"
-	cd $(DOWNLOADS_PATH) && chmod a+x ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin
-	cd $(DOWNLOADS_PATH) && ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin
-	echo "please run the setup scripts "
-
-la-install_0700:
-	echo "install PSDKLA 0700"
-	mkdir -p ./temp_0700
-	echo "1. downlaod the SDK"
-	cd ./temp_0700/ && wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/latest/exports/ti-processor-sdk-linux-automotive-j7-evm-07_00_01-Linux-x86-Install.bin
-	echo "2. run setup scripts"
 
 la-install-addon-makefile: check_paths_PSDKLA 
 	ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH)/
