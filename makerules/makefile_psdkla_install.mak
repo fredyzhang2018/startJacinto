@@ -23,17 +23,39 @@ la-install-sdk: check_paths_downloads la-install-ubuntu-lib
 		echo "please set your install PATH: $(PSDKLA_PATH) " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;\
 		cd $(DOWNLOADS_PATH) && ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin; \
 		echo "please run the setup scripts " ; \
-		cd $(PSDKLA_PATH) &&  ./setup.sh
+		cd $(PSDKLA_PATH) &&  ./setup.sh; \
+		echo "please run: make la－install-addon-makefile to support update image to SD card:" ;\
 	else \
 		echo "sdk already installed, continue..."; \
 	fi
 
-
 la-install-addon-makefile: check_paths_PSDKLA 
-	ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH)/
+	#ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH)/
 	ls -l $(PSDKLA_PATH)/makefile_psdkla_addon.mak
 	$(Q)$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"
+	sed -i "2c ""-include makefile_psdkla_addon.mak" $(PSDKLA_PATH)/Makefile
 	$(Q)$(ECHO) "done"
+
+la-yocto-install: check_paths_PSDKLA 
+	$(Q)if [ ! -d  $(PSDKLA_PATH)/yocto-build/sources ] ; then \
+		cd $(PSDKLA_PATH) && cd yocto-build ; \
+		./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(YOCTO_CONFIG_FILE); \
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "INHERIT += \"own-mirrors\"" >> conf/local.conf
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "SOURCE_MIRROR_URL = \"http://software-dl.ti.com/processor-sdk-mirror/sources/\"" >> conf/local.conf 
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "ARAGO_BRAND  = \"psdkla\"" >> conf/local.conf
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "DISTRO_FEATURES_append = \" virtualization\"" >> conf/local.conf
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "IMAGE_INSTALL_append = \" docker\"">> conf/local.conf
+		
+	else \
+		echo "# Yocto already installed, continue...  "; \
+	fi
+
+la-yocto-build: check_paths_PSDKLA la-yocto-install
+	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv
+	cd $(PSDKLA_PATH)/yocto-build/build && TOOLCHAIN_BASE=/home/fredy/j7/ti-processor-sdk-rtos-j721e-evm-07_03_00_07 MACHINE=j7-evm bitbake -k tisdk-default-image
+	echo "Finished, congratulations !!!"
+
+
 ##########################################
 # sd install                             #
 ##########################################
