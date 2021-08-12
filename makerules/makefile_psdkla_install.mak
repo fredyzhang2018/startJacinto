@@ -95,3 +95,8 @@ la-setup-env-addon-makefile:
 	cd $(PSDKLA_PATH) && ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak $(PSDKLA_PATH)/
 	$(Q)echo "install done!"
 
+
+
+##########################################
+# Yocto                                 #
+##########################################

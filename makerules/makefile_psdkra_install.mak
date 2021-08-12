@@ -9,9 +9,13 @@
 ra-install-dependencies:
 	cd $(PSDKRA_PATH); $(PSDKRA_PATH)/psdk_rtos_auto/scripts/setup_psdk_rtos_auto.sh
 
-ra-install-ccs_scripts:
-	@echo "Please run below in scripts";
-	@echo "load(\"/home/fredy/j7/psdk_rtos_auto_j7_06_00_01_00/pdk/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
+ra-ccs-setup-steps:
+	$(Q)$(ECHO) "1. Please run below in scripts";
+	$(Q)$(ECHO) "load(\"/home/fredy/j7/psdk_rtos_auto_j7_06_01_00_15/pdk/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
+	$(Q)$(ECHO) "load(\"/home/fredy/j7/ti-processor-sdk-rtos-j721e-evm-07_03_00_07/pdk_jacinto_07_03_00_29/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
+	$(Q)$(ECHO) "2. make sure the M3 has the gel file";
+	$(Q)$(ECHO) "3. check the log happey debugging ！";
+	
 
 ra-install-targetfs: 
 	cp ${PSDKLA_PATH}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${PSDKRA_PATH}/
@@ -75,6 +79,13 @@ ra-sd-install-auto-ti-data_07_02: check_paths_sd_rootfs  check_paths_sd_boot
 	mkdir -p $(ROOTFS)/opt/vision_apps
 	cd $(ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(INSTALLER)/psdk_rtos_ti_data_set_07_02_00.tar.gz
 	@echo "install done!!!"	
+
+ra-sd-install-auto-ti-data_07_03: check_paths_sd_rootfs  check_paths_sd_boot 
+	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$USER/rootfs/"
+	mkdir -p $(ROOTFS)/opt/vision_apps
+	cd $(ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(DOWNLOADS_PATH)/psdk_rtos_ti_data_set_07_03_00.tar.gz
+	@echo "install done!!!"	
+
 
 ra-sd-linux-fs-install-sd: check_paths_sd_rootfs  check_paths_sd_boot
 	@echo "Do below to copy vision apps binaries to SD card"

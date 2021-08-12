@@ -19,6 +19,8 @@ BUILD_INCLUDE_PSDKRA_INSTALL  ?=yes
 BUILD_INCLUDE_SD_INSTALL      ?=yes
 BUILD_INCLUDE_CHECK_PATHS     ?=yes
 BUILD_INCLUDE_MCUSS           ?=yes
+BUILD_INCLUDE_K3_BOOTSWITCH   ?=yes
+BUILD_INCLUDE_PDK             ?=yes
 
 ifeq ($(BUILD_INCLUDE_PSDKRA_INSTALL),yes)
 #~ # PSDKRA 07_02_00_06
@@ -54,6 +56,8 @@ print_config:
 	$(Q)$(ECHO) "# BUILD_INCLUDE_PSDKRA_INSTALL      = $(BUILD_INCLUDE_PSDKRA_INSTALL)"
 	$(Q)$(ECHO) "# BUILD_INCLUDE_SD_INSTALL          = $(BUILD_INCLUDE_SD_INSTALL)"
 	$(Q)$(ECHO) "# BUILD_INCLUDE_MCUSS          	 = $(BUILD_INCLUDE_MCUSS)"
+	$(Q)$(ECHO) "# BUILD_INCLUDE_K3_BOOTSWITCH       = $(BUILD_INCLUDE_K3_BOOTSWITCH)"
+	$(Q)$(ECHO) "# BUILD_INCLUDE_PDK                 = $(BUILD_INCLUDE_PDK)"	
 	$(Q)$(ECHO) "#"
 ifeq  ($(BUILD_INCLUDE_PSDKRA_INSTALL),yes)
 	# PSDKRA INSTALL PATH 
@@ -140,3 +144,12 @@ endif
 ifeq ($(BUILD_INCLUDE_MCUSS),yes)
 include makerules/makefile_mcuss.mak
 endif
+
+ifeq ($(BUILD_INCLUDE_K3_BOOTSWITCH),yes)
+include makerules/makefile_k3_bootswitch.mak
+endif
+
+ifeq ($(BUILD_INCLUDE_PDK),yes)
+include makerules/makefile_pdk.mak
+endif
+

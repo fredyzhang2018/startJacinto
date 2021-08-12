@@ -19,12 +19,12 @@ BOOT                       ?= /media/`whoami`/BOOT
 BOOT1                      ?= /media/`whoami`/boot
 ROOTFS                     ?= /media/`whoami`/rootfs
 resouce_PATH               ?= $(jacinto_PATH)/resource
-INSTALLER                  ?= /home/`whoami`/j7/installer 
+INSTALLER                  ?= $(jacinto_PATH)/downloads
 SCRIPTS_PATH               ?= $(jacinto_PATH)/scripts
 DOWNLOADS_PATH             ?= $(jacinto_PATH)/downloads
-J7_SDK_PATH                ?= /home/`whoami`/j7
-J6_SDK_PATH                ?= /home/`whoami`/j6
-TEST_PATH                  ?= /home/`whoami`/test
+J7_SDK_PATH                ?= $(jacinto_PATH)/sdks
+J6_SDK_PATH                ?= $(jacinto_PATH)/sdks
+TEST_PATH                  ?= $(jacinto_PATH)/sdks
 export BOOT
 export BOOT1
 export ROOTFS
@@ -41,11 +41,12 @@ MCUSS_PATH                 ?= $(PSDKRA_PATH)/mcusw
 Imaging_PATH               ?= $(PSDKRA_PATH)/imaging
 VISION_SDK_BUILD_PATH      ?= $(PSDKRA_PATH)/vision_apps
 TUTORIAL_RUN_PATH          ?= $(PSDKRA_PATH)/tiovx/out/PC/x86_64/LINUX/
-
+PDK_PATH                   ?= $(PSDKRA_PATH)/`ls $(PSDKRA_PATH) | grep pdk`
+export PDK_PATH
 #==============================================================================
 # PSDKLA PATH
 #==============================================================================
-
+K3_BOOTSWITCH_PATH         ?= $(PSDKLA_PATH)/board-support/host-tools/k3-bootswitch/
 #==============================================================================
 # print env
 #==============================================================================
@@ -69,8 +70,10 @@ print_env:
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
 	$(Q)$(ECHO) "# VX_TEST_DATA_PATH:               $(VX_TEST_DATA_PATH)"
 	$(Q)$(ECHO) "# MCUSS_PATH:                      $(MCUSS_PATH)"
+	$(Q)$(ECHO) "# PDK_PATH:                        $(PDK_PATH)"
 	$(Q)$(ECHO) "# Imaging_PATH:                    $(Imaging_PATH)"
 	$(Q)$(ECHO) "# VISION_SDK_BUILD_PATH:           $(VISION_SDK_BUILD_PATH)"
 	$(Q)$(ECHO) "# TUTORIAL_RUN_PATH:               $(TUTORIAL_RUN_PATH)"
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
+	$(Q)$(ECHO) "# K3_BOOTSWITCH_PATH:               $(K3_BOOTSWITCH_PATH)"
 	$(Q)$(ECHO) "### ----------------------ending------------------------" 

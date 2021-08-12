@@ -34,3 +34,7 @@ check_paths_PSDKLA:
 check_paths_PSDKRA:
 	@if [ ! -d $(PSDKRA_PATH) ]; then echo 'ERROR: $(PSDKRA_PATH) not found !!!'; exit 1; fi
 	@echo "# $(PSDKRA_PATH) is exist !!!"
+	
+check_paths_PSDKLA_K3_BOOTSWITCH:
+	$(Q)if [ ! -d $(K3_BOOTSWITCH_PATH) ]; then echo 'ERROR: $(K3_BOOTSWITCH_PATH) not found !!!'; exit 1; fi
+	@echo "# $(K3_BOOTSWITCH_PATH) is exist !!!"
