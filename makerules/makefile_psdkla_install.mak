@@ -38,23 +38,20 @@ la-install-addon-makefile: check_paths_PSDKLA
 
 la-yocto-install: check_paths_PSDKLA 
 	$(Q)if [ ! -d  $(PSDKLA_PATH)/yocto-build/sources ] ; then \
-		cd $(PSDKLA_PATH) && cd yocto-build ; \
-		./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(YOCTO_CONFIG_FILE); \
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "INHERIT += \"own-mirrors\"" >> conf/local.conf
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "SOURCE_MIRROR_URL = \"http://software-dl.ti.com/processor-sdk-mirror/sources/\"" >> conf/local.conf 
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "ARAGO_BRAND  = \"psdkla\"" >> conf/local.conf
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "DISTRO_FEATURES_append = \" virtualization\"" >> conf/local.conf
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "IMAGE_INSTALL_append = \" docker\"">> conf/local.conf
-		
+		cd $(PSDKLA_PATH)/yocto-build/      && ./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(YOCTO_CONFIG_FILE); \
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "INHERIT += \"own-mirrors\"" >> conf/local.conf; \
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "SOURCE_MIRROR_URL = \"http://software-dl.ti.com/processor-sdk-mirror/sources/\"" >> conf/local.conf ;\
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "ARAGO_BRAND  = \"psdkla\"" >> conf/local.conf ;\
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "DISTRO_FEATURES_append = \" virtualization\"" >> conf/local.conf ;\
+		cd $(PSDKLA_PATH)/yocto-build/build && echo "IMAGE_INSTALL_append = \" docker\"">> conf/local.conf ;\
 	else \
 		echo "# Yocto already installed, continue...  "; \
 	fi
 
-la-yocto-build: check_paths_PSDKLA la-yocto-install
+la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA la-yocto-install
 	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv
-	cd $(PSDKLA_PATH)/yocto-build/build && TOOLCHAIN_BASE=/home/fredy/j7/ti-processor-sdk-rtos-j721e-evm-07_03_00_07 MACHINE=j7-evm bitbake -k tisdk-default-image
+	cd $(PSDKLA_PATH)/yocto-build/build && TOOLCHAIN_BASE=$(PSDKRA_PATH) MACHINE=j7-evm bitbake -k tisdk-default-image
 	echo "Finished, congratulations !!!"
-
 
 ##########################################
 # sd install                             #

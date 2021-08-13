@@ -21,6 +21,7 @@ BUILD_INCLUDE_CHECK_PATHS     ?=yes
 BUILD_INCLUDE_MCUSS           ?=yes
 BUILD_INCLUDE_K3_BOOTSWITCH   ?=yes
 BUILD_INCLUDE_PDK             ?=yes
+BUILD_INCLUDE_UBUNTU          ?=yes
 
 
 #PSDKLA
@@ -51,6 +52,7 @@ print_config:
 	$(Q)$(ECHO) "# BUILD_INCLUDE_MCUSS          	 = $(BUILD_INCLUDE_MCUSS)"
 	$(Q)$(ECHO) "# BUILD_INCLUDE_K3_BOOTSWITCH       = $(BUILD_INCLUDE_K3_BOOTSWITCH)"
 	$(Q)$(ECHO) "# BUILD_INCLUDE_PDK                 = $(BUILD_INCLUDE_PDK)"	
+	$(Q)$(ECHO) "# BUILD_INCLUDE_PDK                 = $(BUILD_INCLUDE_UBUNTU)"	
 	$(Q)$(ECHO) "#"
 ifeq  ($(BUILD_INCLUDE_PSDKRA_INSTALL),yes)
 	# PSDKRA INSTALL PATH 
@@ -149,4 +151,9 @@ endif
 ifeq ($(BUILD_INCLUDE_PDK),yes)
 include makerules/makefile_pdk.mak
 endif
+
+ifeq ($(BUILD_INCLUDE_UBUNTU),yes)
+include makerules/makefile_ubuntu.mak
+endif
+
 
