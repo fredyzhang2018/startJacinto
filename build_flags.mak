@@ -9,7 +9,7 @@ BUILD_FLAGS_MAK = 1
 endif
 
 # build verbose
-PROJECT_VERSION                                    ?= 00_00_05
+PROJECT_VERSION                                    ?= 20_00_00
 BUILD_FLAG_VERBOSE                                 ?=no
 # build include
 BUILD_INCLUDE_PSDKLA          ?=yes
