@@ -14,7 +14,7 @@ ubuntu-docker-test:
 
 
 ubuntu-install-docker-yocto: 
-	docker pull jwidic/ubuntu_18.04_yocto
+	docker pull jwidic/ubuntu18.04yocto
 
 
 ubuntu-docker-yocto-ubuntu18-j7: check_paths_PSDKLA
