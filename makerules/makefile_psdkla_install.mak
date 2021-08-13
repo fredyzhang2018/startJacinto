@@ -49,8 +49,7 @@ la-yocto-install: check_paths_PSDKLA
 	fi
 
 la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA la-yocto-install
-	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv
-	cd $(PSDKLA_PATH)/yocto-build/build && TOOLCHAIN_BASE=$(PSDKRA_PATH) MACHINE=j7-evm bitbake -k tisdk-default-image
+	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv && TOOLCHAIN_BASE=$(PSDKRA_PATH) MACHINE=j7-evm bitbake -k tisdk-default-image
 	echo "Finished, congratulations !!!"
 
 ##########################################

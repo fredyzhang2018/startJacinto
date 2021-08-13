@@ -13,7 +13,7 @@ If you have any suggestions, please share, we can work together to make this too
 
 # usage
 ## please configure the sdk path first
-Below env is in env_setup_jacinto_xxxx: 
+Below env is in env_setup_jacinto.sh: 
 - jacinto_PATH=**/home/fredy/install/startJacinto**
 - PSDKRA_PATH=**/home/fredy/j7/ti-processor-sdk-rtos-j721e-evm-07_02_00_06**
 - PSDKLA_PATH=**/home/fredy/j7/ti-processor-sdk-linux-j7-evm-07_02_00_07**
@@ -43,7 +43,7 @@ make ra-*
         1. ubuntu-docker-install           --> docker install
         2. ubuntu-docker-test              --> docker testing 
         3. ubuntu-install-docker-yocto     --> install docker ubuntu18 environment
-        4. ubuntu-docker-yocto-ubuntu18-j7 --> build the yocto in docker
+        4. ubuntu-docker-yocto-ubuntu18-j7 --> docker ubuntu18 start. follow 1. to build
 
 # Release notes
 
