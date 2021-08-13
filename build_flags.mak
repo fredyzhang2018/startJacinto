@@ -22,26 +22,19 @@ BUILD_INCLUDE_MCUSS           ?=yes
 BUILD_INCLUDE_K3_BOOTSWITCH   ?=yes
 BUILD_INCLUDE_PDK             ?=yes
 
-ifeq ($(BUILD_INCLUDE_PSDKRA_INSTALL),yes)
-#~ # PSDKRA 07_02_00_06
-#~ 	PSDKRA_PG_NAME=ti-processor-sdk-rtos-j721e-evm-07_02_00_06
-#~ 	PSDKRA_INSTALL_PACKAGES_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_02_00_06/exports/ti-processor-sdk-rtos-j721e-evm-07_02_00_06.tar.gz
-#~ 	PSDKRA_TI_DATA_DOWNLOAD_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_02_00_06/exports/psdk_rtos_ti_data_set_07_02_00.tar.gz
-#~ 	PSDKRA_TI_DATA_PTK_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
-#~ 	PSDKRA_ADD_ON_LINK=https://software-dl.ti.com/secure/software/adas/PSDK-RTOS-AUTO/PSDK_RTOS_v7.02.00/ti-processor-sdk-rtos-j721e-evm-07_02_00_06-addon-linux-x64-installer.run
-# PSDKRA 07_00_00_06
-#~ 	PSDKRA_PG_NAME=ti-processor-sdk-rtos-j721e-evm-07_02_00_06
-#~ 	PSDKRA_INSTALL_PACKAGES_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_02_00_06/exports/ti-processor-sdk-rtos-j721e-evm-07_02_00_06.tar.gz
-#~ 	PSDKRA_TI_DATA_DOWNLOAD_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_02_00_06/exports/psdk_rtos_ti_data_set_07_02_00.tar.gz
-#~ 	PSDKRA_TI_DATA_PTK_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
-#~ 	PSDKRA_ADD_ON_LINK=https://software-dl.ti.com/secure/software/adas/PSDK-RTOS-AUTO/PSDK_RTOS_v7.02.00/ti-processor-sdk-rtos-j721e-evm-07_02_00_06-addon-linux-x64-installer.run
-# PSDKRA 07_03_00_05
-	PSDKRA_PG_NAME=ti-processor-sdk-rtos-j721e-evm-07_03_00_07
-	PSDKRA_INSTALL_PACKAGES_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/ti-processor-sdk-rtos-j721e-evm-07_03_00_07.tar.gz
-	PSDKRA_TI_DATA_DOWNLOAD_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/psdk_rtos_ti_data_set_07_03_00.tar.gz
-	PSDKRA_TI_DATA_PTK_LINK=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
-	PSDKRA_ADD_ON_LINK=https://software-dl.ti.com/secure/software/adas/PSDK-RTOS-AUTO/PSDK_RTOS_v7.03.00/ti-processor-sdk-rtos-j721e-evm-07_03_00_07-addon-linux-x64-installer.run
-endif
+
+#PSDKLA
+YOCTO_CONFIG_FILE             ?=processor-sdk-linux-07_03_00.txt
+PSDKLA_SDK_URL                ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/07_03_00_05/exports/ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin
+
+#PSDKRA
+PSDKRA_PG_NAME                ?=ti-processor-sdk-rtos-j721e-evm-07_03_00_07
+PSDKRA_INSTALL_PACKAGES_LINK  ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/ti-processor-sdk-rtos-j721e-evm-07_03_00_07.tar.gz
+PSDKRA_TI_DATA_DOWNLOAD_LINK  ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/psdk_rtos_ti_data_set_07_03_00.tar.gz
+PSDKRA_TI_DATA_PTK_LINK		  ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
+PSDKRA_ADD_ON_LINK			  ?=https://software-dl.ti.com/secure/software/adas/PSDK-RTOS-AUTO/PSDK_RTOS_v7.03.00/ti-processor-sdk-rtos-j721e-evm-07_03_00_07-addon-linux-x64-installer.run
+
+
 
 print_config:
 	$(Q)$(ECHO)
@@ -67,7 +60,11 @@ ifeq  ($(BUILD_INCLUDE_PSDKRA_INSTALL),yes)
 	$(Q)$(ECHO) "	PSDKLA_TI_DATA_PTK_LINK      --> $(PSDKRA_TI_DATA_PTK_LINK)"
 	$(Q)$(ECHO) "	PSDKRA_ADD_ON_LINK           --> $(PSDKRA_ADD_ON_LINK)"
 endif
-
+ifeq  ($(BUILD_INCLUDE_PSDKLA_INSTALL),yes)
+	# PSDKLA INSTALL PATH 
+	$(Q)$(ECHO) "	YOCTO_CONFIG_FILE            --> $(YOCTO_CONFIG_FILE)"
+	$(Q)$(ECHO) "	PSDKLA_SDK_URL               --> $(PSDKLA_SDK_URL)"
+endif
 
 	
 

@@ -23,9 +23,9 @@ ra-install-targetfs:
 
 ra-install-sdk: check_paths_downloads check_paths_PSDKLA
 	# 1. download the package:
-	#cd $(DOWNLOADS_PATH) && wget $(PSDKRA_INSTALL_PACKAGES_LINK)
+	cd $(DOWNLOADS_PATH) && wget $(PSDKRA_INSTALL_PACKAGES_LINK)
 	# 2. tar to target dictory
-	#cd $(DOWNLOADS_PATH) && tar -zxvf $(PSDKRA_PG_NAME).tar.gz -C $(J7_SDK_PATH)
+	cd $(DOWNLOADS_PATH) && tar -zxvf $(PSDKRA_PG_NAME).tar.gz -C $(J7_SDK_PATH)
 	cd $(PSDKRA_PATH) && git init
 	cd $(PSDKRA_PATH) && git add -A 
 	cd $(PSDKRA_PATH) && git commit -m "repo init"
@@ -37,11 +37,13 @@ ra-install-sdk: check_paths_downloads check_paths_PSDKLA
 	cd ${PSDKRA_PATH} && ./psdk_rtos/scripts/setup_psdk_rtos.sh
 	# 5. Ready to compiling. 
 	# 6. install additional package: 
-	#		a. cd $(DOWNLOADS_PATH) && wget $(PSDKRA_ADD_ON_LINK)
+	#		a. downlaod the sdk
+	#cd $(DOWNLOADS_PATH) && wget $(PSDKRA_ADD_ON_LINK)
 	# 		b. install add on package for run PC demo. 
-	#			cd $(DOWNLOADS_PATH) && chmod a+x ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run 
-	#			cd $(DOWNLOADS_PATH) && cp ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run $(PSDKRA_PATH)/
-	#			cd $(PSDKRA_PATH) && ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run
+	#cd $(DOWNLOADS_PATH) && chmod a+x ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run 
+	#cd $(DOWNLOADS_PATH) && cp ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run $(PSDKRA_PATH)/
+	#cd $(PSDKRA_PATH) && ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run
+	# PSDKRA Ready to use, congrations! 
 
 ra-sd-mk-partition-method:
 	@echo " >>>>> do SD mk partition as below:"
