@@ -33,9 +33,9 @@ la-install-addon-makefile: check_paths_PSDKLA
 	$(Q)if [ ! -f $(PSDKLA_PATH)/makefile_psdkla_addon.mak ] ; then \
 		ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH) ; \
 		ls -l $(PSDKLA_PATH)/makefile_psdkla_addon.mak; \
-		$(Q)$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"; \
+		$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"; \
 		sed -i "2c ""-include makefile_psdkla_addon.mak" $(PSDKLA_PATH)/Makefile;\
-		$(Q)$(ECHO) "done"; \
+		$(ECHO) "done"; \
 	else \
 		echo "$(PSDKLA_PATH)/makefile_psdkla_addon.mak already installed, continue..."; \
 	fi

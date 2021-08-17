@@ -60,7 +60,7 @@ echo "#                       starting $PROJECT , Happy Debugging               
 echo "#                                                                                          #"
 echo "############################################################################################"
 # export the global viable
-export PROJECT=Jacinto7_07_03
+export PROJECT
 export PSDKRA_PATH
 export PSDKLA_PATH
 export PSDKLA_SDK_URL
