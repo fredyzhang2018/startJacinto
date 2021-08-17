@@ -19,9 +19,9 @@ la-install-sdk: check_paths_downloads la-install-ubuntu-lib
 			cd $(DOWNLOADS_PATH) && wget $(PSDKLA_SDK_URL); \
 		fi; \
 		echo "2. run setup scripts"; \
-		cd $(DOWNLOADS_PATH) && chmod a+x ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin; \
+		cd $(DOWNLOADS_PATH) && chmod a+x ./`echo $(PSDKLA_SDK_URL) | cut -d / -f 9`; \
 		echo "please set your install PATH: $(PSDKLA_PATH) " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;\
-		cd $(DOWNLOADS_PATH) && ./ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin; \
+		cd $(DOWNLOADS_PATH) && ./`echo $(PSDKLA_SDK_URL) | cut -d / -f 9`; \
 		echo "please run the setup scripts " ; \
 		cd $(PSDKLA_PATH) &&  ./setup.sh; \
 		echo "please run: make la－install-addon-makefile to support update image to SD card:" ;\
@@ -30,7 +30,7 @@ la-install-sdk: check_paths_downloads la-install-ubuntu-lib
 	fi
 
 la-install-addon-makefile: check_paths_PSDKLA 
-	#ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH)/
+	ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH)/
 	ls -l $(PSDKLA_PATH)/makefile_psdkla_addon.mak
 	$(Q)$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"
 	sed -i "2c ""-include makefile_psdkla_addon.mak" $(PSDKLA_PATH)/Makefile
@@ -48,7 +48,7 @@ la-yocto-install: check_paths_PSDKLA
 		echo "# Yocto already installed, continue...  "; \
 	fi
 
-la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA la-yocto-install
+la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA 
 	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv && TOOLCHAIN_BASE=$(PSDKRA_PATH) MACHINE=j7-evm bitbake -k tisdk-default-image
 	echo "Finished, congratulations !!!"
 
