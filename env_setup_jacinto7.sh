@@ -63,8 +63,15 @@ echo "##########################################################################
 export PROJECT
 export PSDKRA_PATH
 export PSDKLA_PATH
+#PSDKLA
 export PSDKLA_SDK_URL
 export YOCTO_CONFIG_FILE
+#PSDKRA
+export PSDKRA_PG_NAME
+export PSDKRA_INSTALL_PACKAGES_LINK
+export PSDKRA_TI_DATA_DOWNLOAD_LINK
+export PSDKRA_ADD_ON_LINK
+
 export WORK_PATH
 export PS1="\[\e[32;1m\][$PROJECT]\[\e[0m\]:\w> "
 #---------------------------------------------------------------------------

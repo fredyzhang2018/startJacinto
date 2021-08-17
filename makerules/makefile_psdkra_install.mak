@@ -22,21 +22,44 @@ ra-install-targetfs:
 	cp ${PSDKLA_PATH}/filesystem/tisdk-default-image-j7-evm.tar.xz     ${PSDKRA_PATH}/
 
 ra-install-sdk: check_paths_downloads check_paths_PSDKLA
-	# 1. download the package:
-	cd $(DOWNLOADS_PATH) && wget $(PSDKRA_INSTALL_PACKAGES_LINK)
-	# 2. tar to target dictory
-	cd $(DOWNLOADS_PATH) && tar -zxvf $(PSDKRA_PG_NAME).tar.gz -C $(J7_SDK_PATH)
-	cd $(PSDKRA_PATH) && git init
-	cd $(PSDKRA_PATH) && git add -A 
-	cd $(PSDKRA_PATH) && git commit -m "repo init"
-	# 3. install the filesystem to PSDKRA path.  
-	cp ${PSDKLA_PATH}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${PSDKRA_PATH}/
-	cp ${PSDKLA_PATH}/filesystem/tisdk-default-image-j7-evm.tar.xz     ${PSDKRA_PATH}/
+	# 1. download the package & install
+	$(Q)if [ ! -d $(PSDKRA_PATH) ] ; then \
+		if [ ! -f $(DOWNLOADS_PATH)/`echo $(PSDKRA_SDK_URL) | cut -d / -f 9` ] ; then \
+			cd $(DOWNLOADS_PATH) && wget $(PSDKRA_INSTALL_PACKAGES_LINK); \
+		else \
+			echo "SDK alread download. "; \
+		fi; \
+		echo "2. untar the packages to target  dictory"; \
+		cd $(DOWNLOADS_PATH) && tar -zxvf $(PSDKRA_PG_NAME).tar.gz -C $(J7_SDK_PATH); \
+		sync; \
+	else \
+		echo "sdk already installed, continue..."; \
+	fi
+	# 3. Setup the git
+	$(Q)if [ ! -d $(PSDKRA_PATH)/.git ] ; then \
+		cd $(PSDKRA_PATH) && git init; \
+		ln -s $(resouce_PATH)/resource/psdkra/gitignore $(PSDKRA_PATH)/.gitignore ; \
+		cd $(PSDKRA_PATH) && git add -A ; \
+		cd $(PSDKRA_PATH) && git commit -m "repo init" ;\
+	else \
+		echo "Git already setup. "; \
+	fi
+	# 4. install the filesystem to PSDKRA path.  
+	$(Q)if [ ! -f ${PSDKRA_PATH}/boot-j7-evm.tar.gz ] ; then \
+		cp ${PSDKLA_PATH}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${PSDKRA_PATH} ; \
+	else \
+		echo "boot image already setup!"; \
+	fi
+	$(Q)if [ ! -f ${PSDKRA_PATH}/tisdk-default-image-j7-evm.tar.xz ] ; then \
+		cp ${PSDKLA_PATH}/filesystem/tisdk-default-image-j7-evm.tar.xz ${PSDKRA_PATH} ; \
+	else \
+		echo "filesystem already setup!"; \
+	fi
 	sync
-	# 4. install dependcy tools 
+	# 5. install dependcy tools 
 	cd ${PSDKRA_PATH} && ./psdk_rtos/scripts/setup_psdk_rtos.sh
-	# 5. Ready to compiling. 
-	# 6. install additional package: 
+	# 6. Ready to compiling. 
+	# 7. install additional package: 
 	#		a. downlaod the sdk
 	#cd $(DOWNLOADS_PATH) && wget $(PSDKRA_ADD_ON_LINK)
 	# 		b. install add on package for run PC demo. 
