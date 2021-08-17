@@ -38,7 +38,7 @@ ra-install-sdk: check_paths_downloads check_paths_PSDKLA
 	# 3. Setup the git
 	$(Q)if [ ! -d $(PSDKRA_PATH)/.git ] ; then \
 		cd $(PSDKRA_PATH) && git init; \
-		ln -s $(resouce_PATH)/resource/psdkra/gitignore $(PSDKRA_PATH)/.gitignore ; \
+		ln -s $(resouce_PATH)/psdkra/gitignore $(PSDKRA_PATH)/.gitignore ; \
 		cd $(PSDKRA_PATH) && git add -A ; \
 		cd $(PSDKRA_PATH) && git commit -m "repo init" ;\
 	else \

@@ -96,12 +96,25 @@ la-setup-env-nfs:
 la-setup-env-minicom:
 	$(SCRIPTS_PATH)/setup-minicom.sh
 
-la-setup-env-addon-makefile:
-	cd $(PSDKLA_PATH) && ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak $(PSDKLA_PATH)/
-	$(Q)echo "install done!"
 
 
 
-##########################################
-# Yocto                                 #
-##########################################
+ubuntu-install-help:
+	$(Q)$(ECHO)
+	$(Q)$(ECHO) "Available build targets are  :"
+	$(Q)$(ECHO) "    ----------------Build --------------------------------------  "
+	$(Q)$(ECHO) "    la-install-ubuntu-lib        : ubuntu dependent lib;    "
+	$(Q)$(ECHO) "    la-install-sdk               : Install SDK;   "
+	$(Q)$(ECHO) "    la-install-addon-makefile    : additial makefile; "
+	$(Q)$(ECHO) "    -------------------Yocto--------------------------------------  "
+	$(Q)$(ECHO) "    la-yocto-install             : install yocto env;  "
+	$(Q)$(ECHO) "    la-yocto-build               : build the yocto;"
+	$(Q)$(ECHO) "    -------------------SD --------------------------------------  "
+	$(Q)$(ECHO) "    la-sd-mk-partition       "
+	$(Q)$(ECHO) "    la-sd-install-all        "
+	$(Q)$(ECHO) "    la-sd-mk-partition       "
+	$(Q)$(ECHO) "    la-sd-install-mksdboot-scripts       "
+	$(Q)$(ECHO) "    -------------------SD --------------------------------------  "
+	$(Q)$(ECHO) "    la-setup-env-nfs       "
+	$(Q)$(ECHO) "    la-setup-env-minicom      "
+	$(Q)$(ECHO) "    ---------------- ending  !!!--------------------------------------  "
