@@ -24,17 +24,22 @@ la-install-sdk: check_paths_downloads la-install-ubuntu-lib
 		cd $(DOWNLOADS_PATH) && ./`echo $(PSDKLA_SDK_URL) | cut -d / -f 9`; \
 		echo "please run the setup scripts " ; \
 		cd $(PSDKLA_PATH) &&  ./setup.sh; \
-		echo "please run: make la－install-addon-makefile to support update image to SD card:" ;\
+		echo "please run: make la-install-addon-makefile to support update image to SD card:" ;\
 	else \
 		echo "sdk already installed, continue..."; \
 	fi
 
 la-install-addon-makefile: check_paths_PSDKLA 
-	ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH)/
-	ls -l $(PSDKLA_PATH)/makefile_psdkla_addon.mak
-	$(Q)$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"
-	sed -i "2c ""-include makefile_psdkla_addon.mak" $(PSDKLA_PATH)/Makefile
-	$(Q)$(ECHO) "done"
+	$(Q)if [ ! -f $(PSDKLA_PATH)/makefile_psdkla_addon.mak ] ; then \
+		ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH) ; \
+		ls -l $(PSDKLA_PATH)/makefile_psdkla_addon.mak; \
+		$(Q)$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"; \
+		sed -i "2c ""-include makefile_psdkla_addon.mak" $(PSDKLA_PATH)/Makefile;\
+		$(Q)$(ECHO) "done"; \
+	else \
+		echo "$(PSDKLA_PATH)/makefile_psdkla_addon.mak already installed, continue..."; \
+	fi
+
 
 la-yocto-install: check_paths_PSDKLA 
 	$(Q)if [ ! -d  $(PSDKLA_PATH)/yocto-build/sources ] ; then \
