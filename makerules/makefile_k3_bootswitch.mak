@@ -5,25 +5,25 @@
 #
 
 k3_bootswitch_install: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo apt-get install dfu-util
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo apt-get install dfu-util
 
 k3_bootswitch_boot_mmc: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --bootmode mmc
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode mmc
 
 k3_bootswitch_boot_emmc: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --bootmode emmc
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode emmc
 
 k3_bootswitch_boot_ospi: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --bootmode ospi
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode ospi
 k3_bootswitch_boot_uart: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --bootmode uart
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode uart
 k3_bootswitch_boot_noboot: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --bootmode noboot
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode noboot
 
 k3_bootswitch_mount_mmc: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --mount 1
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --mount 1
 k3_bootswitch_mount_emmc: check_paths_PSDKLA_K3_BOOTSWITCH
-	cd $(K3_BOOTSWITCH_PATH) && sudo ./dfu-boot.sh --j721e-evm --mount 0
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --mount 0
 
 k3_bootswitch_help: check_paths_PSDKLA_K3_BOOTSWITCH
 	##### k3 bootswitch tools introduction

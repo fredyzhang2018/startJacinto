@@ -76,4 +76,14 @@ pdk_jacinto_0*/packages/ti/drv/pruss/lib/
 pdk_jacinto_0*/packages/ti/drv/usb/lib/
 pdk_jacinto_0*/packages/ti/transport/ndk/nimu/lib/
 pdk_jacinto_0*/packages/ti/utils/copyVecs2Atcm/lib/
+tidl_j7_*/libvx_tidl_rt.so
+tidl_j7_*/ti_dl/libvx_tidl_rt.so
+tidl_j7_*/ti_dl/test/testvecs/models/public/tflite/
+tidl_j7_*/ti_dl/test/tflrt/__pycache__/
+tidl_j7_*/ti_dl/test/tflrt/python3
+tidl_j7_*/ti_dl/test/tflrt/tflrt-artifacts/
+tidl_j7_*/ti_dl/utils/perfsim/ignore.log
+tidl_j7_*/ti_dl/utils/perfsim/nc_infofile.txt
+tidl_j7_*/ti_dl/utils/perfsim/netbufinfo.bin
+
 

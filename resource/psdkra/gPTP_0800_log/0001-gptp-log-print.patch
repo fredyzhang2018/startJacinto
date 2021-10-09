@@ -1,0 +1,169 @@
+From d92b72d0c6d074896e3a9c6497359848e210cc59 Mon Sep 17 00:00:00 2001
+From: Fredy Zhang <fredy-zhang@ti.com>
+Date: Thu, 9 Sep 2021 06:44:57 -0400
+Subject: [PATCH] gptp log print
+
+---
+ .../timeSync/v2/protocol/ptp/src/timeSync_ptp.c  | 16 ++++++++++++----
+ .../v2/protocol/ptp/src/timeSync_ptp_osal_priv.c | 16 ++++++++++------
+ 2 files changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp.c b/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp.c
+index 0d31d01ce..44e690e3c 100644
+--- a/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp.c
++++ b/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp.c
+@@ -57,6 +57,8 @@
+ #include <ti/transport/timeSync/v2/protocol/ptp/src/priv/timeSync_ptp_priv.h>
+ #include <ti/transport/timeSync/v2/protocol/ptp/src/priv/timeSync_ptp_init_priv.h>
+ #include <ti/transport/timeSync/v2/protocol/ptp/src/priv/timeSync_ptp_osal_priv.h>
++#include <ti/drv/uart/UART_stdio.h>
++
+ 
+ /* ========================================================================== */
+ /*                         Structures and Enums                               */
+@@ -255,7 +257,7 @@ void TimeSyncPtp_processTxNotifyTask(void *arg)
+             while (taskRunFlag == true)
+             {
+                 SemaphoreP_pend(hTimeSyncPtp->pktTxSemHandle, SemaphoreP_WAIT_FOREVER);
+-
++                UART_printf("--- TimeSyncPtp_processTxNotifyTask frameType = 0x%x\n", frameType);
+                 portNum   = txNotifyMsg.portNum;
+                 frameType = txNotifyMsg.frameType;
+                 seqId     = txNotifyMsg.seqId;
+@@ -360,7 +362,7 @@ void TimeSyncPtp_processRxNotifyTask(void *arg)
+             while (taskRunFlag == true)
+             {
+                 SemaphoreP_pend(hTimeSyncPtp->pktRxSemHandle, SemaphoreP_WAIT_FOREVER);
+-
++                
+                 status = TimeSync_getPtpFrame(hTimeSyncPtp->timeSyncHandle,
+                                               &rxFrame[0U],
+                                               &size,
+@@ -371,10 +373,12 @@ void TimeSyncPtp_processRxNotifyTask(void *arg)
+ 
+                     if (TIMESYNC_COMPARE_MAC(dstMacId, timeSyncMAC))
+                     {
++                        UART_printf("--- TimeSyncPtp_processPtpFrame : timeSyncMAC\n");
+                         TimeSyncPtp_processPtpFrame(hTimeSyncPtp, rxFrame, rxPort, size, 0);
+                     }
+                     else if (TIMESYNC_COMPARE_MAC(dstMacId, linkLocalMAC))
+                     {
++                        UART_printf("--- TimeSyncPtp_processPtpFrame linkLocalMAC\n");
+                         TimeSyncPtp_processPtpFrame(hTimeSyncPtp, rxFrame, rxPort, size, 1);
+                     }
+                 }
+@@ -724,7 +728,8 @@ int8_t TimeSyncPtp_processTimeOfDay(TimeSyncPtp_Handle hTimeSyncPtp,
+     {
+         return TIMESYNC_FEATURE_NOT_ENABLED;
+     }
+-
++    UART_printf("--- TimeSyncPtp_processTimeOfDay \n");
++ 
+     hTimeSyncPtp->tsToDParams.toDTsSec = seconds;
+     hTimeSyncPtp->tsToDParams.toDTsNS  = nanoseconds;
+ 
+@@ -754,6 +759,8 @@ void TimeSyncPtp_synchronizeClock(TimeSyncPtp_Handle hTimeSyncPtp)
+     int64_t tempVar2  = 0;
+     int32_t adjOffset = 0;
+ 
++    UART_printf("--- TimeSyncPtp_synchronizeClock \n");
++
+     syncPortNum = hTimeSyncPtp->tsRunTimeVar.syncPortNum;
+     /*Once initial adjustment is done, calculate the offset*/
+     /*Get mean path delay*/
+@@ -999,7 +1006,7 @@ void TimeSyncPtp_calcRcfAndSyncInterval(TimeSyncPtp_Handle hTimeSyncPtp)
+     {
+         curIndex = 0;
+     }
+-
++    UART_printf("--- TimeSyncPtp_calcRcfAndSyncInterval \n");
+     /*Populate the array with TS*/
+     hTimeSyncPtp->tsSyntInfo.syncIngressTs[curIndex] = (uint64_t)
+                                                         hTimeSyncPtp->syncParam[syncPortNum].rxTsSec *
+@@ -1935,6 +1942,7 @@ void TimeSyncPtp_synchronizeToD(TimeSyncPtp_Handle hTimeSyncPtp)
+     uint32_t nanoSeconds = 0U;
+     uint64_t seconds = 0U;
+ 
++    UART_printf("--- TimeSyncPtp_synchronizeToD \n");
+     /*Calculate 64-bit latch and expected time of day timestamp*/
+     latch0TS = (uint64_t)hTimeSyncPtp->tsToDParams.pPsTsSec * (uint64_t)TIMESYNC_SEC_TO_NS +
+                hTimeSyncPtp->tsToDParams.pPsTsNS;
+diff --git a/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp_osal_priv.c b/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp_osal_priv.c
+index 5e5edc243..c26140de1 100644
+--- a/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp_osal_priv.c
++++ b/packages/ti/transport/timeSync/v2/protocol/ptp/src/timeSync_ptp_osal_priv.c
+@@ -56,6 +56,8 @@
+ #include <ti/transport/timeSync/v2/protocol/ptp/src/priv/timeSync_ptp_priv.h>
+ #include <ti/transport/timeSync/v2/protocol/ptp/src/priv/timeSync_ptp_init_priv.h>
+ #include <ti/transport/timeSync/v2/protocol/ptp/src/priv/timeSync_ptp_osal_priv.h>
++#include <ti/drv/uart/UART_stdio.h>
++
+ 
+ /* ========================================================================== */
+ /*                            Global Variables                                */
+@@ -205,7 +207,7 @@ int8_t TimeSyncPtp_createPtpTasks(TimeSyncPtp_Handle hTimeSyncPtp)
+     SemaphoreP_Params_init(&semaphoreParams);
+     semaphoreParams.mode = SemaphoreP_Mode_BINARY;
+     hTimeSyncPtp->syncTxSemHandle = SemaphoreP_create(0, &semaphoreParams);
+-
++    UART_printf("--- TimeSyncPtp_createPtpTasks: processToDSync2PPS = %d \n", hTimeSyncPtp->ptpConfig.processToDSync2PPS);
+     if (hTimeSyncPtp->syncTxSemHandle == NULL)
+     {
+         return TIMESYNC_UNABLE_TO_CREATE_SEMAPHORE;
+@@ -224,7 +226,7 @@ int8_t TimeSyncPtp_createPtpTasks(TimeSyncPtp_Handle hTimeSyncPtp)
+             return TIMESYNC_UNABLE_TO_CREATE_SEMAPHORE;
+         }
+     }
+-
++    UART_printf("--- TimeSyncPtp_createPtpTasks: ptpConfig = %d \n", hTimeSyncPtp->ptpConfig.type);
+     if (hTimeSyncPtp->ptpConfig.type == TIMESYNC_PTP_DELAY_E2E)
+     {
+         /*Create semaphore for sending delay request frames*/
+@@ -562,7 +564,7 @@ static void TimeSyncPtp_delayReqSendTask(void* a0,
+          */
+         SemaphoreP_pend(hTimeSyncPtp->delayReqTxSemHandle, SemaphoreP_WAIT_FOREVER);
+         /*Use registered callback to send packet on Port connected to master*/
+-
++        UART_printf("--- TimeSyncPtp_delayReqSendTask\n");
+         /*Add port number*/
+         TimeSync_addHalfWord(hTimeSyncPtp->timeSyncBuff.delayReqTxBuf +
+                              TIMESYNC_PTP_SRC_PORT_ID_OFFSET - offset,
+@@ -598,7 +600,8 @@ static void TimeSyncPtp_txTsTask(void* a0,
+                               hTimeSyncPtp->eventIdPdelayResp),
+                              EventP_WaitMode_ANY,
+                              EventP_WAIT_FOREVER);
+-
++		UART_printf("--- TimeSyncPtp_txTsTask: eventIdSync = 0x%x, eventIdPdelayReq = 0x%x, eventIdPdelayResp = 0x%x \n", 
++			hTimeSyncPtp->eventIdSync, hTimeSyncPtp->eventIdPdelayReq, hTimeSyncPtp->eventIdPdelayResp);
+         if (events & hTimeSyncPtp->eventIdSync)
+         {
+             TimeSyncPtp_getTxTs(hTimeSyncPtp, portNum, TIMESYNC_SYNC_FRAME);
+@@ -773,7 +776,7 @@ static void TimeSyncPtp_syncTxTask(void* arg)
+         {
+             /*Pend on semaphore*/
+             SemaphoreP_pend(hTimeSyncPtp->syncTxSemHandle, SemaphoreP_WAIT_FOREVER);
+-
++            UART_printf("--- TimeSyncPtp_syncTxTask \n");
+             for (port = 0; port < TIMESYNC_PTP_MAX_PORTS_SUPPORTED; port++)
+             {
+                 if (TIMESYNC_IS_BIT_SET(hTimeSyncPtp->ptpConfig.portMask, port))
+@@ -933,7 +936,7 @@ static void TimeSyncPtp_ppsTask(void* arg0,
+     {
+         /*Pend on semaphore*/
+         SemaphoreP_pend(hTimeSyncPtp->ppsSemHandle, SemaphoreP_WAIT_FOREVER);
+-
++        UART_printf("--- TimeSyncPtp_ppsTask \n");
+         if (hTimeSyncPtp->ptpConfig.processToDSync2PPS)
+         {
+             /*Get the latch time stamp*/
+@@ -960,6 +963,7 @@ void TimeSyncPtp_notifyPps(void *arg)
+         {
+             /*Post semaphore for PPS sync task*/
+             SemaphoreP_post(hTimeSyncPtp->ppsSemHandle);
++            UART_printf("--- TimeSyncPtp_syncTxIsr \n");
+         }
+     }
+ }
+-- 
+2.17.1
+

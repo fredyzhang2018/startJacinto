@@ -1,0 +1,2121 @@
+
+U-Boot 2021.01-g53e79d0e89 (Aug 04 2021 - 22:33:28 +0000)
+
+SoC:   J721E SR1.0
+Model: Texas Instruments K3 J721E SoC
+Board: J721EX-PM2-SOM rev E7
+DRAM:  4 GiB
+Flash: 0 Bytes
+MMC:   sdhci@4f80000: 0, sdhci@4fb0000: 1
+In:    serial@2800000
+Out:   serial@2800000
+Err:   serial@2800000
+Detected: J7X-BASE-CPB rev E3
+Detected: J7X-GESI-EXP rev E3
+Detected: J7X-VSC8514-ETH rev E2
+Net:   am65_cpsw_nuss_slave ethernet@46000000: K3 CPSW: nuss_ver: 0x6BA00101 cpsw_ver: 0x6BA80100 ale_ver: 0x00293904 Ports:1 mdio_freq:1000000
+eth0: ethernet@46000000
+Hit any key to stop autoboot:  2  1  0 
+switch to partitions #0, OK
+mmc1 is current device
+SD/MMC found on device 1
+Failed to load 'boot.scr'
+483 bytes read in 6 ms (78.1 KiB/s)
+Loaded env from uEnv.txt
+Importing environment from mmc1 ...
+Running uenvcmd ...
+1 bytes read in 7 ms (0 Bytes/s)
+Already setup.
+k3_r5f_rproc r5f@41000000: Core 1 is already in use. No rproc commands work
+k3_r5f_rproc r5f@41400000: Core 2 is already in use. No rproc commands work
+3022012 bytes read in 134 ms (21.5 MiB/s)
+Load Remote Processor 2 with data@addr=0x82000000 3022012 bytes: Success!
+719736 bytes read in 39 ms (17.6 MiB/s)
+Load Remote Processor 3 with data@addr=0x82000000 719736 bytes: Success!
+Failed to load '/lib/firmware/j7-main-r5f1_0-fw'
+Failed to load '/lib/firmware/j7-main-r5f1_1-fw'
+1579056 bytes read in 70 ms (21.5 MiB/s)
+Load Remote Processor 6 with data@addr=0x82000000 1579056 bytes: Success!
+1579056 bytes read in 71 ms (21.2 MiB/s)
+Load Remote Processor 7 with data@addr=0x82000000 1579056 bytes: Success!
+10403824 bytes read in 184 ms (53.9 MiB/s)
+Load Remote Processor 8 with data@addr=0x82000000 10403824 bytes: Success!
+19137024 bytes read in 777 ms (23.5 MiB/s)
+97586 bytes read in 12 ms (7.8 MiB/s)
+10611 bytes read in 7 ms (1.4 MiB/s)
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+   Loading Device Tree to 000000008fee5000, end 000000008fffffff ... OK
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd080]
+[    0.000000] Linux version 5.10.41-g4c2eade9f7 (fredy@Jacinto) (aarch64-none-linux-gnu-gcc (GNU Toolchain for the A-profile Architecture 9.2-2019.12 (arm-9.10)) 9.2.1 20191025, GNU ld (GNU Toolchain for the A-profile Architecture 9.2-2019.12 (arm-9.10)) 2.33.1.20191209) #4 SMP PREEMPT Thu Sep 9 02:04:48 EDT 2021
+[    0.000000] Machine model: Texas Instruments K3 J721E SoC
+[    0.000000] earlycon: ns16550a0 at MMIO32 0x0000000002800000 (options '')
+[    0.000000] printk: bootconsole [ns16550a0] enabled
+[    0.000000] efi: UEFI not found.
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a0000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-dma-memory@a0000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a0100000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node vision_apps-r5f-memory@a0100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a1000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-dma-memory@a1000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a1100000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-memory@a1100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a2000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-dma-memory@a2000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a2100000, size 31 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-memory@a2100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a4000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-dma-memory@a4000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a4100000, size 31 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-memory@a4100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a6000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-dma-memory@a6000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a6100000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-memory@a6100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a7000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-dma-memory@a7000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a7100000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-r5f-memory@a7100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a8000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-c66-dma-memory@a8000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a8100000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-c66-memory@a8100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a9000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-c66-dma-memory@a9000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000a9100000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-c66-memory@a9100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000aa000000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-c71-dma-memory@aa000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000aa100000, size 79 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-c71-memory@aa100000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000b2000000, size 96 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-dma-memory@b2000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: initialized node vision_apps_shared-memories, compatible id dma-heap-carveout
+[    0.000000] Reserved memory: created DMA memory pool at 0x00000000d8000000, size 576 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-core-heap-memory-lo@d8000000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000880000000, size 256 MiB
+[    0.000000] OF: reserved mem: initialized node vision-apps-core-heap-memory-hi@880000000, compatible id shared-dma-pool
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x00000008ffffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000009e7fffff]
+[    0.000000]   node   0: [mem 0x000000009e800000-0x00000000aeffffff]
+[    0.000000]   node   0: [mem 0x00000000af000000-0x00000000afffffff]
+[    0.000000]   node   0: [mem 0x00000000b0000000-0x00000000b7ffffff]
+[    0.000000]   node   0: [mem 0x00000000b8000000-0x00000000d7ffffff]
+[    0.000000]   node   0: [mem 0x00000000d8000000-0x00000000fbffffff]
+[    0.000000]   node   0: [mem 0x00000000fc000000-0x00000000ffffffff]
+[    0.000000]   node   0: [mem 0x0000000880000000-0x000000088fffffff]
+[    0.000000]   node   0: [mem 0x0000000890000000-0x00000008ffffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x00000008ffffffff]
+[    0.000000] cma: Failed to reserve 512 MiB
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: Trusted OS migration not required
+[    0.000000] psci: SMC Calling Convention v1.2
+[    0.000000] percpu: Embedded 2 pages/cpu s49880 r8192 d73000 u131072
+[    0.000000] Detected PIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GIC system register CPU interface
+[    0.000000] CPU features: detected: EL2 vector hardening
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 65472
+[    0.000000] Kernel command line: console=ttyS2,115200n8 earlycon=ns16550a,mmio32,0x02800000 mtdparts=47040000.spi.0:512k(ospi.tiboot3),2m(ospi.tispl),4m(ospi.u-boot),256k(ospi.env),1m(ospi.sysfw),256k(ospi.env.backup),57344k@8m(ospi.rootfs),256k(ospi.phypattern);47034000.hyperbus:512k(hbmc.tiboot3),2m(hbmc.tispl),4m(hbmc.u-boot),256k(hbmc.env),1m(hbmc.sysfw),-@8m(hbmc.rootfs) root=PARTUUID=bb038085-02 rw rootfstype=ext4 rootwait
+[    0.000000] Dentry cache hash table entries: 524288 (order: 6, 4194304 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 262144 (order: 5, 2097152 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] software IO TLB: mapped [mem 0x000000009a800000-0x000000009e800000] (64MB)
+[    0.000000] Memory: 2319360K/4194304K available (10816K kernel code, 1344K rwdata, 4288K rodata, 1856K init, 758K bss, 1874944K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=256 to nr_cpu_ids=2.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=2
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 960 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] GICv3: Distributor has no Range Selector support
+[    0.000000] GICv3: 16 PPIs implemented
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x0000000001900000
+[    0.000000] ITS [mem 0x01820000-0x0182ffff]
+[    0.000000] GIC: enabling workaround for ITS: Socionext Synquacer pre-ITS
+[    0.000000] ITS@0x0000000001820000: allocated 1048576 Devices @8a0800000 (flat, esz 8, psz 64K, shr 0)
+[    0.000000] ITS: using cache flushing for cmd queue
+[    0.000000] GICv3: using LPI property table @0x00000008a00b0000
+[    0.000000] GIC: using cache flushing for LPI property table
+[    0.000000] GICv3: CPU0: using allocated LPI pending table @0x00000008a00c0000
+[    0.000000] random: get_random_bytes called from start_kernel+0x32c/0x4d4 with crng_init=0
+[    0.000000] arch_timer: cp15 timer(s) running at 200.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x2e2049d3e8, max_idle_ns: 440795210634 ns
+[    0.000002] sched_clock: 56 bits at 200MHz, resolution 5ns, wraps every 4398046511102ns
+[    0.008369] Console: colour dummy device 80x25
+[    0.012931] Calibrating delay loop (skipped), value calculated using timer frequency.. 400.00 BogoMIPS (lpj=800000)
+[    0.023600] pid_max: default: 32768 minimum: 301
+[    0.028347] LSM: Security Framework initializing
+[    0.033094] Mount-cache hash table entries: 8192 (order: 0, 65536 bytes, linear)
+[    0.040662] Mountpoint-cache hash table entries: 8192 (order: 0, 65536 bytes, linear)
+[    0.049661] rcu: Hierarchical SRCU implementation.
+[    0.054720] Platform MSI: msi-controller@1820000 domain created
+[    0.060978] PCI/MSI: /bus@100000/interrupt-controller@1800000/msi-controller@1820000 domain created
+[    0.070277] EFI services will not be available.
+[    0.075038] smp: Bringing up secondary CPUs ...
+[    0.080246] Detected PIPT I-cache on CPU1
+[    0.080270] GICv3: CPU1: found redistributor 1 region 0:0x0000000001920000
+[    0.080281] GICv3: CPU1: using allocated LPI pending table @0x00000008a00d0000
+[    0.080314] CPU1: Booted secondary processor 0x0000000001 [0x411fd080]
+[    0.080367] smp: Brought up 1 node, 2 CPUs
+[    0.109713] SMP: Total of 2 processors activated.
+[    0.114518] CPU features: detected: 32-bit EL0 Support
+[    0.119773] CPU features: detected: CRC32 instructions
+[    0.133481] CPU: All CPU(s) started at EL2
+[    0.137676] alternatives: patching kernel code
+[    0.142699] devtmpfs: initialized
+[    0.151202] KASLR disabled due to lack of seed
+[    0.155868] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.165831] futex hash table entries: 512 (order: -1, 32768 bytes, linear)
+[    0.172975] pinctrl core: initialized pinctrl subsystem
+[    0.178531] DMI not present or invalid.
+[    0.182741] NET: Registered protocol family 16
+[    0.187508] DMA: preallocated 256 KiB GFP_KERNEL pool for atomic allocations
+[    0.194839] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.202802] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.211084] thermal_sys: Registered thermal governor 'step_wise'
+[    0.211087] thermal_sys: Registered thermal governor 'power_allocator'
+[    0.217487] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.231118] ASID allocator initialised with 65536 entries
+[    0.252183] HugeTLB registered 16.0 GiB page size, pre-allocated 0 pages
+[    0.259038] HugeTLB registered 512 MiB page size, pre-allocated 0 pages
+[    0.265796] HugeTLB registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.273491] cryptd: max_cpu_qlen set to 1000
+[    0.279484] k3-chipinfo 43000014.chipid: Family:J721E rev:SR1.0 JTAGID[0x0bb6402f] Detected
+[    0.288311] vsys_3v3: supplied by evm_12v0
+[    0.292629] vsys_5v0: supplied by evm_12v0
+[    0.297262] iommu: Default domain type: Translated 
+[    0.302410] SCSI subsystem initialized
+[    0.306534] mc: Linux media interface: v0.10
+[    0.310905] videodev: Linux video capture interface: v2.00
+[    0.316534] pps_core: LinuxPPS API ver. 1 registered
+[    0.321604] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.330940] PTP clock support registered
+[    0.334959] EDAC MC: Ver: 3.0.0
+[    0.338724] FPGA manager framework
+[    0.342233] Advanced Linux Sound Architecture Driver Initialized.
+[    0.348837] clocksource: Switched to clocksource arch_sys_counter
+[    0.355276] VFS: Disk quotas dquot_6.6.0
+[    0.359325] VFS: Dquot-cache hash table entries: 8192 (order 0, 65536 bytes)
+[    0.369081] Carveout Heap: Exported 512 MiB at 0x00000000b8000000
+[    0.375373] NET: Registered protocol family 2
+[    0.379968] IP idents hash table entries: 65536 (order: 3, 524288 bytes, linear)
+[    0.388567] tcp_listen_portaddr_hash hash table entries: 4096 (order: 0, 65536 bytes, linear)
+[    0.397352] TCP established hash table entries: 32768 (order: 2, 262144 bytes, linear)
+[    0.405550] TCP bind hash table entries: 32768 (order: 3, 524288 bytes, linear)
+[    0.413502] TCP: Hash tables configured (established 32768 bind 32768)
+[    0.420249] UDP hash table entries: 2048 (order: 0, 65536 bytes, linear)
+[    0.427140] UDP-Lite hash table entries: 2048 (order: 0, 65536 bytes, linear)
+[    0.434534] NET: Registered protocol family 1
+[    0.439241] RPC: Registered named UNIX socket transport module.
+[    0.445296] RPC: Registered udp transport module.
+[    0.450111] RPC: Registered tcp transport module.
+[    0.454914] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.461498] PCI: CLS 0 bytes, default 64
+[    0.465854] hw perfevents: enabled with armv8_cortex_a72 PMU driver, 7 counters available
+[    0.476158] Initialise system trusted keyrings
+[    0.480778] workingset: timestamp_bits=46 max_order=16 bucket_order=0
+[    0.489062] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.495261] NFS: Registering the id_resolver key type
+[    0.500457] Key type id_resolver registered
+[    0.504728] Key type id_legacy registered
+[    0.508853] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    0.515703] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+[    0.523341] 9p: Installing v9fs 9p2000 file system support
+[    0.548487] Key type asymmetric registered
+[    0.552674] Asymmetric key parser 'x509' registered
+[    0.557671] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 243)
+[    0.565229] io scheduler mq-deadline registered
+[    0.569854] io scheduler kyber registered
+[    0.575043] pinctrl-single 4301c000.pinctrl: 94 pins, size 376
+[    0.581217] pinctrl-single 11c000.pinctrl: 173 pins, size 692
+[    0.589661] k3-ringacc 2b800000.ringacc: Failed to get MSI domain
+[    0.595922] k3-ringacc 3c000000.ringacc: Failed to get MSI domain
+[    0.603714] Serial: 8250/16550 driver, 10 ports, IRQ sharing enabled
+[    0.611763] arm-smmu-v3 36600000.iommu: ias 48-bit, oas 48-bit (features 0x00001faf)
+[    0.621050] arm-smmu-v3 36600000.iommu: allocated 524288 entries for cmdq
+[    0.630543] arm-smmu-v3 36600000.iommu: allocated 524288 entries for evtq
+[    0.638402] arm-smmu-v3 36600000.iommu: msi_domain absent - falling back to wired irqs
+[    0.651241] brd: module loaded
+[    0.657275] loop: module loaded
+[    0.660800] sysfs: cannot create duplicate filename '/devices/platform/dma_buf_phys'
+[    0.668728] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.10.41-g4c2eade9f7 #4
+[    0.675927] Hardware name: Texas Instruments K3 J721E SoC (DT)
+[    0.681883] Call trace:
+[    0.684385]  dump_backtrace+0x0/0x1a0
+[    0.688121]  show_stack+0x18/0x68
+[    0.691505]  dump_stack+0xd0/0x12c
+[    0.694975]  sysfs_warn_dup+0x60/0x80
+[    0.698709]  sysfs_create_dir_ns+0xe0/0xf8
+[    0.702891]  kobject_add_internal+0x98/0x288
+[    0.707247]  kobject_add+0x94/0x100
+[    0.710808]  device_add+0xe0/0x748
+[    0.714277]  platform_device_add+0x100/0x238
+[    0.718634]  platform_device_register_full+0xcc/0x150
+[    0.723793]  dma_buf_phys_init+0x6c/0x9c
+[    0.727794]  do_one_initcall+0x54/0x1b8
+[    0.731708]  kernel_init_freeable+0x1d4/0x23c
+[    0.736156]  kernel_init+0x14/0x114
+[    0.739713]  ret_from_fork+0x10/0x34
+[    0.743378] kobject_add_internal failed for dma_buf_phys with -EEXIST, don't try to register things with the same name in the same directory.
+[    0.756544] megasas: 07.714.04.00-rc1
+[    0.761457] libphy: Fixed MDIO Bus: probed
+[    0.766105] tun: Universal TUN/TAP device driver, 1.6
+[    0.771513] igbvf: Intel(R) Gigabit Virtual Function Network Driver
+[    0.777919] igbvf: Copyright (c) 2009 - 2012 Intel Corporation.
+[    0.783989] sky2: driver version 1.30
+[    0.788219] VFIO - User Level meta-driver version: 0.3
+[    0.793868] i2c /dev entries driver
+[    0.798010] sdhci: Secure Digital Host Controller Interface driver
+[    0.804324] sdhci: Copyright(c) Pierre Ossman
+[    0.808944] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.815238] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.821541] SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
+[    0.828641] optee: probing for conduit method.
+[    0.833196] optee: revision 3.12 (3d47a131)
+[    0.833439] optee: initialized driver
+[    0.842704] NET: Registered protocol family 17
+[    0.847316] 9pnet: Installing 9P2000 support
+[    0.851701] Key type dns_resolver registered
+[    0.856185] Loading compiled-in X.509 certificates
+[    0.865340] k3-ringacc 2b800000.ringacc: Failed to get MSI domain
+[    0.871669] k3-ringacc 3c000000.ringacc: Failed to get MSI domain
+[    0.879693] ti-sci 44083000.dmsc: ABI: 3.1 (firmware rev 0x0015 '21.5.0--v2021.05 (Terrific Llam')
+[    0.906276] random: fast init done
+[    0.929278] davinci-mcasp 2ba0000.mcasp: IRQ common not found
+[    0.936764] omap_i2c 40b00000.i2c: bus 0 rev0.12 at 100 kHz
+[    0.942825] omap_i2c 40b10000.i2c: bus 1 rev0.12 at 100 kHz
+[    0.948887] omap_i2c 42120000.i2c: bus 2 rev0.12 at 100 kHz
+[    0.955256] pca953x 3-0020: supply vcc not found, using dummy regulator
+[    0.962076] pca953x 3-0020: using no AI
+[    0.989582] pca953x 3-0022: supply vcc not found, using dummy regulator
+[    0.996379] pca953x 3-0022: using AI
+[    1.000643] gpio-480 (CTRL_PM_I2C_OE): hogged as output/high
+[    1.006618] gpio-481 (MCASP/TRACE_MUX_S0): hogged as output/low
+[    1.012859] gpio-482 (MCASP/TRACE_MUX_S1): hogged as output/high
+[    1.019347] omap_i2c 2000000.i2c: bus 3 rev0.12 at 400 kHz
+[    1.025747] omap_i2c 2010000.i2c: bus 4 rev0.12 at 400 kHz
+[    1.035327] omap_i2c 2020000.i2c: bus 5 rev0.12 at 400 kHz
+[    1.041580] pca953x 6-0020: supply vcc not found, using dummy regulator
+[    1.048393] pca953x 6-0020: using no AI
+[    1.073505] omap_i2c 2030000.i2c: bus 6 rev0.12 at 400 kHz
+[    1.079549] omap_i2c 2040000.i2c: bus 7 rev0.12 at 100 kHz
+[    1.085485] omap_i2c 2050000.i2c: bus 8 rev0.12 at 100 kHz
+[    1.091860] ti-sci-intr bus@100000:bus@28380000:interrupt-controller2: Interrupt Router 137 domain created
+[    1.101837] ti-sci-intr bus@100000:interrupt-controller0: Interrupt Router 131 domain created
+[    1.110636] ti-sci-intr bus@100000:main-navss:interrupt-controller1: Interrupt Router 213 domain created
+[    1.120459] ti-sci-inta 33d00000.interrupt-controller: Interrupt Aggregator domain 209 created
+[    1.138098] j721e-pcie 2900000.pcie: host bridge /bus@100000/pcie@2900000 ranges:
+[    1.145786] j721e-pcie 2900000.pcie:       IO 0x0010001000..0x0010010fff -> 0x0010001000
+[    1.154063] j721e-pcie 2900000.pcie:      MEM 0x0010011000..0x0017ffffff -> 0x0010011000
+[    1.162340] j721e-pcie 2900000.pcie:   IB MEM 0x0000000000..0xffffffffffff -> 0x0000000000
+[    2.172666] j721e-pcie 2900000.pcie: PCI host bridge to bus 0000:00
+[    2.179082] pci_bus 0000:00: root bus resource [bus 00-0f]
+[    2.184688] pci_bus 0000:00: root bus resource [io  0x0000-0xffff] (bus address [0x10001000-0x10010fff])
+[    2.194378] pci_bus 0000:00: root bus resource [mem 0x10011000-0x17ffffff]
+[    2.201428] pci 0000:00:00.0: [104c:b00d] type 01 class 0x060400
+[    2.207567] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x4 may corrupt adjacent RW1C bits
+[    2.217436] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x4 may corrupt adjacent RW1C bits
+[    2.227326] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0xe8 may corrupt adjacent RW1C bits
+[    2.237287] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x3e may corrupt adjacent RW1C bits
+[    2.247256] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x92 may corrupt adjacent RW1C bits
+[    2.257216] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0xb2 may corrupt adjacent RW1C bits
+[    2.267200] pci 0000:00:00.0: supports D1
+[    2.271294] pci 0000:00:00.0: PME# supported from D0 D1 D3hot
+[    2.277166] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x84 may corrupt adjacent RW1C bits
+[    2.288953] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    2.297155] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x3e may corrupt adjacent RW1C bits
+[    2.307115] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x3e may corrupt adjacent RW1C bits
+[    2.317074] pci_bus 0000:00: 2-byte config write to 0000:00:00.0 offset 0x3e may corrupt adjacent RW1C bits
+[    2.328659] pci_bus 0000:01: busn_res: [bus 01-0f] end is updated to 01
+[    2.335434] pci 0000:00:00.0: PCI bridge to [bus 01]
+[    2.340712] pcieport 0000:00:00.0: PME: Signaling with IRQ 50
+[    2.347082] j721e-pcie 2910000.pcie: host bridge /bus@100000/pcie@2910000 ranges:
+[    2.354751] j721e-pcie 2910000.pcie:       IO 0x0018001000..0x0018010fff -> 0x0018001000
+[    2.363030] j721e-pcie 2910000.pcie:      MEM 0x0018011000..0x001fffffff -> 0x0018011000
+[    2.371308] j721e-pcie 2910000.pcie:   IB MEM 0x0000000000..0xffffffffffff -> 0x0000000000
+[    3.379844] j721e-pcie 2910000.pcie: PCI host bridge to bus 0001:00
+[    3.386255] pci_bus 0001:00: root bus resource [bus 00-0f]
+[    3.391860] pci_bus 0001:00: root bus resource [io  0x10000-0x1ffff] (bus address [0x18001000-0x18010fff])
+[    3.401729] pci_bus 0001:00: root bus resource [mem 0x18011000-0x1fffffff]
+[    3.408775] pci 0001:00:00.0: [104c:b00d] type 01 class 0x060400
+[    3.414975] pci 0001:00:00.0: supports D1
+[    3.419069] pci 0001:00:00.0: PME# supported from D0 D1 D3hot
+[    3.426712] pci 0001:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    3.436517] pci_bus 0001:01: busn_res: [bus 01-0f] end is updated to 01
+[    3.443285] pci 0001:00:00.0: PCI bridge to [bus 01]
+[    3.448551] pcieport 0001:00:00.0: PME: Signaling with IRQ 53
+[    3.454853] j721e-pcie 2920000.pcie: host bridge /bus@100000/pcie@2920000 ranges:
+[    3.462523] j721e-pcie 2920000.pcie:       IO 0x4400001000..0x4400010fff -> 0x0000001000
+[    3.470799] j721e-pcie 2920000.pcie:      MEM 0x4400011000..0x4407ffffff -> 0x0000011000
+[    3.479076] j721e-pcie 2920000.pcie:   IB MEM 0x0000000000..0xffffffffffff -> 0x0000000000
+[    4.479850] j721e-pcie 2920000.pcie: PCI host bridge to bus 0002:00
+[    4.486260] pci_bus 0002:00: root bus resource [bus 00-0f]
+[    4.491865] pci_bus 0002:00: root bus resource [io  0x20000-0x2ffff] (bus address [0x1000-0x10fff])
+[    4.501112] pci_bus 0002:00: root bus resource [mem 0x4400011000-0x4407ffffff] (bus address [0x00011000-0x07ffffff])
+[    4.511888] pci 0002:00:00.0: [104c:b00d] type 01 class 0x060400
+[    4.518087] pci 0002:00:00.0: supports D1
+[    4.522182] pci 0002:00:00.0: PME# supported from D0 D1 D3hot
+[    4.529795] pci 0002:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    4.539594] pci_bus 0002:01: busn_res: [bus 01-0f] end is updated to 01
+[    4.546367] pci 0002:00:00.0: PCI bridge to [bus 01]
+[    4.551631] pcieport 0002:00:00.0: PME: Signaling with IRQ 56
+[    4.558335] k3-ringacc 2b800000.ringacc: Ring Accelerator probed rings:286, gp-rings[96,20] sci-dev-id:235
+[    4.568217] k3-ringacc 2b800000.ringacc: dma-ring-reset-quirk: disabled
+[    4.574976] k3-ringacc 2b800000.ringacc: RA Proxy rev. 66346100, num_proxies:64
+[    4.583913] k3-ringacc 3c000000.ringacc: Ring Accelerator probed rings:1024, gp-rings[440,150] sci-dev-id:211
+[    4.594069] k3-ringacc 3c000000.ringacc: dma-ring-reset-quirk: disabled
+[    4.600828] k3-ringacc 3c000000.ringacc: RA Proxy rev. 66346100, num_proxies:64
+[    4.608777] 40a00000.serial: ttyS1 at MMIO 0x40a00000 (irq = 15, base_baud = 6000000) is a 8250
+[    4.618140] 2800000.serial: ttyS2 at MMIO 0x2800000 (irq = 33, base_baud = 3000000) is a 8250
+[    4.626882] printk: console [ttyS2] enabled
+[    4.626882] printk: console [ttyS2] enabled
+[    4.635319] printk: bootconsole [ns16550a0] disabled
+[    4.635319] printk: bootconsole [ns16550a0] disabled
+[    4.645743] 2810000.serial: ttyS3 at MMIO 0x2810000 (irq = 34, base_baud = 3000000) is a 8250
+[    4.654661] 2840000.serial: ttyS6 at MMIO 0x2840000 (irq = 35, base_baud = 3000000) is a 8250
+[    4.664223] cdns-ufshcd 4e84000.ufs: ufshcd_populate_vreg: Unable to find vdd-hba-supply regulator, assuming enabled
+[    4.674735] cdns-ufshcd 4e84000.ufs: ufshcd_populate_vreg: Unable to find vcc-supply regulator, assuming enabled
+[    4.684888] cdns-ufshcd 4e84000.ufs: ufshcd_populate_vreg: Unable to find vccq-supply regulator, assuming enabled
+[    4.695126] cdns-ufshcd 4e84000.ufs: ufshcd_populate_vreg: Unable to find vccq2-supply regulator, assuming enabled
+[    4.705852] scsi host0: ufshcd
+[    4.727915] cdns-ufshcd 4e84000.ufs: ufshcd_print_pwr_info:[RX, TX]: gear=[1, 1], lane[1, 1], pwr[SLOWAUTO_MODE, SLOWAUTO_MODE], rate = 0
+[    4.748840] davinci_mdio 46000f00.mdio: davinci mdio revision 9.7, bus freq 1000000
+[    4.756486] libphy: 46000f00.mdio: probed
+[    4.761854] davinci_mdio 46000f00.mdio: phy[0]: device 46000f00.mdio:00, driver TI DP83867
+[    4.770160] am65-cpsw-nuss 46000000.ethernet: initializing am65 cpsw nuss version 0x6BA00101, cpsw version 0x6BA80100 Ports: 2 quirks:00000000
+[    4.784111] am65-cpts 310d0000.cpts: CPTS ver 0x4e8a010a, freq:200000000, add_val:4 pps:0
+[    4.792877] mmc0: CQHCI version 5.10
+[    4.797118] davinci-mcasp 2ba0000.mcasp: IRQ common not found
+[    4.804851] cdns-ufshcd 4e84000.ufs: ufshcd_print_pwr_info:[RX, TX]: gear=[3, 3], lane[2, 2], pwr[FAST MODE, FAST MODE], rate = 2
+[    4.808901] vdd_mmc1: supplied by vsys_3v3
+[    4.820595] cdns-ufshcd 4e84000.ufs: ufshcd_find_max_sup_active_icc_level: Regulator capability was not set, actvIccLevel=0
+[    4.821189] pca953x 4-0020: supply vcc not found, using dummy regulator
+[    4.838383] pca953x 4-0020: using no AI
+[    4.842257] scsi 0:0:0:49488: Well-known LUN    TOSHIBA  THGAF8G8T23BAILB 0300 PQ: 0 ANSI: 6
+[    4.850685] mmc0: SDHCI controller on 4f80000.mmc [4f80000.mmc] using ADMA 64-bit
+[    4.858612] scsi 0:0:0:49476: Well-known LUN    TOSHIBA  THGAF8G8T23BAILB 0300 PQ: 0 ANSI: 6
+[    4.859330] omap-mailbox 31f80000.mailbox: omap mailbox rev 0x66fc7100
+[    4.873902] cdns-ufshcd 4e84000.ufs: ufshcd_scsi_add_wlus: BOOT WLUN not found
+[    4.873930] omap-mailbox 31f81000.mailbox: omap mailbox rev 0x66fc7100
+[    4.888045] omap-mailbox 31f82000.mailbox: omap mailbox rev 0x66fc7100
+[    4.894875] omap-mailbox 31f83000.mailbox: omap mailbox rev 0x66fc7100
+[    4.901782] omap-mailbox 31f84000.mailbox: omap mailbox rev 0x66fc7100
+[    4.911694] ti-udma 285c0000.dma-controller: Channels: 26 (tchan: 13, rchan: 13, gp-rflow: 8)
+[    4.921748] ti-udma 31150000.dma-controller: Channels: 84 (tchan: 42, rchan: 42, gp-rflow: 16)
+[    4.934547] spi-nor spi0.0: mt35xu512aba (65536 Kbytes)
+[    4.939824] mtd: 47040000.spi.0: partitioning exceeds flash size, truncating
+[    4.946863] mtd: 47040000.spi.0: skipping zero sized partition
+[    4.952690] 7 cmdlinepart partitions found on MTD device 47040000.spi.0
+[    4.959287] Creating 7 MTD partitions on "47040000.spi.0":
+[    4.964760] 0x000000000000-0x000000080000 : "ospi.tiboot3"
+[    4.970740] 0x000000080000-0x000000280000 : "ospi.tispl"
+[    4.976467] 0x000000280000-0x000000680000 : "ospi.u-boot"
+[    4.982264] 0x000000680000-0x0000006c0000 : "ospi.env"
+[    4.987826] 0x0000006c0000-0x0000007c0000 : "ospi.sysfw"
+[    4.993582] 0x0000007c0000-0x000000800000 : "ospi.env.backup"
+[    4.999691] 0x000000800000-0x000004000000 : "ospi.rootfs"
+[    5.007891] spi-nor spi1.0: mt25qu512a (65536 Kbytes)
+[    5.020493] mmc0: Command Queue Engine enabled
+[    5.024938] mmc0: new HS400 MMC card at address 0001
+[    5.030190] mmcblk0: mmc0:0001 S0J56X 14.8 GiB 
+[    5.034833] mmcblk0boot0: mmc0:0001 S0J56X partition 1 31.5 MiB
+[    5.040871] mmcblk0boot1: mmc0:0001 S0J56X partition 2 31.5 MiB
+[    5.046860] mmcblk0rpmb: mmc0:0001 S0J56X partition 3 4.00 MiB, chardev (237:0)
+[    5.054168] davinci_mdio 46000f00.mdio: davinci mdio revision 9.7, bus freq 1000000
+[    5.061827] libphy: 46000f00.mdio: probed
+[    5.066819]  mmcblk0: p1 p2
+[    5.069855] davinci_mdio 46000f00.mdio: phy[0]: device 46000f00.mdio:00, driver TI DP83867
+[    5.078361] am65-cpsw-nuss 46000000.ethernet: initializing am65 cpsw nuss version 0x6BA00101, cpsw version 0x6BA80100 Ports: 2 quirks:00000000
+[    5.092378] am65-cpsw-nuss 46000000.ethernet: set new flow-id-base 48
+[    5.099332] am65-cpsw-nuss 46000000.ethernet: initialized cpsw ale version 1.4
+[    5.106551] am65-cpsw-nuss 46000000.ethernet: ALE Table size 64
+[    5.112850] am65-cpsw-nuss 46000000.ethernet: CPTS ver 0x4e8a010a, freq:500000000, add_val:1 pps:0
+[    5.123084] davinci-mcasp 2ba0000.mcasp: IRQ common not found
+[    5.129129] mmc1: CQHCI version 5.10
+[    5.139981] debugfs: Directory 'pd:242' with parent 'pm_genpd' already present!
+[    5.147408] debugfs: Directory 'pd:241' with parent 'pm_genpd' already present!
+[    5.154717] debugfs: Directory 'pd:240' with parent 'pm_genpd' already present!
+[    5.162023] debugfs: Directory 'pd:239' with parent 'pm_genpd' already present!
+[    5.170065] input: gpio-keys as /devices/platform/gpio-keys/input/input0
+[    5.185162] ALSA device list:
+[    5.188120]   No soundcards found.
+[    6.191572] mmc1: SDHCI controller on 4fb0000.mmc [4fb0000.mmc] using ADMA 64-bit
+[    6.199303] Waiting for root device PARTUUID=bb038085-02...
+[    6.257672] mmc1: new ultra high speed DDR50 SDXC card at address aaaa
+[    6.264507] mmcblk1: mmc1:aaaa SN64G 59.5 GiB 
+[    6.271568]  mmcblk1: p1 p2
+[    6.300406] EXT4-fs (mmcblk1p2): mounted filesystem with ordered data mode. Opts: (null)
+[    6.308522] VFS: Mounted root (ext4 filesystem) on device 179:98.
+[    6.315608] devtmpfs: mounted
+[    6.318952] Freeing unused kernel memory: 1856K
+[    6.323498] Run /sbin/init as init process
+[    6.506859] systemd[1]: System time before build time, advancing clock.
+[    6.563858] NET: Registered protocol family 10
+[    6.568781] Segment Routing with IPv6
+[    6.589853] systemd[1]: systemd 244.5+ running in system mode. (+PAM -AUDIT -SELINUX +IMA -APPARMOR -SMACK +SYSVINIT +UTMP -LIBCRYPTSETUP -GCRYPT -GNUTLS +ACL +XZ -LZ4 -SECCOMP +BLKID -ELFUTILS +KMOD -IDN2 -IDN -PCRE2 default-hierarchy=hybrid)
+[    6.611620] systemd[1]: Detected architecture arm64.
+
+Welcome to Arago 2020.09!
+
+[    6.649593] systemd[1]: Set hostname to <j7-evm>.
+[    6.857667] systemd[1]: /lib/systemd/system/docker.socket:6: ListenStream= references a path below legacy directory /var/run/, updating /var/run/docker.sock → /run/docker.sock; please update the unit file accordingly.
+[    6.936105] random: systemd: uninitialized urandom read (16 bytes read)
+[    6.942838] systemd[1]: system-getty.slice: unit configures an IP firewall, but the local system does not support BPF/cgroup firewalling.
+[    6.955174] systemd[1]: (This warning is only shown for the first unit using IP firewalling.)
+[    6.965161] systemd[1]: Created slice system-getty.slice.
+[  OK  ] Created slice system-getty.slice.
+[    6.984920] random: systemd: uninitialized urandom read (16 bytes read)
+[    6.992175] systemd[1]: Created slice system-serial\x2dgetty.slice.
+[  OK  ] Created slice system-serial\x2dgetty.slice.
+[    7.012903] random: systemd: uninitialized urandom read (16 bytes read)
+[    7.020072] systemd[1]: Created slice User and Session Slice.
+[  OK  ] Created slice User and Session Slice.
+[    7.041025] systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+[  OK  ] Started Dispatch Password …ts to Console Directory Watch.
+[    7.064950] systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+[  OK  ] Started Forward Password R…uests to Wall Directory Watch.
+[    7.088939] systemd[1]: Reached target Paths.
+[  OK  ] Reached target Paths.
+[    7.108888] systemd[1]: Reached target Remote File Systems.
+[  OK  ] Reached target Remote File Systems.
+[    7.128882] systemd[1]: Reached target Slices.
+[  OK  ] Reached target Slices.
+[    7.148883] systemd[1]: Reached target Swap.
+[  OK  ] Reached target Swap.
+[    7.173781] systemd[1]: Listening on RPCbind Server Activation Socket.
+[  OK  ] Listening on RPCbind Server Activation Socket.
+[    7.196915] systemd[1]: Reached target RPC Port Mapper.
+[  OK  ] Reached target RPC Port Mapper.
+[    7.219303] systemd[1]: Listening on Process Core Dump Socket.
+[  OK  ] Listening on Process Core Dump Socket.
+[    7.241008] systemd[1]: Listening on initctl Compatibility Named Pipe.
+[  OK  ] Listening on initctl Compatibility Named Pipe.
+[    7.275105] systemd[1]: Condition check resulted in Journal Audit Socket being skipped.
+[    7.283433] systemd[1]: Listening on Journal Socket (/dev/log).
+[  OK  ] Listening on Journal Socket (/dev/log).
+[    7.305102] systemd[1]: Listening on Journal Socket.
+[  OK  ] Listening on Journal Socket.
+[    7.325153] systemd[1]: Listening on Network Service Netlink Socket.
+[  OK  ] Listening on Network Service Netlink Socket.
+[    7.349064] systemd[1]: Listening on udev Control Socket.
+[  OK  ] Listening on udev Control Socket.
+[    7.368994] systemd[1]: Listening on udev Kernel Socket.
+[  OK  ] Listening on udev Kernel Socket.
+[    7.391850] systemd[1]: Mounting Huge Pages File System...
+         Mounting Huge Pages File System...
+[    7.415721] systemd[1]: Mounting POSIX Message Queue File System...
+         Mounting POSIX Message Queue File System...
+[    7.439183] systemd[1]: Mounting Kernel Debug File System...
+         Mounting Kernel Debug File System...
+[    7.464511] systemd[1]: Mounting Temporary Directory (/tmp)...
+         Mounting Temporary Directory (/tmp)...
+[    7.487449] systemd[1]: Starting Create list of static device nodes for the current kernel...
+         Starting Create list of st…odes for the current kernel...
+[    7.515179] systemd[1]: Starting Start psplash boot splash screen...
+         Starting Start psplash boot splash screen...
+[    7.544392] systemd[1]: Started Hardware RNG Entropy Gatherer Daemon.
+[  OK  ] Started Hardware RNG Entropy Gatherer Daemon.
+[    7.567410] systemd[1]: Starting RPC Bind...
+         Starting RPC Bind...
+[    7.581013] systemd[1]: Condition check resulted in File System Check on Root Device being skipped.
+[    7.603432] systemd[1]: Starting Journal Service...
+         Starting Journal Service...
+[    7.632721] systemd[1]: Starting Load Kernel Modules...
+         Starting Load Kernel Modules...[    7.646051] cryptodev: loading out-of-tree module taints kernel.
+
+[    7.667287] systemd[1]: Starting Remount Root and Kernel File Systems...
+         Starting Remount Root and Kernel File Systems   7.675809] cryptodev: driver 1.10 loaded.
+[0m...
+[    7.695342] systemd[1]: Starting udev Coldplug all Devices...
+         Starting udev Coldplug all Devices...
+[    7.715161] EXT4-fs (mmcblk1p2): re-mounted. Opts: (null)
+[    7.723206] systemd[1]: Started RPC Bind.
+[  OK  ] Started RPC Bind.
+[    7.746111] systemd[1]: Started Journal Service.
+[  OK  ] Started Journal Service.
+[  OK  ] Mounted Huge Pages File System.
+[  OK  ] Mounted POSIX Message Queue File System.
+[  OK  ] Mounted Kernel Debug File System.
+[  OK  ] Mounted Temporary Directory (/tmp).
+[  OK  ] Started Create list of sta… nodes for the current kernel.
+[FAILED] Failed to start Start psplash boot splash screen.
+See 'systemctl status psplash-start.service' for details.
+[DEPEND] Dependency failed for Star…progress communication helper.
+[  OK  ] Started Load Kernel Modules.
+[  OK  ] Started Remount Root and Kernel File Systems.
+         Mounting Kernel Configuration File System...
+         Starting Flush Journal to Persistent Storage...
+[    7.959643] systemd-journald[168]: Received client request to flush runtime journal.
+         Starting Apply Kernel Variables...
+         Starting Create Static Device Nodes in /dev...
+[  OK  ] Mounted Kernel Configuration File System.
+[  OK  ] Started Flush Journal to Persistent Storage.
+[  OK  ] Started Apply Kernel Variables.
+[  OK  ] Started Create Static Device Nodes in /dev.
+[  OK  ] Reached target Local File Systems (Pre).
+         Mounting /media/ram...
+         Mounting /var/volatile...
+         Starting udev Kernel Device Manager...
+[  OK  ] Mounted /media/ram.
+[  OK  ] Mounted /var/volatile.
+         Starting Load/Save Random Seed...
+[  OK  ] Reached target Local File Systems.
+         Starting Create Volatile Files and Directories...
+[  OK  ] Started udev Coldplug all Devices.
+[  OK  ] Started Create Volatile Files and Directories.
+[  OK  ] Started udev Kernel Device Manager.
+         Starting Network Time Synchronization...
+         Starting Update UTMP about System Boot/Shutdown...
+[  OK  ] Started Update UTMP about System Boot/Shutdown.
+[  OK  ] Started Network Time Synchronization.
+[  OK  ] Reached target System Initialization.
+[  OK  ] Started Daily Cleanup of Temporary Directories.
+[  OK  ] Reached target System Time Set.
+[  OK  ] Reached target System Time Synchronized.
+[  OK  ] Started Daily rotation of log files.
+[  OK  ] Reached target Timers.
+[  OK  ] Listening on Avahi mDNS/DNS-SD Stack Activation Socket.
+[  OK  ] Listening on D-Bus System Message Bus Socket.
+         Starting Docker Socket for the API.
+[  OK  ] Listening on dropbear.socket.
+         Starting Reboot and dump vmcore via kexec...
+[  OK  ] Listening on Docker Socket for the API.
+[  OK  ] Reached target Sockets.
+[  OK  ] Reached target Basic System.
+[  OK  ] Started Job spooling tools.
+[  OK  ] Started Periodic Command Scheduler.
+[  OK  ] Started D-Bus System Message Bus.
+         Starting Print notice about GPLv3 packages...
+         Starting IPv6 Packet Filtering Framework...
+         Starting IPv4 Packet Filtering Framework...
+[  OK  ] Started irqbalance daemon.
+         Starting Telephony service...
+         Starting rc.pvr.service...
+         Starting Login Service...
+[  OK  ] Started Reboot and dump vmcore via kexec.
+[  OK  ] Started IPv6 Packet Filtering Framework.
+[  OK  ] Started IPv4 Packet Filtering Framework.
+[  OK  ] Reached target Network (Pre).
+         Starting Network Service...
+[  OK  ] Started Telephony service.
+[    8.953411] PVR_K:  246: Read BVNC 22.104.208.318 from HW device registers
+[    8.965213] ina2xx 5-0040: power monitor ina226 (Rshunt = 10000 uOhm)
+[    8.971723] PVR_K:  246: RGX Device registered with BVNC 22.104.208.318
+[    8.982158] Bluetooth: Core ver 2.22
+[    8.985869] [drm] Initialized pvr 1.13.5776728 20170530 for 4e20000000.gpu on minor 0
+[    8.988936] NET: Registered protocol family 31
+[    9.004450] Bluetooth: HCI device and connection manager initialized
+[    9.015496] Bluetooth: HCI socket layer initialized
+[    9.015502] Bluetooth: L2CAP socket layer initialized
+[    9.015513] Bluetooth: SCO socket layer initialized
+[    9.038196] ina2xx 5-0041: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.057464] ina2xx 5-0042: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.057897] ina2xx 5-0043: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.058290] ina2xx 5-0044: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.066372] ina2xx 5-0045: power monitor ina226 (Rshunt = 5000 uOhm)
+[    9.067176] ina2xx 5-0046: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.067594] ina2xx 5-0047: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.068004] ina2xx 5-0048: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.068461] ina2xx 5-0049: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.070662] ina2xx 5-004a: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.071113] ina2xx 5-004b: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.071589] ina2xx 5-004c: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.071996] ina2xx 5-004d: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.074777] ina2xx 5-004e: power monitor ina226 (Rshunt = 10000 uOhm)
+[    9.082181] ina2xx 5-004f: power monitor ina226 (Rshunt = 10000 uOhm)
+[  OK  ] Started Network Service.
+         Starting Wait for Network to be Configured...
+         Starting Network Name Resolution...
+[  OK  ] Started Login Service.
+[  OK  ] Started Network Name Resolution.
+[  OK  ] Reached target Network.
+[  OK  ] Reached target Host and Network Name Lookups.
+         Starting Avahi mDNS/DNS-SD Stack...
+         Starting Enable and configure wl18xx bluetooth stack...
+[  OK  ] Started NFS status monitor for NFSv2/3 locking..
+         Starting Simple Network Ma…ent Protocol (SNMP) Daemon....
+         Starting Permit User Sessions...
+[  OK  ] Started Permit User Sessions.
+[  OK  ] Started Getty on tty1.
+[  OK  ] Started Serial Getty on ttyS2.
+[  OK  ] Started Serial Getty on ttyS3.
+[  OK  ] Reached target Login Prompts.
+         Starting Synchronize System and HW clocks...
+[FAILED] Failed to start Synchronize System and HW clocks.
+See 'systemctl status sync-clocks.service' for details.
+[  OK  ] Started Enable and configure wl18xx bluetooth stack.
+[  OK  ] Started Avahi mDNS/DNS-SD Stack.
+[    9.799154] k3-dsp-rproc 4d80800000.dsp: assigned reserved memory node vision-apps-c66-dma-memory@a9000000
+[   10.176876] random: crng init done
+[   10.180279] random: 7 urandom warning(s) missed due to ratelimiting
+[   10.229345] k3-dsp-rproc 4d80800000.dsp: configured DSP for IPC-only mode
+[   10.236948] remoteproc remoteproc0: 4d80800000.dsp is available
+[   10.291050] img_dec 4300000.video-decoder: decoder registered as /dev/video0
+[  OK  ] Started Load/Save Random Seed.
+[   10.345469] CAN device driver interface
+[   10.464702] remoteproc remoteproc0: attaching to 4d80800000.dsp
+[   10.552998] k3-dsp-rproc 4d80800000.dsp: DSP initialized in IPC-only mode
+[   10.645107]  remoteproc0#vdev0buffer: assigned reserved memory node vision-apps-c66-dma-memory@a9000000
+[  OK  ] Started Simple Network Man…ement Protocol (SNMP) Daemon..
+[   10.730568] platform 41000000.r5f: R5F core may have been powered on by a different host, programmed state (0) != actual state (1)
+[   10.949884] virtio_rpmsg_bus virtio0: rpmsg host is online
+[   10.953989] virtio_rpmsg_bus virtio0: creating channel rpmsg_chrdev addr 0xd
+[   11.052096] platform 41000000.r5f: configured R5F for IPC-only mode
+[   11.081400]  remoteproc0#vdev0buffer: registered virtio0 (type 7)
+[   11.121785] remoteproc remoteproc0: remote processor 4d80800000.dsp is now attached
+[   11.155246] k3-dsp-rproc 4d81800000.dsp: assigned reserved memory node vision-apps-c66-dma-memory@a8000000
+[   11.172575] platform 41000000.r5f: assigned reserved memory node vision-apps-r5f-dma-memory@a0000000
+[   11.210445] k3-dsp-rproc 4d81800000.dsp: configured DSP for IPC-only mode
+[   11.225949] remoteproc remoteproc1: 41000000.r5f is available
+[   11.266380] TI DP83867 46000f00.mdio:00: attached PHY driver [TI DP83867] (mii_bus:phy_addr=46000f00.mdio:00, irq=POLL)
+[   11.293713] am65-cpsw-nuss 46000000.ethernet eth0: Link is Down
+[   11.327932] remoteproc remoteproc1: attaching to 41000000.r5f
+[   11.341741] remoteproc remoteproc2: 4d81800000.dsp is available
+[   11.458593] platform 41000000.r5f: R5F core initialized in IPC-only mode
+[   11.489480] remoteproc remoteproc2: attaching to 4d81800000.dsp
+[   11.639053] k3-dsp-rproc 4d81800000.dsp: DSP initialized in IPC-only mode
+***************************************************************[   11.678229]  remoteproc1#vdev0buffer: assigned reserved memory node vision-apps-r5f-dma-memory@a0000000
+
+***************************************************************
+NOTICE: This file system contains the following GPLv3 packages:
+	autoconf
+	bash-dev
+	bash
+	bc
+	binutils
+	cifs-utils
+	coreutils-stdbuf
+	coreutils
+	cpio
+	cpp-symlinks
+	cpp
+	dosfstools
+	elfutils
+	g++-symlinks
+	g++
+	gawk
+	gcc-symlinks
+	gcc
+	gdb
+	gdbserver
+	gettext
+	glmark2
+	gstreamer1.0-libav-dev
+	gstreamer1.0-libav
+	gzip
+	less
+	libasm1
+	libbfd
+	libdw1
+	libelf1
+	libgdbm-compat4
+	libgdbm-dev
+	libgdbm6
+	libgettextlib
+	libgettextsrc
+	libgmp-dev
+	libgmp10
+	libgmpxx4
+	libidn2-0
+	libidn2-dev
+	libmpc3
+	libmpfr6
+	libreadline-dev
+	libreadline8
+	libunistring-dev
+	libunistring2
+	m4-dev
+	m4
+	make
+	nettle-dev
+	nettle
+	parted
+	python3-rfc3987
+	python3-strict-rfc3339
+	tar
+	which
+	zeromq
+
+If you do not wish to distribute GPLv3 components please remove
+the above packages prior to distribution.  This can be done using
+the opkg remove command.  i.e.:
+    opkg remove <package>
+Where <package> is the name p[   11.777363]  remoteproc2#vdev0buffer: assigned reserved memory node vision-apps-c66-dma-memory@a8000000
+rinted in the list above
+
+NOTE: If the package is a dependency of another package you
+      will be notified of the dependent packages.  You should
+      use the --force-removal-of-dependent-packages option to
+      also remove the dependent packages as well
+***************************************************************
+***************************************************************
+[  OK  ] Started Print notice about GPLv3 packages.
+[   11.867990] virtio_rpmsg_bus virtio1: rpmsg host is online
+[   11.880171] virtio_rpmsg_bus virtio1: creating channel ti.ipc4.ping-pong addr 0xd
+[   11.892980] virtio_rpmsg_bus virtio1: creating channel rpmsg_chrdev addr 0xe
+[   11.945106]  remoteproc1#vdev0buffer: registered virtio1 (type 7)
+[   11.971379] virtio_rpmsg_bus virtio2: rpmsg host is online
+[   11.975494] virtio_rpmsg_bus virtio2: creating channel rpmsg_chrdev addr 0xd
+[   12.048128] remoteproc remoteproc1: remote processor 41000000.r5f is now attached
+[   12.095018]  remoteproc2#vdev0buffer: registered virtio2 (type 7)
+[   12.154315] remoteproc remoteproc2: remote processor 4d81800000.dsp is now attached
+[   12.174779] platform 5c00000.r5f: configured R5F for IPC-only mode
+[   12.241082] platform 5c00000.r5f: assigned reserved memory node vision-apps-r5f-dma-memory@a2000000
+[   12.279830] k3-dsp-rproc 64800000.dsp: assigned reserved memory node vision-apps-c71-dma-memory@aa000000
+[   12.480031] remoteproc remoteproc3: 5c00000.r5f is available
+[   12.522903] m_can_platform 40528000.can: m_can device registered (irq=23, version=32)
+[   12.536358] m_can_platform 40568000.can: m_can device registered (irq=25, version=32)
+[   12.587812] k3-dsp-rproc 64800000.dsp: configured DSP for IPC-only mode
+[   12.641326] remoteproc remoteproc3: attaching to 5c00000.r5f
+[   12.672560] remoteproc remoteproc4: 64800000.dsp is available
+[   12.769088] platform 5c00000.r5f: R5F core initialized in IPC-only mode
+[   12.829076] remoteproc remoteproc4: attaching to 64800000.dsp
+[   12.893120]  remoteproc3#vdev0buffer: assigned reserved memory node vision-apps-r5f-dma-memory@a2000000
+[   12.927595] remoteproc remoteproc4: unsupported resource 65538
+[  OK  ] Created slice system-systemd\x2dfsck.slice.
+[   13.025964] k3-dsp-rproc 64800000.dsp: DSP initialized in IPC-only mode
+[   13.073959] virtio_rpmsg_bus virtio3: rpmsg host is online
+[   13.101034]  remoteproc4#vdev0buffer: assigned reserved memory node vision-apps-c71-dma-memory@aa000000
+[   13.132991]  remoteproc3#vdev0buffer: registered virtio3 (type 7)
+[   13.185821] remoteproc remoteproc3: remote processor 5c00000.r5f is now attached
+[   13.227851] virtio_rpmsg_bus virtio4: rpmsg host is online
+[   13.229928] virtio_rpmsg_bus virtio4: creating channel rpmsg_chrdev addr 0xd
+[   13.287840]  remoteproc4#vdev0buffer: registered virtio4 (type 7)
+[   13.316851] platform 5d00000.r5f: configured R5F for IPC-only mode
+[   13.379312] remoteproc remoteproc4: remote processor 64800000.dsp is now attached
+[   13.401014] platform 5d00000.r5f: assigned reserved memory node vision-apps-r5f-dma-memory@a4000000
+[   13.511562] remoteproc remoteproc5: 5d00000.r5f is available
+[  OK  ] Found device /dev/mmcblk0p2.
+         Starting File System Check on /dev/mmcblk0p2...
+[   13.623616] remoteproc remoteproc5: attaching to 5d00000.r5f
+rootfs: fsck 0.0% complete...[   13.720861] platform 5d00000.r5f: R5F core initialized in IPC-only mode
+[   13.741896]  remoteproc5#vdev0buffer: assigned reserved memory node vision-apps-r5f-dma-memory@a4000000
+rootfs: fsck 0.6% complete...rootfs: fsck 19.4% complete...[  OK  ] Found device /dev/mmcblk0p1.
+         Starting File System Check on /dev/mmcblk0p1...
+[  OK  ] Started File System Check on /dev/mmcblk0p1.
+         Mounting /run/media/mmcblk0p1...
+[  OK  ] Mounted /run/media/mmcblk0p1.
+[   13.947322] virtio_rpmsg_bus virtio5: rpmsg host is online
+[   13.952891] virtio_rpmsg_bus virtio5: creating channel rpmsg_chrdev addr 0xd
+                                [FAILED] Failed to start File System Check on /dev/mmcblk0p2.
+See 'systemctl status systemd-fsck@dev-mmcblk0p2.service' for details.
+[DEPEND] Dependency failed for /run/media/mmcblk0p2.
+[   14.051933]  remoteproc5#vdev0buffer: registered virtio5 (type 7)
+[   14.116341] remoteproc remoteproc5: remote processor 5d00000.r5f is now attached
+[  OK  ] Found device /dev/mmcblk1p1.
+[   14.205884] platform 5e00000.r5f: configured R5F for remoteproc mode
+         Starting File System Check on /dev/mmcblk1p1...
+[   14.277709] platform 5e00000.r5f: assigned reserved memory node vision-apps-r5f-dma-memory@a6000000
+[  OK  ] Started File System Check on /dev/mmcblk1p1.
+         Mounting /run/media/mmcblk1p1...[   14.394493] remoteproc remoteproc6: 5e00000.r5f is available
+
+[  OK  ] Listening on Load/Save RF …itch S[   14.448590] remoteproc remoteproc6: Direct firmware load for j7-main-r5f1_0-fw failed with error -2
+tatus /dev/rfkill Watch.
+[   14.467221] remoteproc remoteproc6: powering up 5e00000.r5f
+[   14.467241] remoteproc remoteproc6: Direct firmware load for j7-main-r5f1_0-fw failed with error -2
+[   14.467244] remoteproc remoteproc6: request_firmware failed: -2
+[   14.474171] platform 5f00000.r5f: configured R5F for remoteproc mode
+[   14.475971] platform 5f00000.r5f: assigned reserved memory node vision-apps-r5f-dma-memory@a7000000
+[   14.476065] remoteproc remoteproc7: 5f00000.r5f is available
+[   14.476151] remoteproc remoteproc7: Direct firmware load for j7-main-r5f1_1-fw failed with error -2
+[   14.476155] remoteproc remoteproc7: powering up 5f00000.r5f
+[   14.476165] remoteproc remoteproc7: Direct firmware load for j7-main-r5f1_1-fw failed with error -2
+[   14.476168] remoteproc remoteproc7: request_firmware failed: -2
+[   14.631981] usbcore: registered new interface driver usbfs
+[   14.632002] usbcore: registered new interface driver hub
+[   14.632032] usbcore: registered new device driver usb
+[   14.644035] remoteproc remoteproc8: b034000.pru is available
+[   14.644539] remoteproc remoteproc9: b004000.rtu is available
+[   14.644998] remoteproc remoteproc10: b00a000.txpru is available
+[   14.646697] remoteproc remoteproc11: b038000.pru is available
+[   14.647152] remoteproc remoteproc12: b006000.rtu is available
+[   14.647498] remoteproc remoteproc13: b00c000.txpru is available
+[   14.649925] remoteproc remoteproc14: b134000.pru is available
+[   14.650276] remoteproc remoteproc15: b104000.rtu is available
+[   14.650525] remoteproc remoteproc16: b10a000.txpru is available
+[   14.650815] remoteproc remoteproc17: b138000.pru is available
+[   14.651066] remoteproc remoteproc18: b106000.rtu is available
+[   14.651304] remoteproc remoteproc19: b10c000.txpru is available
+[   14.688875] omap_rng 4e10000.rng: Random Number Generator ver. 241b34c
+[   15.477191] virtio_rpmsg_bus virtio3: creating channel rpmsg_chrdev addr 0xd
+[   15.477796] virtio_rpmsg_bus virtio4: creating channel rpmsg_chrdev addr 0x15
+[   15.477926] virtio_rpmsg_bus virtio0: creating channel rpmsg_chrdev addr 0x15
+[   15.478045] virtio_rpmsg_bus virtio2: creating channel rpmsg_chrdev addr 0x15
+[   15.478126] virtio_rpmsg_bus virtio5: creating channel rpmsg_chrdev addr 0x15
+[   15.478272] virtio_rpmsg_bus virtio3: creating channel rpmsg_chrdev addr 0x15
+[   15.479119] virtio_rpmsg_bus virtio4: creating channel ti.ipc4.ping-pong addr 0xe
+[   15.484785] virtio_rpmsg_bus virtio2: creating channel ti.ipc4.ping-pong addr 0xe
+[   15.484961] virtio_rpmsg_bus virtio0: creating channel ti.ipc4.ping-pong addr 0xe
+[  OK  ] Mounted /run/media/mmcblk1p1.
+[   15.628955] virtio_rpmsg_bus virtio5: creating channel ti.ipc4.ping-pong addr 0xe
+[   15.636615] virtio_rpmsg_bus virtio3: creating channel ti.ethfw.notifyservice addr 0x1e
+[   15.644721] virtio_rpmsg_bus virtio3: creating channel rpmsg-kdrv addr 0x1a
+[   15.656294] rpmsg-kdrv-eth-switch rpmsg-kdrv-2-mpu_1_0_ethswitch-device-0: Device info: permissions: 07FFFFFF uart_id: 2
+[   15.668038] rpmsg-kdrv-eth-switch rpmsg-kdrv-2-mpu_1_0_ethswitch-device-0: FW ver 0.1 (rev 1) 31/Aug/2021 SHA:9a44b16b
+[   15.682228] virtio_rpmsg_bus virtio3: creating channel ti.ipc4.ping-pong addr 0xe
+[   15.697534] j721e-cpsw-virt-mac main_r5fss_cpsw9g_virt_mac0: virt_cpsw_nuss mac loaded
+[   15.706495] j721e-cpsw-virt-mac main_r5fss_cpsw9g_virt_mac0: rdev_features:00000003 rdev_mtu:1522 flow_id:172 tx_psil_dst_id:4A00
+[   15.722554] j721e-cpsw-virt-mac main_r5fss_cpsw9g_virt_mac0: local_mac_addr:00:00:00:00:00:00 rdev_mac_addr:70:ff:76:1d:92:c1
+[   15.962763] PVR_K:  1171: RGX Firmware image 'rgx.fw.22.104.208.318' loaded
+[   16.350567] j721e-cpsw-virt-mac main_r5fss_cpsw9g_virt_mac0: virt_cpsw_nuss mac started
+[   16.371056] xhci-hcd xhci-hcd.2.auto: xHCI Host Controller
+[   16.388889] xhci-hcd xhci-hcd.2.auto: new USB bus registered, assigned bus number 1
+[   16.405221] xhci-hcd xhci-hcd.2.auto: hcc params 0x200073c9 hci version 0x100 quirks 0x0000002000010010
+[   16.424881] xhci-hcd xhci-hcd.2.auto: irq 614, io mem 0x06410000
+[   16.433033] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.10
+[   16.444838] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[   16.452050] usb usb1: Product: xHCI Host Controller
+[   16.464837] usb usb1: Manufacturer: Linux 5.10.41-g4c2eade9f7 xhci-hcd
+[   16.471355] usb usb1: SerialNumber: xhci-hcd.2.auto
+[   16.481566] hub 1-0:1.0: USB hub found
+[   16.485345] hub 1-0:1.0: 1 port detected
+[   16.497198] xhci-hcd xhci-hcd.2.auto: xHCI Host Controller
+[   16.502686] xhci-hcd xhci-hcd.2.auto: new USB bus registered, assigned bus number 2
+[   16.516846] xhci-hcd xhci-hcd.2.auto: Host supports USB 3.0 SuperSpeed
+[   16.523424] usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.
+[   16.536883] usb usb2: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 5.10
+[   16.548838] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[   16.556048] usb usb2: Product: xHCI Host Controller
+[   16.568836] usb usb2: Manufacturer: Linux 5.10.41-g4c2eade9f7 xhci-hcd
+[   16.575354] usb usb2: SerialNumber: xhci-hcd.2.auto
+[   16.581103] hub 2-0:1.0: USB hub found
+[   16.585246] hub 2-0:1.0: 1 port detected
+
+ _____                    _____           _         _   
+|  _  |___ ___ ___ ___   |  _  |___ ___  |_|___ ___| |_ 
+|     |  _| .'| . | . |  |   __|  _| . | | | -_|  _|  _|
+|__|__|_| |__,|_  |___|  |__|  |_| |___|_| |___|___|_|  
+              |___|                    |___|            
+
+Arago Project http://arago-project.org j7-evm ttyS2
+
+Arago 2020.09 j7-evm ttyS2
+
+j7-evm login: [   16.840845] usb 1-1: new high-speed USB device number 2 using xhci-hcd
+[   17.001112] usb 1-1: New USB device found, idVendor=0451, idProduct=8142, bcdDevice= 1.00
+[   17.012836] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=1
+[   17.024837] usb 1-1: SerialNumber: 94000879DE36
+[   17.029864] hub 1-1:1.0: USB hub found
+[   17.036869] hub 1-1:1.0: 4 ports detected
+
+j7-evm login: 
+j7-evm login: 
+j7-evm login: root
+Last login: Wed Aug  4 22:20:55 UTC 2021
+root@j7-evm:~# cd /opt/vision_apps/
+root@j7-evm:/opt/vision_apps# ./vision_apps_init.sh 
+root@j7-evm:/opt/vision_apps# [MCU2_0]      4.077056 s: CIO: Init ... Done !!!
+[MCU2_0]      4.077113 s: ### CPU Frequency = 1000000000 Hz
+[MCU2_0]      4.077147 s: APP: Init ... !!!
+[MCU2_0]      4.077168 s: SCICLIENT: Init ... !!!
+[MCU2_0]      4.077389 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[MCU2_0]      4.077435 s: SCICLIENT: DMSC FW revision 0x15  
+[MCU2_0]      4.077463 s: SCICLIENT: DMSC FW ABI revision 3.1
+[MCU2_0]      4.077491 s: SCICLIENT: Init ... Done !!!
+[MCU2_0]      4.077513 s: UDMA: Init ... !!!
+[MCU2_0]      4.078777 s: UDMA: Init ... Done !!!
+[MCU2_0]      4.078834 s: MEM: Init ... !!!
+[MCU2_0]      4.078879 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e1000000 of size 16777216 bytes !!!
+[MCU2_0]      4.078941 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000000) @ 3600000 of size 262144 bytes !!!
+[MCU2_0]      4.078992 s: MEM: Created heap (DDR_NON_CACHE_ME, id=5, flags=0x00000000) @ d8000000 of size 16777216 bytes !!!
+[MCU2_0]      4.079040 s: MEM: Init ... Done !!!
+[MCU2_0]      4.079063 s: IPC: Init ... !!!
+[MCU2_0]      4.079118 s: IPC: 6 CPUs participating in IPC !!!
+[MCU2_0]      4.079164 s: IPC: Waiting for HLOS to be ready ... !!!
+[MCU2_0]     21.735015 s: IPC: HLOS is ready !!!
+[MCU2_0]     21.740633 s: IPC: Init ... Done !!!
+[MCU2_0]     21.740709 s: APP: Syncing with 5 CPUs ... !!!
+[MCU2_0]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[MCU2_0]     21.740784 s: REMOTE_SERVICE: Init ... !!!
+[MCU2_0]     21.742301 s: REMOTE_SERVICE: Init ... Done !!!
+[MCU2_0]     21.742360 s: ETHFW: Init ... !!!
+[MCU2_0]     21.761328 s: CPSW_9G Test on MAIN NAVSS
+[MCU2_0]     21.774024 s: EnetPhy_bindDriver: PHY 12: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774329 s: EnetPhy_bindDriver: PHY 0: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774622 s: EnetPhy_bindDriver: PHY 3: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774922 s: EnetPhy_bindDriver: PHY 15: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774998 s: PHY 0 is alive
+[MCU2_0]     21.775032 s: PHY 3 is alive
+[MCU2_0]     21.775068 s: PHY 12 is alive
+[MCU2_0]     21.775093 s: PHY 15 is alive
+[MCU2_0]     21.775127 s: PHY 23 is alive
+[MCU2_0]     21.776907 s: ETHFW: Version   : 0.01.01
+[MCU2_0]     21.776957 s: ETHFW: Build Date: Aug 31, 2021
+[MCU2_0]     21.776989 s: ETHFW: Build Time: 01:37:18
+[MCU2_0]     21.777013 s: ETHFW: Commit SHA: 9a44b16b
+[MCU2_0]     21.777081 s: ETHFW: Init ... DONE !!!
+[MCU2_0]     21.777111 s: ETHFW: Remove server Init ... !!!
+[MCU2_0]     21.777953 s: Remote demo device (core : mcu2_0) .....
+[MCU2_0]     21.778015 s: ETHFW: Remove server Init ... DONE !!!
+[MCU2_0]     21.779057 s: Starting lwIP, local interface IP is dhcp-enabled
+[MCU2_0]     21.785671 s: Host MAC address: 70:ff:76:1d:92:c2
+[MCU2_0]     21.827683 s: FVID2: Init ... !!!
+[MCU2_0]     21.827806 s: FVID2: Init ... Done !!!
+[MCU2_0]     21.827859 s: DSS: Init ... !!!
+[MCU2_0]     21.827889 s: DSS: Display type is eDP !!!
+[MCU2_0]     21.827914 s: DSS: M2M Path is enabled !!!
+[MCU2_0]     21.827938 s: DSS: SoC init ... !!!
+[MCU2_0]     21.827960 s: SCICLIENT: Sciclient_pmSetModuleState module=152 state=2
+[MCU2_0]     21.828120 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828161 s: SCICLIENT: Sciclient_pmSetModuleState module=297 state=2
+[MCU2_0]     21.828301 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828336 s: SCICLIENT: Sciclient_pmSetModuleState module=151 state=2
+[MCU2_0]     21.828457 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828491 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=9 parent=11
+[MCU2_0]     21.828583 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.828616 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=13 parent=18
+[MCU2_0]     21.828854 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.828904 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=1 parent=2
+[MCU2_0]     21.829004 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.829041 s: SCICLIENT: Sciclient_pmSetModuleClkFreq module=152 clk=1 freq=148500000
+[MCU2_0]     21.830060 s: SCICLIENT: Sciclient_pmSetModuleClkFreq success
+[MCU2_0]     21.830109 s: SCICLIENT: Sciclient_pmModuleClkRequest module=152 clk=1 state=2 flag=0
+[MCU2_0]     21.830251 s: SCICLIENT: Sciclient_pmModuleClkRequest success
+[MCU2_0]     21.830291 s: DSS: SoC init ... Done !!!
+[MCU2_0]     21.830317 s: DSS: Board init ... !!!
+[MCU2_0]     21.830340 s: DSS: Board init ... Done !!!
+[MCU2_0]     21.863751 s: [LWIPIF_LWIP] NETIF INIT SUCCESS
+[MCU2_0]     21.863828 s: Added interface 'ti1', IP is 0.0.0.0
+[MCU2_0]     21.871884 s: DSS: Init ... Done !!!
+[MCU2_0]     21.871944 s: VHWA: VPAC Init ... !!!
+[MCU2_0]     21.871970 s: SCICLIENT: Sciclient_pmSetModuleState module=290 state=2
+[MCU2_0]     21.872130 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.872173 s: VHWA: LDC Init ... !!!
+[MCU2_0]     21.875985 s: VHWA: LDC Init ... Done !!!
+[MCU2_0]     21.876041 s: VHWA: MSC Init ... !!!
+[MCU2_0]     21.886864 s: VHWA: MSC Init ... Done !!!
+[MCU2_0]     21.886922 s: VHWA: NF Init ... !!!
+[MCU2_0]     21.888834 s: VHWA: NF Init ... Done !!!
+[MCU2_0]     21.888891 s: VHWA: VISS Init ... !!!
+[MCU2_0]     21.900093 s: VHWA: VISS Init ... Done !!!
+[MCU2_0]     21.900149 s: VHWA: VPAC Init ... Done !!!
+[MCU2_0]     21.900195 s:  VX_ZONE_INIT:Enabled
+[MCU2_0]     21.900225 s:  VX_ZONE_ERROR:Enabled
+[MCU2_0]     21.900249 s:  VX_ZONE_WARNING:Enabled
+[MCU2_0]     21.901453 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target IPU1-0 
+[MCU2_0]     21.901839 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_NF 
+[MCU2_0]     21.902068 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_LDC1 
+[MCU2_0]     21.902264 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_MSC1 
+[MCU2_0]     21.902465 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_MSC2 
+[MCU2_0]     21.902876 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_VISS1 
+[MCU2_0]     21.903154 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE1 
+[MCU2_0]     21.903397 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE2 
+[MCU2_0]     21.903630 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DISPLAY1 
+[MCU2_0]     21.904035 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DISPLAY2 
+[MCU2_0]     21.904323 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CSITX 
+[MCU2_0]     21.904595 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE3 
+[MCU2_0]     21.905068 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE4 
+[MCU2_0]     21.905321 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE5 
+[MCU2_0]     21.905574 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE6 
+[MCU2_0]     21.905957 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE7 
+[MCU2_0]     21.906207 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE8 
+[MCU2_0]     21.906407 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M1 
+[MCU2_0]     21.906611 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M2 
+[MCU2_0]     21.907017 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M3 
+[MCU2_0]     21.907238 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M4 
+[MCU2_0]     21.907287 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[MCU2_0]     21.907319 s: APP: OpenVX Target kernel init ... !!!
+[MCU2_0]     21.920554 s: APP: OpenVX Target kernel init ... Done !!!
+[MCU2_0]     21.920615 s: CSI2RX: Init ... !!!
+[MCU2_0]     21.920640 s: SCICLIENT: Sciclient_pmSetModuleState module=25 state=2
+[MCU2_0]     21.920971 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921017 s: SCICLIENT: Sciclient_pmSetModuleState module=26 state=2
+[MCU2_0]     21.921143 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921181 s: SCICLIENT: Sciclient_pmSetModuleState module=27 state=2
+[MCU2_0]     21.921291 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921324 s: SCICLIENT: Sciclient_pmSetModuleState module=147 state=2
+[MCU2_0]     21.921406 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921440 s: SCICLIENT: Sciclient_pmSetModuleState module=148 state=2
+[MCU2_0]     21.921516 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.922479 s: CSI2RX: Init ... Done !!!
+[MCU2_0]     21.922539 s: CSI2TX: Init ... !!!
+[MCU2_0]     21.922567 s: SCICLIENT: Sciclient_pmSetModuleState module=25 state=2
+[MCU2_0]     21.922814 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.922866 s: SCICLIENT: Sciclient_pmSetModuleState module=28 state=2
+[MCU2_0]     21.923002 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.923042 s: SCICLIENT: Sciclient_pmSetModuleState module=296 state=2
+[MCU2_0]     21.923149 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.923839 s: CSI2TX: Init ... Done !!!
+[MCU2_0]     21.923896 s: ISS: Init ... !!!
+[MCU2_0]     21.923941 s: IssSensor_Init ... Done !!!
+[MCU2_0]     21.924068 s: vissRemoteServer_Init ... Done !!!
+[MCU2_0]     21.924167 s: IttRemoteServer_Init ... Done !!!
+[MCU2_0]     21.924200 s: UDMA Copy: Init ... !!!
+[MCU2_0]     21.926094 s: UDMA Copy: Init ... Done !!!
+[MCU2_0]     21.926191 s: APP: Init ... Done !!!
+[MCU2_0]     21.926223 s: APP: Run ... !!!
+[MCU2_0]     21.926246 s: IPC: Starting echo test ...
+[MCU2_0]     21.928439 s: APP: Run ... Done !!!
+[MCU2_0]     21.930316 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[.] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_0]     21.930433 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_0]     21.930530 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[.] 
+[MCU2_0]     21.930621 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[P] 
+[MCU2_0]     21.953272 s: Function:CpswProxyServer_attachExtHandlerCb,HostId:0,CpswType:6
+[MCU2_0]     22.610028 s: Function:CpswProxyServer_registerMacHandlerCb,HostId:0,Handle:a35248dc,CoreKey:38acb7e6, MacAddress:70:ff:76:1d:92:c1, FlowIdx:172, FlowIdxOffset:0
+[MCU2_0]     22.613358 s: Cpsw_ioctlInternal: CPSW: Registered MAC address.ALE entry:12, Policer Entry:1
+[MCU2_0]     25.275043 s: Cpsw_handleLinkUp: Port 8: Link up: 1-Gbps Full-Duplex
+[MCU2_0]     25.474989 s: Cpsw_handleLinkUp: Port 4: Link up: 1-Gbps Full-Duplex
+[MCU2_0]     26.036908 s: Function:CpswProxyServer_registerIpv4MacHandlerCb,HostId:0,Handle:a35248dc,CoreKey:38acb7e6, MacAddress:70:ff:76:1d:92:c1 IPv4Addr:192.168.31.152
+[MCU2_0]     26.037048 s: 
+[MCU2_0]  SNo.      IP Address          MAC Address   
+[MCU2_0]     26.037087 s: ------    -------------     -----------------
+[MCU2_0]     26.037122 s:   1       192.168.31.152     70:ff:76:1d:92:c1
+[MCU2_0]     26.278865 s: Added interface 'ti1', IP is 192.168.31.153
+[MCU2_0]     26.395240 s: EthFw: TimeSync PTP enabled
+[MCU2_0]     26.400149 s: Rx Flow for Software Inter-VLAN Routing is up
+[MCU2_1]      4.074996 s: CIO: Init ... Done !!!
+[MCU2_1]      4.075053 s: ### CPU Frequency = 1000000000 Hz
+[MCU2_1]      4.075088 s: APP: Init ... !!!
+[MCU2_1]      4.075110 s: SCICLIENT: Init ... !!!
+[MCU2_1]      4.075336 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[MCU2_1]      4.075380 s: SCICLIENT: DMSC FW revision 0x15  
+[MCU2_1]      4.075408 s: SCICLIENT: DMSC FW ABI revision 3.1
+[MCU2_1]      4.075436 s: SCICLIENT: Init ... Done !!!
+[MCU2_1]      4.075461 s: UDMA: Init ... !!!
+[MCU2_1]      4.076840 s: UDMA: Init ... Done !!!
+[MCU2_1]      4.076900 s: MEM: Init ... !!!
+[MCU2_1]      4.076944 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e2000000 of size 16777216 bytes !!!
+[MCU2_1]      4.077000 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 3640000 of size 262144 bytes !!!
+[MCU2_1]      4.077053 s: MEM: Created heap (DDR_NON_CACHE_ME, id=5, flags=0x00000000) @ d9000000 of size 117440512 bytes !!!
+[MCU2_1]      4.077102 s: MEM: Init ... Done !!!
+[MCU2_1]      4.077123 s: IPC: Init ... !!!
+[MCU2_1]      4.077181 s: IPC: 6 CPUs participating in IPC !!!
+[MCU2_1]      4.077225 s: IPC: Waiting for HLOS to be ready ... !!!
+[MCU2_1]     20.210350 s: IPC: HLOS is ready !!!
+[MCU2_1]     20.215865 s: IPC: Init ... Done !!!
+[MCU2_1]     20.215927 s: APP: Syncing with 5 CPUs ... !!!
+[MCU2_1]     21.740755 s: APP: Syncing with 5 CPUs ... Done !!!
+[MCU2_1]     21.740799 s: REMOTE_SERVICE: Init ... !!!
+[MCU2_1]     21.742245 s: REMOTE_SERVICE: Init ... Done !!!
+[MCU2_1]     21.742303 s: FVID2: Init ... !!!
+[MCU2_1]     21.742372 s: FVID2: Init ... Done !!!
+[MCU2_1]     21.742404 s: VHWA: DMPAC: Init ... !!!
+[MCU2_1]     21.742427 s: SCICLIENT: Sciclient_pmSetModuleState module=48 state=2
+[MCU2_1]     21.742609 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_1]     21.742652 s: SCICLIENT: Sciclient_pmSetModuleState module=305 state=2
+[MCU2_1]     21.742754 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_1]     21.742785 s: VHWA: DOF Init ... !!!
+[MCU2_1]     21.751034 s: VHWA: DOF Init ... Done !!!
+[MCU2_1]     21.751089 s: VHWA: SDE Init ... !!!
+[MCU2_1]     21.753528 s: VHWA: SDE Init ... Done !!!
+[MCU2_1]     21.753593 s: VHWA: DMPAC: Init ... Done !!!
+[MCU2_1]     21.753637 s:  VX_ZONE_INIT:Enabled
+[MCU2_1]     21.753667 s:  VX_ZONE_ERROR:Enabled
+[MCU2_1]     21.753692 s:  VX_ZONE_WARNING:Enabled
+[MCU2_1]     21.754707 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DMPAC_SDE 
+[MCU2_1]     21.754916 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DMPAC_DOF 
+[MCU2_1]     21.754977 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[MCU2_1]     21.755011 s: APP: OpenVX Target kernel init ... !!!
+[MCU2_1]     21.755247 s: APP: OpenVX Target kernel init ... Done !!!
+[MCU2_1]     21.755287 s: UDMA Copy: Init ... !!!
+[MCU2_1]     21.757013 s: UDMA Copy: Init ... Done !!!
+[MCU2_1]     21.757079 s: APP: Init ... Done !!!
+[MCU2_1]     21.757106 s: APP: Run ... !!!
+[MCU2_1]     21.757126 s: IPC: Starting echo test ...
+[MCU2_1]     21.759011 s: APP: Run ... Done !!!
+[MCU2_1]     21.760244 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_1]     21.760348 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[.] 
+[MCU2_1]     21.760437 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[P] 
+[MCU2_1]     21.930274 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[P] 
+[C6x_1 ]      4.161628 s: CIO: Init ... Done !!!
+[C6x_1 ]      4.161652 s: ### CPU Frequency = 1350000000 Hz
+[C6x_1 ]      4.161663 s: APP: Init ... !!!
+[C6x_1 ]      4.161671 s: SCICLIENT: Init ... !!!
+[C6x_1 ]      4.161885 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_1 ]      4.161899 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_1 ]      4.161909 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_1 ]      4.161919 s: SCICLIENT: Init ... Done !!!
+[C6x_1 ]      4.161928 s: UDMA: Init ... !!!
+[C6x_1 ]      4.163362 s: UDMA: Init ... Done !!!
+[C6x_1 ]      4.163385 s: MEM: Init ... !!!
+[C6x_1 ]      4.163398 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e4000000 of size 16777216 bytes !!!
+[C6x_1 ]      4.163416 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_1 ]      4.163432 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e5000000 of size 50331648 bytes !!!
+[C6x_1 ]      4.163449 s: MEM: Init ... Done !!!
+[C6x_1 ]      4.163457 s: IPC: Init ... !!!
+[C6x_1 ]      4.163478 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_1 ]      4.163492 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_1 ]     17.212925 s: IPC: HLOS is ready !!!
+[C6x_1 ]     17.217217 s: IPC: Init ... Done !!!
+[C6x_1 ]     17.217247 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_1 ]     21.740752 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_1 ]     21.740764 s: REMOTE_SERVICE: Init ... !!!
+[C6x_1 ]     21.741448 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_1 ]     21.741489 s:  VX_ZONE_INIT:Enabled
+[C6x_1 ]     21.741500 s:  VX_ZONE_ERROR:Enabled
+[C6x_1 ]     21.741510 s:  VX_ZONE_WARNING:Enabled
+[C6x_1 ]     21.742467 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_1 ]     21.742483 s: APP: OpenVX Target kernel init ... !!!
+[C6x_1 ]     21.742887 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_1 ]     21.742905 s: UDMA Copy: Init ... !!!
+[C6x_1 ]     21.746161 s: UDMA Copy: Init ... Done !!!
+[C6x_1 ]     21.746183 s: APP: Init ... Done !!!
+[C6x_1 ]     21.746681 s: APP: Run ... !!!
+[C6x_1 ]     21.746691 s: IPC: Starting echo test ...
+[C6x_1 ]     21.747902 s: APP: Run ... Done !!!
+[C6x_1 ]     21.748305 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[.] C7X_1[P] 
+[C6x_1 ]     21.748344 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.759972 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.930197 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_2 ]      4.247334 s: CIO: Init ... Done !!!
+[C6x_2 ]      4.247359 s: ### CPU Frequency = 1350000000 Hz
+[C6x_2 ]      4.247371 s: APP: Init ... !!!
+[C6x_2 ]      4.247379 s: SCICLIENT: Init ... !!!
+[C6x_2 ]      4.247587 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_2 ]      4.247601 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_2 ]      4.247610 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_2 ]      4.247622 s: SCICLIENT: Init ... Done !!!
+[C6x_2 ]      4.247631 s: UDMA: Init ... !!!
+[C6x_2 ]      4.249088 s: UDMA: Init ... Done !!!
+[C6x_2 ]      4.249112 s: MEM: Init ... !!!
+[C6x_2 ]      4.249124 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e8000000 of size 16777216 bytes !!!
+[C6x_2 ]      4.249143 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_2 ]      4.249159 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e9000000 of size 50331648 bytes !!!
+[C6x_2 ]      4.249176 s: MEM: Init ... Done !!!
+[C6x_2 ]      4.249185 s: IPC: Init ... !!!
+[C6x_2 ]      4.249205 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_2 ]      4.249220 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_2 ]     18.234420 s: IPC: HLOS is ready !!!
+[C6x_2 ]     18.238702 s: IPC: Init ... Done !!!
+[C6x_2 ]     18.238732 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_2 ]     21.740753 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_2 ]     21.740765 s: REMOTE_SERVICE: Init ... !!!
+[C6x_2 ]     21.741461 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_2 ]     21.741499 s:  VX_ZONE_INIT:Enabled
+[C6x_2 ]     21.741510 s:  VX_ZONE_ERROR:Enabled
+[C6x_2 ]     21.741520 s:  VX_ZONE_WARNING:Enabled
+[C6x_2 ]     21.742459 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_2 ]     21.742476 s: APP: OpenVX Target kernel init ... !!!
+[C6x_2 ]     21.742883 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_2 ]     21.742900 s: UDMA Copy: Init ... !!!
+[C6x_2 ]     21.746050 s: UDMA Copy: Init ... Done !!!
+[C6x_2 ]     21.746072 s: APP: Init ... Done !!!
+[C6x_2 ]     21.746580 s: APP: Run ... !!!
+[C6x_2 ]     21.746593 s: IPC: Starting echo test ...
+[C6x_2 ]     21.747719 s: APP: Run ... Done !!!
+[C6x_2 ]     21.748094 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.748309 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.760000 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.930252 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C7x_1 ]      4.456315 s: CIO: Init ... Done !!!
+[C7x_1 ]      4.456329 s: ### CPU Frequency = 1000000000 Hz
+[C7x_1 ]      4.456340 s: APP: Init ... !!!
+[C7x_1 ]      4.456347 s: SCICLIENT: Init ... !!!
+[C7x_1 ]      4.456529 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C7x_1 ]      4.456542 s: SCICLIENT: DMSC FW revision 0x15  
+[C7x_1 ]      4.456553 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C7x_1 ]      4.456563 s: SCICLIENT: Init ... Done !!!
+[C7x_1 ]      4.456572 s: UDMA: Init ... !!!
+[C7x_1 ]      4.457484 s: UDMA: Init ... Done !!!
+[C7x_1 ]      4.457496 s: MEM: Init ... !!!
+[C7x_1 ]      4.457507 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ 100000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457527 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 70020000 of size 8159232 bytes !!!
+[C7x_1 ]      4.457545 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 64800000 of size 491520 bytes !!!
+[C7x_1 ]      4.457562 s: MEM: Created heap (L1_MEM, id=3, flags=0x00000001) @ 64e00000 of size 16384 bytes !!!
+[C7x_1 ]      4.457579 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ ec000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457597 s: MEM: Init ... Done !!!
+[C7x_1 ]      4.457605 s: IPC: Init ... !!!
+[C7x_1 ]      4.457620 s: IPC: 6 CPUs participating in IPC !!!
+[C7x_1 ]      4.457634 s: IPC: Waiting for HLOS to be ready ... !!!
+[C7x_1 ]     19.490895 s: IPC: HLOS is ready !!!
+[C7x_1 ]     19.493045 s: IPC: Init ... Done !!!
+[C7x_1 ]     19.493059 s: APP: Syncing with 5 CPUs ... !!!
+[C7x_1 ]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[C7x_1 ]     21.740770 s: REMOTE_SERVICE: Init ... !!!
+[C7x_1 ]     21.741103 s: REMOTE_SERVICE: Init ... Done !!!
+[C7x_1 ]     21.741126 s:  VX_ZONE_INIT:Enabled
+[C7x_1 ]     21.741137 s:  VX_ZONE_ERROR:Enabled
+[C7x_1 ]     21.741148 s:  VX_ZONE_WARNING:Enabled
+[C7x_1 ]     21.741388 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C7x_1 ]     21.741403 s: APP: OpenVX Target kernel init ... !!!
+[C7x_1 ]     21.741500 s: APP: OpenVX Target kernel init ... Done !!!
+[C7x_1 ]     21.741513 s: APP: Init ... Done !!!
+[C7x_1 ]     21.741522 s: APP: Run ... !!!
+[C7x_1 ]     21.741531 s: IPC: Starting echo test ...
+[C7x_1 ]     21.742029 s: APP: Run ... Done !!!
+[C7x_1 ]     21.748084 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.748287 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.760023 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.930272 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[  130.159483] Initializing XFRM netlink socket
+[  132.953939] process 'docker/tmp/qemu-check086002939/check' started with executable stack
+
+root@j7-evm:/opt/vision_apps# 
+root@j7-evm:/opt/vision_apps# 
+root@j7-evm:/opt/vision_apps# ./vx_app_
+vx_app_arm_fd_exchange_consumer.out  vx_app_multi_cam.out                 vx_app_tidl.out
+vx_app_arm_fd_exchange_producer.out  vx_app_radar_gtrack.out              vx_app_tidl_avp.out
+vx_app_arm_ipc.out                   vx_app_sde.out                       vx_app_tidl_avp2.out
+vx_app_arm_mem.out                   vx_app_sde_ldc.out                   vx_app_tidl_avp3.out
+vx_app_arm_opengl_mosaic.out         vx_app_sde_obstacle_detection.out    vx_app_tidl_avp4.out
+vx_app_arm_remote_log.out            vx_app_semseg_cnn.out                vx_app_tidl_cam.out
+vx_app_c7x_kernel.out                vx_app_sfm.out                       vx_app_tidl_od.out
+vx_app_conformance.out               vx_app_single_cam.out                vx_app_tidl_od_cam.out
+vx_app_dense_optical_flow.out        vx_app_srv_calibration.out           vx_app_tidl_seg.out
+vx_app_dlrt_test.out                 vx_app_srv_camera.out                vx_app_tidl_seg_cam.out
+vx_app_dof_sfm_fisheye.out           vx_app_srv_fileio.out                vx_app_tidl_vl.out
+vx_app_estop.out                     vx_app_ss_sde_detection.out          vx_app_tutorial.out
+vx_app_heap_stats.out                vx_app_stereo_depth.out              vx_app_valet_parking.out
+vx_app_lidar_ogmap.out               vx_app_surround_radar_ogmap.out      vx_app_viss.out
+vx_app_load_test.out                 vx_app_test_framework.out            
+root@j7-evm:/opt/vision_apps# ./vx_app_arm_
+vx_app_arm_fd_exchange_consumer.out  vx_app_arm_ipc.out                   vx_app_arm_opengl_mosaic.out
+vx_app_arm_fd_exchange_producer.out  vx_app_arm_mem.out                   vx_app_arm_remote_log.out
+root@j7-evm:/opt/vision_apps# ./vx_app_arm_remote_log.out 
+[MCU2_0]      4.077056 s: CIO: Init ... Done !!!
+[MCU2_0]      4.077113 s: ### CPU Frequency = 1000000000 Hz
+[MCU2_0]      4.077147 s: APP: Init ... !!!
+[MCU2_0]      4.077168 s: SCICLIENT: Init ... !!!
+[MCU2_0]      4.077389 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[MCU2_0]      4.077435 s: SCICLIENT: DMSC FW revision 0x15  
+[MCU2_0]      4.077463 s: SCICLIENT: DMSC FW ABI revision 3.1
+[MCU2_0]      4.077491 s: SCICLIENT: Init ... Done !!!
+[MCU2_0]      4.077513 s: UDMA: Init ... !!!
+[MCU2_0]      4.078777 s: UDMA: Init ... Done !!!
+[MCU2_0]      4.078834 s: MEM: Init ... !!!
+[MCU2_0]      4.078879 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e1000000 of size 16777216 bytes !!!
+[MCU2_0]      4.078941 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000000) @ 3600000 of size 262144 bytes !!!
+[MCU2_0]      4.078992 s: MEM: Created heap (DDR_NON_CACHE_ME, id=5, flags=0x00000000) @ d8000000 of size 16777216 bytes !!!
+[MCU2_0]      4.079040 s: MEM: Init ... Done !!!
+[MCU2_0]      4.079063 s: IPC: Init ... !!!
+[MCU2_0]      4.079118 s: IPC: 6 CPUs participating in IPC !!!
+[MCU2_0]      4.079164 s: IPC: Waiting for HLOS to be ready ... !!!
+[MCU2_0]     21.735015 s: IPC: HLOS is ready !!!
+[MCU2_0]     21.740633 s: IPC: Init ... Done !!!
+[MCU2_0]     21.740709 s: APP: Syncing with 5 CPUs ... !!!
+[MCU2_0]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[MCU2_0]     21.740784 s: REMOTE_SERVICE: Init ... !!!
+[MCU2_0]     21.742301 s: REMOTE_SERVICE: Init ... Done !!!
+[MCU2_0]     21.742360 s: ETHFW: Init ... !!!
+[MCU2_0]     21.761328 s: CPSW_9G Test on MAIN NAVSS
+[MCU2_0]     21.774024 s: EnetPhy_bindDriver: PHY 12: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774329 s: EnetPhy_bindDriver: PHY 0: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774622 s: EnetPhy_bindDriver: PHY 3: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774922 s: EnetPhy_bindDriver: PHY 15: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774998 s: PHY 0 is alive
+[MCU2_0]     21.775032 s: PHY 3 is alive
+[MCU2_0]     21.775068 s: PHY 12 is alive
+[MCU2_0]     21.775093 s: PHY 15 is alive
+[MCU2_0]     21.775127 s: PHY 23 is alive
+[MCU2_0]     21.776907 s: ETHFW: Version   : 0.01.01
+[MCU2_0]     21.776957 s: ETHFW: Build Date: Aug 31, 2021
+[MCU2_0]     21.776989 s: ETHFW: Build Time: 01:37:18
+[MCU2_0]     21.777013 s: ETHFW: Commit SHA: 9a44b16b
+[MCU2_0]     21.777081 s: ETHFW: Init ... DONE !!!
+[MCU2_0]     21.777111 s: ETHFW: Remove server Init ... !!!
+[MCU2_0]     21.777953 s: Remote demo device (core : mcu2_0) .....
+[MCU2_0]     21.778015 s: ETHFW: Remove server Init ... DONE !!!
+[MCU2_0]     21.779057 s: Starting lwIP, local interface IP is dhcp-enabled
+[MCU2_0]     21.785671 s: Host MAC address: 70:ff:76:1d:92:c2
+[MCU2_0]     21.827683 s: FVID2: Init ... !!!
+[MCU2_0]     21.827806 s: FVID2: Init ... Done !!!
+[MCU2_0]     21.827859 s: DSS: Init ... !!!
+[MCU2_0]     21.827889 s: DSS: Display type is eDP !!!
+[MCU2_0]     21.827914 s: DSS: M2M Path is enabled !!!
+[MCU2_0]     21.827938 s: DSS: SoC init ... !!!
+[MCU2_0]     21.827960 s: SCICLIENT: Sciclient_pmSetModuleState module=152 state=2
+[MCU2_0]     21.828120 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828161 s: SCICLIENT: Sciclient_pmSetModuleState module=297 state=2
+[MCU2_0]     21.828301 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828336 s: SCICLIENT: Sciclient_pmSetModuleState module=151 state=2
+[MCU2_0]     21.828457 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828491 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=9 parent=11
+[MCU2_0]     21.828583 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.828616 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=13 parent=18
+[MCU2_0]     21.828854 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.828904 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=1 parent=2
+[MCU2_0]     21.829004 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.829041 s: SCICLIENT: Sciclient_pmSetModuleClkFreq module=152 clk=1 freq=148500000
+[MCU2_0]     21.830060 s: SCICLIENT: Sciclient_pmSetModuleClkFreq success
+[MCU2_0]     21.830109 s: SCICLIENT: Sciclient_pmModuleClkRequest module=152 clk=1 state=2 flag=0
+[MCU2_0]     21.830251 s: SCICLIENT: Sciclient_pmModuleClkRequest success
+[MCU2_0]     21.830291 s: DSS: SoC init ... Done !!!
+[MCU2_0]     21.830317 s: DSS: Board init ... !!!
+[MCU2_0]     21.830340 s: DSS: Board init ... Done !!!
+[MCU2_0]     21.863751 s: [LWIPIF_LWIP] NETIF INIT SUCCESS
+[MCU2_0]     21.863828 s: Added interface 'ti1', IP is 0.0.0.0
+[MCU2_0]     21.871884 s: DSS: Init ... Done !!!
+[MCU2_0]     21.871944 s: VHWA: VPAC Init ... !!!
+[MCU2_0]     21.871970 s: SCICLIENT: Sciclient_pmSetModuleState module=290 state=2
+[MCU2_0]     21.872130 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.872173 s: VHWA: LDC Init ... !!!
+[MCU2_0]     21.875985 s: VHWA: LDC Init ... Done !!!
+[MCU2_0]     21.876041 s: VHWA: MSC Init ... !!!
+[MCU2_0]     21.886864 s: VHWA: MSC Init ... Done !!!
+[MCU2_0]     21.886922 s: VHWA: NF Init ... !!!
+[MCU2_0]     21.888834 s: VHWA: NF Init ... Done !!!
+[MCU2_0]     21.888891 s: VHWA: VISS Init ... !!!
+[MCU2_0]     21.900093 s: VHWA: VISS Init ... Done !!!
+[MCU2_0]     21.900149 s: VHWA: VPAC Init ... Done !!!
+[MCU2_0]     21.900195 s:  VX_ZONE_INIT:Enabled
+[MCU2_0]     21.900225 s:  VX_ZONE_ERROR:Enabled
+[MCU2_0]     21.900249 s:  VX_ZONE_WARNING:Enabled
+[MCU2_0]     21.901453 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target IPU1-0 
+[MCU2_0]     21.901839 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_NF 
+[MCU2_0]     21.902068 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_LDC1 
+[MCU2_0]     21.902264 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_MSC1 
+[MCU2_0]     21.902465 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_MSC2 
+[MCU2_0]     21.902876 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_VISS1 
+[MCU2_0]     21.903154 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE1 
+[MCU2_0]     21.903397 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE2 
+[MCU2_0]     21.903630 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DISPLAY1 
+[MCU2_0]     21.904035 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DISPLAY2 
+[MCU2_0]     21.904323 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CSITX 
+[MCU2_0]     21.904595 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE3 
+[MCU2_0]     21.905068 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE4 
+[MCU2_0]     21.905321 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE5 
+[MCU2_0]     21.905574 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE6 
+[MCU2_0]     21.905957 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE7 
+[MCU2_0]     21.906207 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE8 
+[MCU2_0]     21.906407 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M1 
+[MCU2_0]     21.906611 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M2 
+[MCU2_0]     21.907017 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M3 
+[MCU2_0]     21.907238 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M4 
+[MCU2_0]     21.907287 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[MCU2_0]     21.907319 s: APP: OpenVX Target kernel init ... !!!
+[MCU2_0]     21.920554 s: APP: OpenVX Target kernel init ... Done !!!
+[MCU2_0]     21.920615 s: CSI2RX: Init ... !!!
+[MCU2_0]     21.920640 s: SCICLIENT: Sciclient_pmSetModuleState module=25 state=2
+[MCU2_0]     21.920971 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921017 s: SCICLIENT: Sciclient_pmSetModuleState module=26 state=2
+[MCU2_0]     21.921143 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921181 s: SCICLIENT: Sciclient_pmSetModuleState module=27 state=2
+[MCU2_0]     21.921291 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921324 s: SCICLIENT: Sciclient_pmSetModuleState module=147 state=2
+[MCU2_0]     21.921406 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921440 s: SCICLIENT: Sciclient_pmSetModuleState module=148 state=2
+[MCU2_0]     21.921516 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.922479 s: CSI2RX: Init ... Done !!!
+[MCU2_0]     21.922539 s: CSI2TX: Init ... !!!
+[MCU2_0]     21.922567 s: SCICLIENT: Sciclient_pmSetModuleState module=25 state=2
+[MCU2_0]     21.922814 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.922866 s: SCICLIENT: Sciclient_pmSetModuleState module=28 state=2
+[MCU2_0]     21.923002 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.923042 s: SCICLIENT: Sciclient_pmSetModuleState module=296 state=2
+[MCU2_0]     21.923149 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.923839 s: CSI2TX: Init ... Done !!!
+[MCU2_0]     21.923896 s: ISS: Init ... !!!
+[MCU2_0]     21.923941 s: IssSensor_Init ... Done !!!
+[MCU2_0]     21.924068 s: vissRemoteServer_Init ... Done !!!
+[MCU2_0]     21.924167 s: IttRemoteServer_Init ... Done !!!
+[MCU2_0]     21.924200 s: UDMA Copy: Init ... !!!
+[MCU2_0]     21.926094 s: UDMA Copy: Init ... Done !!!
+[MCU2_0]     21.926191 s: APP: Init ... Done !!!
+[MCU2_0]     21.926223 s: APP: Run ... !!!
+[MCU2_0]     21.926246 s: IPC: Starting echo test ...
+[MCU2_0]     21.928439 s: APP: Run ... Done !!!
+[MCU2_0]     21.930316 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[.] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_0]     21.930433 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_0]     21.930530 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[.] 
+[MCU2_0]     21.930621 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[P] 
+[MCU2_0]     21.953272 s: Function:CpswProxyServer_attachExtHandlerCb,HostId:0,CpswType:6
+[MCU2_0]     22.610028 s: Function:CpswProxyServer_registerMacHandlerCb,HostId:0,Handle:a35248dc,CoreKey:38acb7e6, MacAddress:70:ff:76:1d:92:c1, FlowIdx:172, FlowIdxOffset:0
+[MCU2_0]     22.613358 s: Cpsw_ioctlInternal: CPSW: Registered MAC address.ALE entry:12, Policer Entry:1
+[MCU2_0]     25.275043 s: Cpsw_handleLinkUp: Port 8: Link up: 1-Gbps Full-Duplex
+[MCU2_0]     25.474989 s: Cpsw_handleLinkUp: Port 4: Link up: 1-Gbps Full-Duplex
+[MCU2_0]     26.036908 s: Function:CpswProxyServer_registerIpv4MacHandlerCb,HostId:0,Handle:a35248dc,CoreKey:38acb7e6, MacAddress:70:ff:76:1d:92:c1 IPv4Addr:192.168.31.152
+[MCU2_0]     26.037048 s: 
+[MCU2_0]  SNo.      IP Address          MAC Address   
+[MCU2_0]     26.037087 s: ------    -------------     -----------------
+[MCU2_0]     26.037122 s:   1       192.168.31.152     70:ff:76:1d:92:c1
+[MCU2_0]     26.278865 s: Added interface 'ti1', IP is 192.168.31.153
+[MCU2_0]     26.395240 s: EthFw: TimeSync PTP enabled
+[MCU2_0]     26.400149 s: Rx Flow for Software Inter-VLAN Routing is up
+[MCU2_1]      4.074996 s: CIO: Init ... Done !!!
+[MCU2_1]      4.075053 s: ### CPU Frequency = 1000000000 Hz
+[MCU2_1]      4.075088 s: APP: Init ... !!!
+[MCU2_1]      4.075110 s: SCICLIENT: Init ... !!!
+[MCU2_1]      4.075336 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[MCU2_1]      4.075380 s: SCICLIENT: DMSC FW revision 0x15  
+[MCU2_1]      4.075408 s: SCICLIENT: DMSC FW ABI revision 3.1
+[MCU2_1]      4.075436 s: SCICLIENT: Init ... Done !!!
+[MCU2_1]      4.075461 s: UDMA: Init ... !!!
+[MCU2_1]      4.076840 s: UDMA: Init ... Done !!!
+[MCU2_1]      4.076900 s: MEM: Init ... !!!
+[MCU2_1]      4.076944 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e2000000 of size 16777216 bytes !!!
+[MCU2_1]      4.077000 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 3640000 of size 262144 bytes !!!
+[MCU2_1]      4.077053 s: MEM: Created heap (DDR_NON_CACHE_ME, id=5, flags=0x00000000) @ d9000000 of size 117440512 bytes !!!
+[MCU2_1]      4.077102 s: MEM: Init ... Done !!!
+[MCU2_1]      4.077123 s: IPC: Init ... !!!
+[MCU2_1]      4.077181 s: IPC: 6 CPUs participating in IPC !!!
+[MCU2_1]      4.077225 s: IPC: Waiting for HLOS to be ready ... !!!
+[MCU2_1]     20.210350 s: IPC: HLOS is ready !!!
+[MCU2_1]     20.215865 s: IPC: Init ... Done !!!
+[MCU2_1]     20.215927 s: APP: Syncing with 5 CPUs ... !!!
+[MCU2_1]     21.740755 s: APP: Syncing with 5 CPUs ... Done !!!
+[MCU2_1]     21.740799 s: REMOTE_SERVICE: Init ... !!!
+[MCU2_1]     21.742245 s: REMOTE_SERVICE: Init ... Done !!!
+[MCU2_1]     21.742303 s: FVID2: Init ... !!!
+[MCU2_1]     21.742372 s: FVID2: Init ... Done !!!
+[MCU2_1]     21.742404 s: VHWA: DMPAC: Init ... !!!
+[MCU2_1]     21.742427 s: SCICLIENT: Sciclient_pmSetModuleState module=48 state=2
+[MCU2_1]     21.742609 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_1]     21.742652 s: SCICLIENT: Sciclient_pmSetModuleState module=305 state=2
+[MCU2_1]     21.742754 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_1]     21.742785 s: VHWA: DOF Init ... !!!
+[MCU2_1]     21.751034 s: VHWA: DOF Init ... Done !!!
+[MCU2_1]     21.751089 s: VHWA: SDE Init ... !!!
+[MCU2_1]     21.753528 s: VHWA: SDE Init ... Done !!!
+[MCU2_1]     21.753593 s: VHWA: DMPAC: Init ... Done !!!
+[MCU2_1]     21.753637 s:  VX_ZONE_INIT:Enabled
+[MCU2_1]     21.753667 s:  VX_ZONE_ERROR:Enabled
+[MCU2_1]     21.753692 s:  VX_ZONE_WARNING:Enabled
+[MCU2_1]     21.754707 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DMPAC_SDE 
+[MCU2_1]     21.754916 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DMPAC_DOF 
+[MCU2_1]     21.754977 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[MCU2_1]     21.755011 s: APP: OpenVX Target kernel init ... !!!
+[MCU2_1]     21.755247 s: APP: OpenVX Target kernel init ... Done !!!
+[MCU2_1]     21.755287 s: UDMA Copy: Init ... !!!
+[MCU2_1]     21.757013 s: UDMA Copy: Init ... Done !!!
+[MCU2_1]     21.757079 s: APP: Init ... Done !!!
+[MCU2_1]     21.757106 s: APP: Run ... !!!
+[MCU2_1]     21.757126 s: IPC: Starting echo test ...
+[MCU2_1]     21.759011 s: APP: Run ... Done !!!
+[MCU2_1]     21.760244 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_1]     21.760348 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[.] 
+[MCU2_1]     21.760437 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[P] 
+[MCU2_1]     21.930274 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[P] 
+[C6x_1 ]      4.161628 s: CIO: Init ... Done !!!
+[C6x_1 ]      4.161652 s: ### CPU Frequency = 1350000000 Hz
+[MCU2_1]     21.760348 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[.] 
+[C6x_1 ]      4.161663 s: APP: Init ... !!!
+[C6x_1 ]      4.161671 s: SCICLIENT: Init ... !!!
+[C6x_1 ]      4.161671 s: SCICLIENT: Init ... !!!
+[C6x_1 ]      4.161885 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_1 ]      4.161885 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_1 ]      4.161899 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_1 ]      4.161899 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_1 ]      4.161909 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_1 ]      4.161909 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_1 ]      4.161919 s: SCICLIENT: Init ... Done !!!
+[C6x_1 ]      4.161919 s: SCICLIENT: Init ... Done !!!
+[C6x_1 ]      4.161928 s: UDMA: Init ... !!!
+[C6x_1 ]      4.161928 s: UDMA: Init ... !!!
+[C6x_1 ]      4.163362 s: UDMA: Init ... Done !!!
+[C6x_1 ]      4.163362 s: UDMA: Init ... Done !!!
+[C6x_1 ]      4.163385 s: MEM: Init ... !!!
+[C6x_1 ]      4.163385 s: MEM: Init ... !!!
+[C6x_1 ]      4.163398 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e4000000 of size 16777216 bytes !!!
+[C6x_1 ]      4.163398 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e4000000 of size 16777216 bytes !!!
+[C6x_1 ]      4.163416 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_1 ]      4.163416 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_1 ]      4.163432 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e5000000 of size 50331648 bytes !!!
+[C6x_1 ]      4.163432 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e5000000 of size 50331648 bytes !!!
+[C6x_1 ]      4.163449 s: MEM: Init ... Done !!!
+[C6x_1 ]      4.163449 s: MEM: Init ... Done !!!
+[C6x_1 ]      4.163457 s: IPC: Init ... !!!
+[C6x_1 ]      4.163457 s: IPC: Init ... !!!
+[C6x_1 ]      4.163478 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_1 ]      4.163478 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_1 ]      4.163492 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_1 ]      4.163492 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_1 ]     17.212925 s: IPC: HLOS is ready !!!
+[C6x_1 ]     17.212925 s: IPC: HLOS is ready !!!
+[C6x_1 ]     17.217217 s: IPC: Init ... Done !!!
+[C6x_1 ]     17.217217 s: IPC: Init ... Done !!!
+[C6x_1 ]     17.217247 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_1 ]     17.217247 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_1 ]     21.740752 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_1 ]     21.740752 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_1 ]     21.740764 s: REMOTE_SERVICE: Init ... !!!
+[C6x_1 ]     21.740764 s: REMOTE_SERVICE: Init ... !!!
+[C6x_1 ]     21.741448 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_1 ]     21.741448 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_1 ]     21.741489 s:  VX_ZONE_INIT:Enabled
+[C6x_1 ]     21.741489 s:  VX_ZONE_INIT:Enabled
+[C6x_1 ]     21.741500 s:  VX_ZONE_ERROR:Enabled
+[C6x_1 ]     21.741500 s:  VX_ZONE_ERROR:Enabled
+[C6x_1 ]     21.741510 s:  VX_ZONE_WARNING:Enabled
+[C6x_1 ]     21.741510 s:  VX_ZONE_WARNING:Enabled
+[C6x_1 ]     21.742467 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_1 ]     21.742467 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_1 ]     21.742483 s: APP: OpenVX Target kernel init ... !!!
+[C6x_1 ]     21.742483 s: APP: OpenVX Target kernel init ... !!!
+[C6x_1 ]     21.742887 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_1 ]     21.742887 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_1 ]     21.742905 s: UDMA Copy: Init ... !!!
+[C6x_1 ]     21.742905 s: UDMA Copy: Init ... !!!
+[C6x_1 ]     21.746161 s: UDMA Copy: Init ... Done !!!
+[C6x_1 ]     21.746161 s: UDMA Copy: Init ... Done !!!
+[C6x_1 ]     21.746183 s: APP: Init ... Done !!!
+[C6x_1 ]     21.746183 s: APP: Init ... Done !!!
+[C6x_1 ]     21.746681 s: APP: Run ... !!!
+[C6x_1 ]     21.746681 s: APP: Run ... !!!
+[C6x_1 ]     21.746691 s: IPC: Starting echo test ...
+[C6x_1 ]     21.746691 s: IPC: Starting echo test ...
+[C6x_1 ]     21.747902 s: APP: Run ... Done !!!
+[C6x_1 ]     21.747902 s: APP: Run ... Done !!!
+[C6x_1 ]     21.748305 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[.] C7X_1[P] 
+[C6x_1 ]     21.748305 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[.] C7X_1[P] 
+[C6x_1 ]     21.748344 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.748344 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.759972 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.759972 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.930197 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.930197 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_2 ]      4.247334 s: CIO: Init ... Done !!!
+[C6x_2 ]      4.247334 s: CIO: Init ... Done !!!
+[C6x_2 ]      4.247359 s: ### CPU Frequency = 1350000000 Hz
+[C6x_2 ]      4.247359 s: ### CPU Frequency = 1350000000 Hz
+[C6x_2 ]      4.247371 s: APP: Init ... !!!
+[C6x_2 ]      4.247371 s: APP: Init ... !!!
+[C6x_2 ]      4.247379 s: SCICLIENT: Init ... !!!
+[C6x_2 ]      4.247379 s: SCICLIENT: Init ... !!!
+[C6x_2 ]      4.247587 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_2 ]      4.247587 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_2 ]      4.247601 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_2 ]      4.247601 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_2 ]      4.247610 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_2 ]      4.247610 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_2 ]      4.247622 s: SCICLIENT: Init ... Done !!!
+[C6x_2 ]      4.247622 s: SCICLIENT: Init ... Done !!!
+[C6x_2 ]      4.247631 s: UDMA: Init ... !!!
+[C6x_2 ]      4.247631 s: UDMA: Init ... !!!
+[C6x_2 ]      4.249088 s: UDMA: Init ... Done !!!
+[C6x_2 ]      4.249088 s: UDMA: Init ... Done !!!
+[C6x_2 ]      4.249112 s: MEM: Init ... !!!
+[C6x_2 ]      4.249112 s: MEM: Init ... !!!
+[C6x_2 ]      4.249124 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e8000000 of size 16777216 bytes !!!
+[C6x_2 ]      4.249124 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e8000000 of size 16777216 bytes !!!
+[C6x_2 ]      4.249143 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_2 ]      4.249143 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_2 ]      4.249159 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e9000000 of size 50331648 bytes !!!
+[C6x_2 ]      4.249159 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e9000000 of size 50331648 bytes !!!
+[C6x_2 ]      4.249176 s: MEM: Init ... Done !!!
+[C6x_2 ]      4.249176 s: MEM: Init ... Done !!!
+[C6x_2 ]      4.249185 s: IPC: Init ... !!!
+[C6x_2 ]      4.249185 s: IPC: Init ... !!!
+[C6x_2 ]      4.249205 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_2 ]      4.249205 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_2 ]      4.249220 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_2 ]      4.249220 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_2 ]     18.234420 s: IPC: HLOS is ready !!!
+[C6x_2 ]     18.234420 s: IPC: HLOS is ready !!!
+[C6x_2 ]     18.238702 s: IPC: Init ... Done !!!
+[C6x_2 ]     18.238702 s: IPC: Init ... Done !!!
+[C6x_2 ]     18.238732 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_2 ]     18.238732 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_2 ]     21.740753 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_2 ]     21.740753 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_2 ]     21.740765 s: REMOTE_SERVICE: Init ... !!!
+[C6x_2 ]     21.740765 s: REMOTE_SERVICE: Init ... !!!
+[C6x_2 ]     21.741461 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_2 ]     21.741461 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_2 ]     21.741499 s:  VX_ZONE_INIT:Enabled
+[C6x_2 ]     21.741499 s:  VX_ZONE_INIT:Enabled
+[C6x_2 ]     21.741510 s:  VX_ZONE_ERROR:Enabled
+[C6x_2 ]     21.741510 s:  VX_ZONE_ERROR:Enabled
+[C6x_2 ]     21.741520 s:  VX_ZONE_WARNING:Enabled
+[C6x_2 ]     21.741520 s:  VX_ZONE_WARNING:Enabled
+[C6x_2 ]     21.742459 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_2 ]     21.742459 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_2 ]     21.742476 s: APP: OpenVX Target kernel init ... !!!
+[C6x_2 ]     21.742476 s: APP: OpenVX Target kernel init ... !!!
+[C6x_2 ]     21.742883 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_2 ]     21.742883 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_2 ]     21.742900 s: UDMA Copy: Init ... !!!
+[C6x_2 ]     21.742900 s: UDMA Copy: Init ... !!!
+[C6x_2 ]     21.746050 s: UDMA Copy: Init ... Done !!!
+[C6x_2 ]     21.746050 s: UDMA Copy: Init ... Done !!!
+[C6x_2 ]     21.746072 s: APP: Init ... Done !!!
+[C6x_2 ]     21.746072 s: APP: Init ... Done !!!
+[C6x_2 ]     21.746580 s: APP: Run ... !!!
+[C6x_2 ]     21.746580 s: APP: Run ... !!!
+[C6x_2 ]     21.746593 s: IPC: Starting echo test ...
+[C6x_2 ]     21.746593 s: IPC: Starting echo test ...
+[C6x_2 ]     21.747719 s: APP: Run ... Done !!!
+[C6x_2 ]     21.747719 s: APP: Run ... Done !!!
+[C6x_2 ]     21.748094 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.748094 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.748309 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.748309 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.760000 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.760000 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.930252 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.930252 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C7x_1 ]      4.456315 s: CIO: Init ... Done !!!
+[C7x_1 ]      4.456329 s: ### CPU Frequency = 1000000000 Hz
+[C7x_1 ]      4.456329 s: ### CPU Frequency = 1000000000 Hz
+[C7x_1 ]      4.456340 s: APP: Init ... !!!
+[C7x_1 ]      4.456340 s: APP: Init ... !!!
+[C7x_1 ]      4.456347 s: SCICLIENT: Init ... !!!
+[C7x_1 ]      4.456347 s: SCICLIENT: Init ... !!!
+[C7x_1 ]      4.456529 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C7x_1 ]      4.456529 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C7x_1 ]      4.456542 s: SCICLIENT: DMSC FW revision 0x15  
+[C7x_1 ]      4.456542 s: SCICLIENT: DMSC FW revision 0x15  
+[C7x_1 ]      4.456553 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C7x_1 ]      4.456553 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C7x_1 ]      4.456563 s: SCICLIENT: Init ... Done !!!
+[C7x_1 ]      4.456563 s: SCICLIENT: Init ... Done !!!
+[C7x_1 ]      4.456572 s: UDMA: Init ... !!!
+[C7x_1 ]      4.456572 s: UDMA: Init ... !!!
+[C7x_1 ]      4.457484 s: UDMA: Init ... Done !!!
+[C7x_1 ]      4.457484 s: UDMA: Init ... Done !!!
+[C7x_1 ]      4.457496 s: MEM: Init ... !!!
+[C7x_1 ]      4.457496 s: MEM: Init ... !!!
+[C7x_1 ]      4.457507 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ 100000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457507 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ 100000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457527 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 70020000 of size 8159232 bytes !!!
+[C7x_1 ]      4.457527 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 70020000 of size 8159232 bytes !!!
+[C7x_1 ]      4.457545 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 64800000 of size 491520 bytes !!!
+[C7x_1 ]      4.457545 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 64800000 of size 491520 bytes !!!
+[C7x_1 ]      4.457562 s: MEM: Created heap (L1_MEM, id=3, flags=0x00000001) @ 64e00000 of size 16384 bytes !!!
+[C7x_1 ]      4.457562 s: MEM: Created heap (L1_MEM, id=3, flags=0x00000001) @ 64e00000 of size 16384 bytes !!!
+[C7x_1 ]      4.457579 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ ec000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457579 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ ec000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457597 s: MEM: Init ... Done !!!
+[C7x_1 ]      4.457597 s: MEM: Init ... Done !!!
+[C7x_1 ]      4.457605 s: IPC: Init ... !!!
+[C7x_1 ]      4.457605 s: IPC: Init ... !!!
+[C7x_1 ]      4.457620 s: IPC: 6 CPUs participating in IPC !!!
+[C7x_1 ]      4.457620 s: IPC: 6 CPUs participating in IPC !!!
+[C7x_1 ]      4.457634 s: IPC: Waiting for HLOS to be ready ... !!!
+[C7x_1 ]      4.457634 s: IPC: Waiting for HLOS to be ready ... !!!
+[C7x_1 ]     19.490895 s: IPC: HLOS is ready !!!
+[C7x_1 ]     19.490895 s: IPC: HLOS is ready !!!
+[C7x_1 ]     19.493045 s: IPC: Init ... Done !!!
+[C7x_1 ]     19.493045 s: IPC: Init ... Done !!!
+[C7x_1 ]     19.493059 s: APP: Syncing with 5 CPUs ... !!!
+[C7x_1 ]     19.493059 s: APP: Syncing with 5 CPUs ... !!!
+[C7x_1 ]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[C7x_1 ]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[C7x_1 ]     21.740770 s: REMOTE_SERVICE: Init ... !!!
+[C7x_1 ]     21.740770 s: REMOTE_SERVICE: Init ... !!!
+[C7x_1 ]     21.741103 s: REMOTE_SERVICE: Init ... Done !!!
+[C7x_1 ]     21.741103 s: REMOTE_SERVICE: Init ... Done !!!
+[C7x_1 ]     21.741126 s:  VX_ZONE_INIT:Enabled
+[C7x_1 ]     21.741126 s:  VX_ZONE_INIT:Enabled
+[C7x_1 ]     21.741137 s:  VX_ZONE_ERROR:Enabled
+[C7x_1 ]     21.741137 s:  VX_ZONE_ERROR:Enabled
+[C7x_1 ]     21.741148 s:  VX_ZONE_WARNING:Enabled
+[C7x_1 ]     21.741148 s:  VX_ZONE_WARNING:Enabled
+[C7x_1 ]     21.741388 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C7x_1 ]     21.741388 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C7x_1 ]     21.741403 s: APP: OpenVX Target kernel init ... !!!
+[C7x_1 ]     21.741403 s: APP: OpenVX Target kernel init ... !!!
+[C7x_1 ]     21.741500 s: APP: OpenVX Target kernel init ... Done !!!
+[C7x_1 ]     21.741500 s: APP: OpenVX Target kernel init ... Done !!!
+[C7x_1 ]     21.741513 s: APP: Init ... Done !!!
+[C7x_1 ]     21.741513 s: APP: Init ... Done !!!
+[C7x_1 ]     21.741522 s: APP: Run ... !!!
+[C7x_1 ]     21.741522 s: APP: Run ... !!!
+[C7x_1 ]     21.741531 s: IPC: Starting echo test ...
+[C7x_1 ]     21.741531 s: IPC: Starting echo test ...
+[C7x_1 ]     21.742029 s: APP: Run ... Done !!!
+[C7x_1 ]     21.742029 s: APP: Run ... Done !!!
+[C7x_1 ]     21.748084 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.748084 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.748287 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.748287 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.760023 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.760023 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.930272 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.930272 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[MCU2_0]   2100.274909 s: Cpsw_handleLinkDown: Port 4: Link down
+[MCU2_0]   2100.274909 s: Cpsw_handleLinkDown: Port 4: Link down
+[MCU2_0]   2102.375246 s: Cpsw_handleLinkUp: Port 4: Link up: 10-Mbps Full-Duplex
+[MCU2_0]   2102.774936 s: Cpsw_handleLinkDown: Port 4: Link down
+
+
+
+
+
+
+:^C
+root@j7-evm:/opt/vision_apps# 
+root@j7-evm:/opt/vision_apps# ./vx_app_arm_remote_log.out 
+[MCU2_0]      4.077056 s: CIO: Init ... Done !!!
+[MCU2_0]      4.077113 s: ### CPU Frequency = 1000000000 Hz
+[MCU2_0]      4.077147 s: APP: Init ... !!!
+[MCU2_0]      4.077168 s: SCICLIENT: Init ... !!!
+[MCU2_0]      4.077389 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[MCU2_0]      4.077435 s: SCICLIENT: DMSC FW revision 0x15  
+[MCU2_0]      4.077463 s: SCICLIENT: DMSC FW ABI revision 3.1
+[MCU2_0]      4.077491 s: SCICLIENT: Init ... Done !!!
+[MCU2_0]      4.077513 s: UDMA: Init ... !!!
+[MCU2_0]      4.078777 s: UDMA: Init ... Done !!!
+[MCU2_0]      4.078834 s: MEM: Init ... !!!
+[MCU2_0]      4.078879 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e1000000 of size 16777216 bytes !!!
+[MCU2_0]      4.078941 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000000) @ 3600000 of size 262144 bytes !!!
+[MCU2_0]      4.078992 s: MEM: Created heap (DDR_NON_CACHE_ME, id=5, flags=0x00000000) @ d8000000 of size 16777216 bytes !!!
+[MCU2_0]      4.079040 s: MEM: Init ... Done !!!
+[MCU2_0]      4.079063 s: IPC: Init ... !!!
+[MCU2_0]      4.079118 s: IPC: 6 CPUs participating in IPC !!!
+[MCU2_0]      4.079164 s: IPC: Waiting for HLOS to be ready ... !!!
+[MCU2_0]     21.735015 s: IPC: HLOS is ready !!!
+[MCU2_0]     21.740633 s: IPC: Init ... Done !!!
+[MCU2_0]     21.740709 s: APP: Syncing with 5 CPUs ... !!!
+[MCU2_0]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[MCU2_0]     21.740784 s: REMOTE_SERVICE: Init ... !!!
+[MCU2_0]     21.742301 s: REMOTE_SERVICE: Init ... Done !!!
+[MCU2_0]     21.742360 s: ETHFW: Init ... !!!
+[MCU2_0]     21.761328 s: CPSW_9G Test on MAIN NAVSS
+[MCU2_0]     21.774024 s: EnetPhy_bindDriver: PHY 12: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774329 s: EnetPhy_bindDriver: PHY 0: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774622 s: EnetPhy_bindDriver: PHY 3: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774922 s: EnetPhy_bindDriver: PHY 15: OUI:080028 Model:23 Ver:01 <-> 'dp83867' : OK
+[MCU2_0]     21.774998 s: PHY 0 is alive
+[MCU2_0]     21.775032 s: PHY 3 is alive
+[MCU2_0]     21.775068 s: PHY 12 is alive
+[MCU2_0]     21.775093 s: PHY 15 is alive
+[MCU2_0]     21.775127 s: PHY 23 is alive
+[MCU2_0]     21.776907 s: ETHFW: Version   : 0.01.01
+[MCU2_0]     21.776957 s: ETHFW: Build Date: Aug 31, 2021
+[MCU2_0]     21.776989 s: ETHFW: Build Time: 01:37:18
+[MCU2_0]     21.777013 s: ETHFW: Commit SHA: 9a44b16b
+[MCU2_0]     21.777081 s: ETHFW: Init ... DONE !!!
+[MCU2_0]     21.777111 s: ETHFW: Remove server Init ... !!!
+[MCU2_0]     21.777953 s: Remote demo device (core : mcu2_0) .....
+[MCU2_0]     21.778015 s: ETHFW: Remove server Init ... DONE !!!
+[MCU2_0]     21.779057 s: Starting lwIP, local interface IP is dhcp-enabled
+[MCU2_0]     21.785671 s: Host MAC address: 70:ff:76:1d:92:c2
+[MCU2_0]     21.827683 s: FVID2: Init ... !!!
+[MCU2_0]     21.827806 s: FVID2: Init ... Done !!!
+[MCU2_0]     21.827859 s: DSS: Init ... !!!
+[MCU2_0]     21.827889 s: DSS: Display type is eDP !!!
+[MCU2_0]     21.827914 s: DSS: M2M Path is enabled !!!
+[MCU2_0]     21.827938 s: DSS: SoC init ... !!!
+[MCU2_0]     21.827960 s: SCICLIENT: Sciclient_pmSetModuleState module=152 state=2
+[MCU2_0]     21.828120 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828161 s: SCICLIENT: Sciclient_pmSetModuleState module=297 state=2
+[MCU2_0]     21.828301 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828336 s: SCICLIENT: Sciclient_pmSetModuleState module=151 state=2
+[MCU2_0]     21.828457 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.828491 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=9 parent=11
+[MCU2_0]     21.828583 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.828616 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=13 parent=18
+[MCU2_0]     21.828854 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.828904 s: SCICLIENT: Sciclient_pmSetModuleClkParent module=152 clk=1 parent=2
+[MCU2_0]     21.829004 s: SCICLIENT: Sciclient_pmSetModuleClkParent success
+[MCU2_0]     21.829041 s: SCICLIENT: Sciclient_pmSetModuleClkFreq module=152 clk=1 freq=148500000
+[MCU2_0]     21.830060 s: SCICLIENT: Sciclient_pmSetModuleClkFreq success
+[MCU2_0]     21.830109 s: SCICLIENT: Sciclient_pmModuleClkRequest module=152 clk=1 state=2 flag=0
+[MCU2_0]     21.830251 s: SCICLIENT: Sciclient_pmModuleClkRequest success
+[MCU2_0]     21.830291 s: DSS: SoC init ... Done !!!
+[MCU2_0]     21.830317 s: DSS: Board init ... !!!
+[MCU2_0]     21.830340 s: DSS: Board init ... Done !!!
+[MCU2_0]     21.863751 s: [LWIPIF_LWIP] NETIF INIT SUCCESS
+[MCU2_0]     21.863828 s: Added interface 'ti1', IP is 0.0.0.0
+[MCU2_0]     21.871884 s: DSS: Init ... Done !!!
+[MCU2_0]     21.871944 s: VHWA: VPAC Init ... !!!
+[MCU2_0]     21.871970 s: SCICLIENT: Sciclient_pmSetModuleState module=290 state=2
+[MCU2_0]     21.872130 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.872173 s: VHWA: LDC Init ... !!!
+[MCU2_0]     21.875985 s: VHWA: LDC Init ... Done !!!
+[MCU2_0]     21.876041 s: VHWA: MSC Init ... !!!
+[MCU2_0]     21.886864 s: VHWA: MSC Init ... Done !!!
+[MCU2_0]     21.886922 s: VHWA: NF Init ... !!!
+[MCU2_0]     21.888834 s: VHWA: NF Init ... Done !!!
+[MCU2_0]     21.888891 s: VHWA: VISS Init ... !!!
+[MCU2_0]     21.900093 s: VHWA: VISS Init ... Done !!!
+[MCU2_0]     21.900149 s: VHWA: VPAC Init ... Done !!!
+[MCU2_0]     21.900195 s:  VX_ZONE_INIT:Enabled
+[MCU2_0]     21.900225 s:  VX_ZONE_ERROR:Enabled
+[MCU2_0]     21.900249 s:  VX_ZONE_WARNING:Enabled
+[MCU2_0]     21.901453 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target IPU1-0 
+[MCU2_0]     21.901839 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_NF 
+[MCU2_0]     21.902068 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_LDC1 
+[MCU2_0]     21.902264 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_MSC1 
+[MCU2_0]     21.902465 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_MSC2 
+[MCU2_0]     21.902876 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target VPAC_VISS1 
+[MCU2_0]     21.903154 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE1 
+[MCU2_0]     21.903397 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE2 
+[MCU2_0]     21.903630 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DISPLAY1 
+[MCU2_0]     21.904035 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DISPLAY2 
+[MCU2_0]     21.904323 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CSITX 
+[MCU2_0]     21.904595 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE3 
+[MCU2_0]     21.905068 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE4 
+[MCU2_0]     21.905321 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE5 
+[MCU2_0]     21.905574 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE6 
+[MCU2_0]     21.905957 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE7 
+[MCU2_0]     21.906207 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target CAPTURE8 
+[MCU2_0]     21.906407 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M1 
+[MCU2_0]     21.906611 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M2 
+[MCU2_0]     21.907017 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M3 
+[MCU2_0]     21.907238 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DSS_M2M4 
+[MCU2_0]     21.907287 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[MCU2_0]     21.907319 s: APP: OpenVX Target kernel init ... !!!
+[MCU2_0]     21.920554 s: APP: OpenVX Target kernel init ... Done !!!
+[MCU2_0]     21.920615 s: CSI2RX: Init ... !!!
+[MCU2_0]     21.920640 s: SCICLIENT: Sciclient_pmSetModuleState module=25 state=2
+[MCU2_0]     21.920971 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921017 s: SCICLIENT: Sciclient_pmSetModuleState module=26 state=2
+[MCU2_0]     21.921143 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921181 s: SCICLIENT: Sciclient_pmSetModuleState module=27 state=2
+[MCU2_0]     21.921291 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921324 s: SCICLIENT: Sciclient_pmSetModuleState module=147 state=2
+[MCU2_0]     21.921406 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.921440 s: SCICLIENT: Sciclient_pmSetModuleState module=148 state=2
+[MCU2_0]     21.921516 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.922479 s: CSI2RX: Init ... Done !!!
+[MCU2_0]     21.922539 s: CSI2TX: Init ... !!!
+[MCU2_0]     21.922567 s: SCICLIENT: Sciclient_pmSetModuleState module=25 state=2
+[MCU2_0]     21.922814 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.922866 s: SCICLIENT: Sciclient_pmSetModuleState module=28 state=2
+[MCU2_0]     21.923002 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.923042 s: SCICLIENT: Sciclient_pmSetModuleState module=296 state=2
+[MCU2_0]     21.923149 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_0]     21.923839 s: CSI2TX: Init ... Done !!!
+[MCU2_0]     21.923896 s: ISS: Init ... !!!
+[MCU2_0]     21.923941 s: IssSensor_Init ... Done !!!
+[MCU2_0]     21.924068 s: vissRemoteServer_Init ... Done !!!
+[MCU2_0]     21.924167 s: IttRemoteServer_Init ... Done !!!
+[MCU2_0]     21.924200 s: UDMA Copy: Init ... !!!
+[MCU2_0]     21.926094 s: UDMA Copy: Init ... Done !!!
+[MCU2_0]     21.926191 s: APP: Init ... Done !!!
+[MCU2_0]     21.926223 s: APP: Run ... !!!
+[MCU2_0]     21.926246 s: IPC: Starting echo test ...
+[MCU2_0]     21.928439 s: APP: Run ... Done !!!
+[MCU2_0]     21.930316 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[.] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_0]     21.930433 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_0]     21.930530 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[.] 
+[MCU2_0]     21.930621 s: IPC: Echo status: mpu1_0[x] mcu2_0[s] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[P] 
+[MCU2_0]     21.953272 s: Function:CpswProxyServer_attachExtHandlerCb,HostId:0,CpswType:6
+[MCU2_0]     22.610028 s: Function:CpswProxyServer_registerMacHandlerCb,HostId:0,Handle:a35248dc,CoreKey:38acb7e6, MacAddress:70:ff:76:1d:92:c1, FlowIdx:172, FlowIdxOffset:0
+[MCU2_0]     22.613358 s: Cpsw_ioctlInternal: CPSW: Registered MAC address.ALE entry:12, Policer Entry:1
+[MCU2_0]     25.275043 s: Cpsw_handleLinkUp: Port 8: Link up: 1-Gbps Full-Duplex
+[MCU2_0]     25.474989 s: Cpsw_handleLinkUp: Port 4: Link up: 1-Gbps Full-Duplex
+[MCU2_0]     26.036908 s: Function:CpswProxyServer_registerIpv4MacHandlerCb,HostId:0,Handle:a35248dc,CoreKey:38acb7e6, MacAddress:70:ff:76:1d:92:c1 IPv4Addr:192.168.31.152
+[MCU2_0]     26.037048 s: 
+[MCU2_0]  SNo.      IP Address          MAC Address   
+[MCU2_0]     26.037087 s: ------    -------------     -----------------
+[MCU2_0]     26.037122 s:   1       192.168.31.152     70:ff:76:1d:92:c1
+[MCU2_0]     26.278865 s: Added interface 'ti1', IP is 192.168.31.153
+[MCU2_0]     26.395240 s: EthFw: TimeSync PTP enabled
+[MCU2_0]     26.400149 s: Rx Flow for Software Inter-VLAN Routing is up
+[MCU2_0]   2100.274909 s: Cpsw_handleLinkDown: Port 4: Link down
+[MCU2_0]   2102.375246 s: Cpsw_handleLinkUp: Port 4: Link up: 10-Mbps Full-Duplex
+[MCU2_0]   2102.774936 s: Cpsw_handleLinkDown: Port 4: Link down
+[MCU2_1]      4.074996 s: CIO: Init ... Done !!!
+[MCU2_1]      4.075053 s: ### CPU Frequency = 1000000000 Hz
+[MCU2_1]      4.075088 s: APP: Init ... !!!
+[MCU2_1]      4.075110 s: SCICLIENT: Init ... !!!
+[MCU2_1]      4.075336 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[MCU2_1]      4.075380 s: SCICLIENT: DMSC FW revision 0x15  
+[MCU2_1]      4.075408 s: SCICLIENT: DMSC FW ABI revision 3.1
+[MCU2_1]      4.075436 s: SCICLIENT: Init ... Done !!!
+[MCU2_1]      4.075461 s: UDMA: Init ... !!!
+[MCU2_1]      4.076840 s: UDMA: Init ... Done !!!
+[MCU2_1]      4.076900 s: MEM: Init ... !!!
+[MCU2_1]      4.076944 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e2000000 of size 16777216 bytes !!!
+[MCU2_1]      4.077000 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 3640000 of size 262144 bytes !!!
+[MCU2_1]      4.077053 s: MEM: Created heap (DDR_NON_CACHE_ME, id=5, flags=0x00000000) @ d9000000 of size 117440512 bytes !!!
+[MCU2_1]      4.077102 s: MEM: Init ... Done !!!
+[MCU2_1]      4.077123 s: IPC: Init ... !!!
+[MCU2_1]      4.077181 s: IPC: 6 CPUs participating in IPC !!!
+[MCU2_1]      4.077225 s: IPC: Waiting for HLOS to be ready ... !!!
+[MCU2_1]     20.210350 s: IPC: HLOS is ready !!!
+[MCU2_1]     20.215865 s: IPC: Init ... Done !!!
+[MCU2_1]     20.215927 s: APP: Syncing with 5 CPUs ... !!!
+[MCU2_1]     21.740755 s: APP: Syncing with 5 CPUs ... Done !!!
+[MCU2_1]     21.740799 s: REMOTE_SERVICE: Init ... !!!
+[MCU2_1]     21.742245 s: REMOTE_SERVICE: Init ... Done !!!
+[MCU2_1]     21.742303 s: FVID2: Init ... !!!
+[MCU2_1]     21.742372 s: FVID2: Init ... Done !!!
+[MCU2_1]     21.742404 s: VHWA: DMPAC: Init ... !!!
+[MCU2_1]     21.742427 s: SCICLIENT: Sciclient_pmSetModuleState module=48 state=2
+[MCU2_1]     21.742609 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_1]     21.742652 s: SCICLIENT: Sciclient_pmSetModuleState module=305 state=2
+[MCU2_1]     21.742754 s: SCICLIENT: Sciclient_pmSetModuleState success
+[MCU2_1]     21.742785 s: VHWA: DOF Init ... !!!
+[MCU2_1]     21.751034 s: VHWA: DOF Init ... Done !!!
+[MCU2_1]     21.751089 s: VHWA: SDE Init ... !!!
+[MCU2_1]     21.753528 s: VHWA: SDE Init ... Done !!!
+[MCU2_1]     21.753593 s: VHWA: DMPAC: Init ... Done !!!
+[MCU2_1]     21.753637 s:  VX_ZONE_INIT:Enabled
+[MCU2_1]     21.753667 s:  VX_ZONE_ERROR:Enabled
+[MCU2_1]     21.753692 s:  VX_ZONE_WARNING:Enabled
+[MCU2_1]     21.754707 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DMPAC_SDE 
+[MCU2_1]     21.754916 s:  VX_ZONE_INIT:[tivxPlatformCreateTargetId:55] Added target DMPAC_DOF 
+[MCU2_1]     21.754977 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[MCU2_1]     21.755011 s: APP: OpenVX Target kernel init ... !!!
+[MCU2_1]     21.755247 s: APP: OpenVX Target kernel init ... Done !!!
+[MCU2_1]     21.755287 s: UDMA Copy: Init ... !!!
+[MCU2_1]     21.757013 s: UDMA Copy: Init ... Done !!!
+[MCU2_1]     21.757079 s: APP: Init ... Done !!!
+[MCU2_1]     21.757106 s: APP: Run ... !!!
+[MCU2_1]     21.757126 s: IPC: Starting echo test ...
+[MCU2_1]     21.759011 s: APP: Run ... Done !!!
+[MCU2_1]     21.760244 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[.] C7X_1[.] 
+[MCU2_1]     21.760348 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[.] 
+[MCU2_1]     21.760437 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[P] 
+[MCU2_1]     21.930274 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[s] C66X_1[P] C66X_2[P] C7X_1[P] 
+[C6x_1 ]      4.161628 s: CIO: Init ... Done !!!
+[C6x_1 ]      4.161652 s: ### CPU Frequency = 1350000000 Hz
+[C6x_1 ]      4.161663 s: APP: Init ... !!!
+[C6x_1 ]      4.161671 s: SCICLIENT: Init ... !!!
+[C6x_1 ]      4.161885 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_1 ]      4.161899 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_1 ]      4.161909 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_1 ]      4.161919 s: SCICLIENT: Init ... Done !!!
+[C6x_1 ]      4.161928 s: UDMA: Init ... !!!
+[C6x_1 ]      4.163362 s: UDMA: Init ... Done !!!
+[C6x_1 ]      4.163385 s: MEM: Init ... !!!
+[C6x_1 ]      4.163398 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e4000000 of size 16777216 bytes !!!
+[C6x_1 ]      4.163416 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_1 ]      4.163432 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e5000000 of size 50331648 bytes !!!
+[C6x_1 ]      4.163449 s: MEM: Init ... Done !!!
+[C6x_1 ]      4.163457 s: IPC: Init ... !!!
+[C6x_1 ]      4.163478 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_1 ]      4.163492 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_1 ]     17.212925 s: IPC: HLOS is ready !!!
+[C6x_1 ]     17.217217 s: IPC: Init ... Done !!!
+[C6x_1 ]     17.217247 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_1 ]     21.740752 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_1 ]     21.740764 s: REMOTE_SERVICE: Init ... !!!
+[C6x_1 ]     21.741448 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_1 ]     21.741489 s:  VX_ZONE_INIT:Enabled
+[C6x_1 ]     21.741500 s:  VX_ZONE_ERROR:Enabled
+[C6x_1 ]     21.741510 s:  VX_ZONE_WARNING:Enabled
+[C6x_1 ]     21.742467 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_1 ]     21.742483 s: APP: OpenVX Target kernel init ... !!!
+[C6x_1 ]     21.742887 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_1 ]     21.742905 s: UDMA Copy: Init ... !!!
+[C6x_1 ]     21.746161 s: UDMA Copy: Init ... Done !!!
+[C6x_1 ]     21.746183 s: APP: Init ... Done !!!
+[C6x_1 ]     21.746681 s: APP: Run ... !!!
+[C6x_1 ]     21.746691 s: IPC: Starting echo test ...
+[C6x_1 ]     21.747902 s: APP: Run ... Done !!!
+[C6x_1 ]     21.748305 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[.] C7X_1[P] 
+[C6x_1 ]     21.748344 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.759972 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_1 ]     21.930197 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[s] C66X_2[P] C7X_1[P] 
+[C6x_2 ]      4.247334 s: CIO: Init ... Done !!!
+[C6x_2 ]      4.247359 s: ### CPU Frequency = 1350000000 Hz
+[C6x_2 ]      4.247371 s: APP: Init ... !!!
+[C6x_2 ]      4.247379 s: SCICLIENT: Init ... !!!
+[C6x_2 ]      4.247587 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C6x_2 ]      4.247601 s: SCICLIENT: DMSC FW revision 0x15  
+[C6x_2 ]      4.247610 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C6x_2 ]      4.247622 s: SCICLIENT: Init ... Done !!!
+[C6x_2 ]      4.247631 s: UDMA: Init ... !!!
+[C6x_2 ]      4.249088 s: UDMA: Init ... Done !!!
+[C6x_2 ]      4.249112 s: MEM: Init ... !!!
+[C6x_2 ]      4.249124 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ e8000000 of size 16777216 bytes !!!
+[C6x_2 ]      4.249143 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 800000 of size 229376 bytes !!!
+[C6x_2 ]      4.249159 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ e9000000 of size 50331648 bytes !!!
+[C6x_2 ]      4.249176 s: MEM: Init ... Done !!!
+[C6x_2 ]      4.249185 s: IPC: Init ... !!!
+[C6x_2 ]      4.249205 s: IPC: 6 CPUs participating in IPC !!!
+[C6x_2 ]      4.249220 s: IPC: Waiting for HLOS to be ready ... !!!
+[C6x_2 ]     18.234420 s: IPC: HLOS is ready !!!
+[C6x_2 ]     18.238702 s: IPC: Init ... Done !!!
+[C6x_2 ]     18.238732 s: APP: Syncing with 5 CPUs ... !!!
+[C6x_2 ]     21.740753 s: APP: Syncing with 5 CPUs ... Done !!!
+[C6x_2 ]     21.740765 s: REMOTE_SERVICE: Init ... !!!
+[C6x_2 ]     21.741461 s: REMOTE_SERVICE: Init ... Done !!!
+[C6x_2 ]     21.741499 s:  VX_ZONE_INIT:Enabled
+[C6x_2 ]     21.741510 s:  VX_ZONE_ERROR:Enabled
+[C6x_2 ]     21.741520 s:  VX_ZONE_WARNING:Enabled
+[C6x_2 ]     21.742459 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C6x_2 ]     21.742476 s: APP: OpenVX Target kernel init ... !!!
+[C6x_2 ]     21.742883 s: APP: OpenVX Target kernel init ... Done !!!
+[C6x_2 ]     21.742900 s: UDMA Copy: Init ... !!!
+[C6x_2 ]     21.746050 s: UDMA Copy: Init ... Done !!!
+[C6x_2 ]     21.746072 s: APP: Init ... Done !!!
+[C6x_2 ]     21.746580 s: APP: Run ... !!!
+[C6x_2 ]     21.746593 s: IPC: Starting echo test ...
+[C6x_2 ]     21.747719 s: APP: Run ... Done !!!
+[C6x_2 ]     21.748094 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.748309 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.760000 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C6x_2 ]     21.930252 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[s] C7X_1[P] 
+[C7x_1 ]      4.456315 s: CIO: Init ... Done !!!
+[C7x_1 ]      4.456329 s: ### CPU Frequency = 1000000000 Hz
+[C7x_1 ]      4.456340 s: APP: Init ... !!!
+[C7x_1 ]      4.456347 s: SCICLIENT: Init ... !!!
+[C7x_1 ]      4.456529 s: SCICLIENT: DMSC FW version [21.5.0--v2021.05 (Terrific Llam]
+[C7x_1 ]      4.456542 s: SCICLIENT: DMSC FW revision 0x15  
+[C7x_1 ]      4.456553 s: SCICLIENT: DMSC FW ABI revision 3.1
+[C7x_1 ]      4.456563 s: SCICLIENT: Init ... Done !!!
+[C7x_1 ]      4.456572 s: UDMA: Init ... !!!
+[C7x_1 ]      4.457484 s: UDMA: Init ... Done !!!
+[C7x_1 ]      4.457496 s: MEM: Init ... !!!
+[C7x_1 ]      4.457507 s: MEM: Created heap (DDR_SHARED_MEM, id=0, flags=0x00000004) @ 100000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457527 s: MEM: Created heap (L3_MEM, id=1, flags=0x00000001) @ 70020000 of size 8159232 bytes !!!
+[C7x_1 ]      4.457545 s: MEM: Created heap (L2_MEM, id=2, flags=0x00000001) @ 64800000 of size 491520 bytes !!!
+[C7x_1 ]      4.457562 s: MEM: Created heap (L1_MEM, id=3, flags=0x00000001) @ 64e00000 of size 16384 bytes !!!
+[C7x_1 ]      4.457579 s: MEM: Created heap (DDR_SCRATCH_MEM, id=4, flags=0x00000001) @ ec000000 of size 268435456 bytes !!!
+[C7x_1 ]      4.457597 s: MEM: Init ... Done !!!
+[C7x_1 ]      4.457605 s: IPC: Init ... !!!
+[C7x_1 ]      4.457620 s: IPC: 6 CPUs participating in IPC !!!
+[C7x_1 ]      4.457634 s: IPC: Waiting for HLOS to be ready ... !!!
+[C7x_1 ]     19.490895 s: IPC: HLOS is ready !!!
+[C7x_1 ]     19.493045 s: IPC: Init ... Done !!!
+[C7x_1 ]     19.493059 s: APP: Syncing with 5 CPUs ... !!!
+[C7x_1 ]     21.740754 s: APP: Syncing with 5 CPUs ... Done !!!
+[C7x_1 ]     21.740770 s: REMOTE_SERVICE: Init ... !!!
+[C7x_1 ]     21.741103 s: REMOTE_SERVICE: Init ... Done !!!
+[C7x_1 ]     21.741126 s:  VX_ZONE_INIT:Enabled
+[C7x_1 ]     21.741137 s:  VX_ZONE_ERROR:Enabled
+[C7x_1 ]     21.741148 s:  VX_ZONE_WARNING:Enabled
+[C7x_1 ]     21.741388 s:  VX_ZONE_INIT:[tivxInit:71] Initialization Done !!!
+[C7x_1 ]     21.741403 s: APP: OpenVX Target kernel init ... !!!
+[C7x_1 ]     21.741500 s: APP: OpenVX Target kernel init ... Done !!!
+[C7x_1 ]     21.741513 s: APP: Init ... Done !!!
+[C7x_1 ]     21.741522 s: APP: Run ... !!!
+[C7x_1 ]     21.741531 s: IPC: Starting echo test ...
+[C7x_1 ]     21.742029 s: APP: Run ... Done !!!
+[C7x_1 ]     21.748084 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[.] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.748287 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[x] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.760023 s: IPC: Echo status: mpu1_0[x] mcu2_0[x] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+[C7x_1 ]     21.930272 s: IPC: Echo status: mpu1_0[x] mcu2_0[P] mcu2_1[P] C66X_1[P] C66X_2[P] C7X_1[s] 
+
+
+
+^C
+root@j7-evm:/opt/vision_apps# ./vx_app_arm_remote_log.out [MCU2_0]   2719.475188 s: Cpsw_handleLinkUp: Port 3: Link up: 1-Gbps Full-Duplex
+[MCU2_0]   2719.574872 s: Cpsw_handleLinkDown: Port 3: Link down
+[MCU2_0]   2722.874951 s: Cpsw_handleLinkUp: Port 3: Link up: 1-Gbps Full-Duplex
+[MCU2_0]   2727.028857 s: CpswCpts_ioctl: Eth TX event not found (msgType=3, seqId=0, dom=0, portNum=2)
+[MCU2_0]   2727.028925 s: EnetMod_ioctl: cpsw9g.cpts: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2727.028972 s: EnetPer_ioctl: cpsw9g: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2727.029015 s: Enet_ioctl: cpsw9g: IOCTL 0x01000307 failed: -14
+[MCU2_0]   2745.121879 s: CpswCpts_ioctl: Eth TX event not found (msgType=2, seqId=1, dom=0, portNum=2)
+[MCU2_0]   2745.121948 s: EnetMod_ioctl: cpsw9g.cpts: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2745.121998 s: EnetPer_ioctl: cpsw9g: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2745.122041 s: Enet_ioctl: cpsw9g: IOCTL 0x01000307 failed: -14
+[MCU2_0]   2770.003815 s: CpswCpts_ioctl: Setting PPM to 1024, as 987 is less than minimum value (1024)
+[MCU2_0]   2771.021841 s: CpswCpts_ioctl: Setting PPM to 1024, as 828 is less than minimum value (1024)
+[MCU2_0]   2771.264861 s: CpswCpts_ioctl: Eth TX event not found (msgType=2, seqId=5, dom=0, portNum=2)
+[MCU2_0]   2771.264928 s: EnetMod_ioctl: cpsw9g.cpts: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2771.264976 s: EnetPer_ioctl: cpsw9g: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2771.265020 s: Enet_ioctl: cpsw9g: IOCTL 0x01000307 failed: -14
+[MCU2_0]   2771.497863 s: CpswCpts_ioctl: Eth TX event not found (msgType=3, seqId=949, dom=0, portNum=2)
+[MCU2_0]   2771.497929 s: EnetMod_ioctl: cpsw9g.cpts: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2771.497977 s: EnetPer_ioctl: cpsw9g: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2771.498022 s: Enet_ioctl: cpsw9g: IOCTL 0x01000307 failed: -14
+[MCU2_0]   2771.918812 s: CpswCpts_ioctl: Setting PPM to 1024, as 712 is less than minimum value (1024)
+[MCU2_0]   2773.918817 s: CpswCpts_ioctl: Setting PPM to 1024, as 625 is less than minimum value (1024)
+[MCU2_0]   2788.075941 s: CpswCpts_ioctl: Eth TX event not found (msgType=2, seqId=0, dom=0, portNum=2)
+[MCU2_0]   2788.076006 s: EnetMod_ioctl: cpsw9g.cpts: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2788.076054 s: EnetPer_ioctl: cpsw9g: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2788.076101 s: Enet_ioctl: cpsw9g: IOCTL 0x01000307 failed: -14
+[MCU2_0]   2796.919814 s: CpswCpts_ioctl: Setting PPM to 1024, as 855 is less than minimum value (1024)
+[MCU2_0]   2797.110864 s: CpswCpts_ioctl: Eth TX event not found (msgType=2, seqId=5, dom=0, portNum=2)
+[MCU2_0]   2797.110932 s: EnetMod_ioctl: cpsw9g.cpts: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2797.110982 s: EnetPer_ioctl: cpsw9g: Failed to do IOCTL cmd 0x01000307: -14
+[MCU2_0]   2797.111025 s: Enet_ioctl: cpsw9g: IOCTL 0x01000307 failed: -14
+[MCU2_0]   2798.003809 s: CpswCpts_ioctl: Setting PPM to 1024, as 715 is less than minimum value (1024)
+[MCU2_0]   2799.004818 s: CpswCpts_ioctl: Setting PPM to 1024, as 616 is less than minimum value (1024)
+[MCU2_0]   2800.919817 s: CpswCpts_ioctl: Setting PPM to 1024, as 539 is less than minimum value (1024)
+[MCU2_0]   2802.003816 s: CpswCpts_ioctl: Setting PPM to 1024, as 481 is less than minimum value (1024)
+[MCU2_0]   2803.919811 s: CpswCpts_ioctl: Setting PPM to 1024, as 433 is less than minimum value (1024)
+

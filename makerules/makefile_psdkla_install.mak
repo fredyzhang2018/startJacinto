@@ -12,75 +12,75 @@ la-install-ubuntu-lib:
 	echo "configure done !!!"
 
 la-install-sdk: check_paths_downloads la-install-ubuntu-lib
-	echo "install $(PSDKLA_PATH)"
+	echo "install $(SJ_PATH_PSDKLA)"
 	echo "1. downlaod the SDK"
-	$(Q)if [ ! -d $(PSDKLA_PATH) ] ; then \
-		if [ ! -f $(DOWNLOADS_PATH)/`echo $(PSDKLA_SDK_URL) | cut -d / -f 9` ] ; then \
-			cd $(DOWNLOADS_PATH) && wget $(PSDKLA_SDK_URL); \
+	$(Q)if [ ! -d $(SJ_PATH_PSDKLA) ] ; then \
+		if [ ! -f $(SJ_PATH_DOWNLOAD)/`echo $(SJ_PSDKLA_SDK_URL) | cut -d / -f 9` ] ; then \
+			cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKLA_SDK_URL); \
 		fi; \
 		echo "2. run setup scripts"; \
-		cd $(DOWNLOADS_PATH) && chmod a+x ./`echo $(PSDKLA_SDK_URL) | cut -d / -f 9`; \
-		echo "please set your install PATH: $(PSDKLA_PATH) " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;\
-		cd $(DOWNLOADS_PATH) && ./`echo $(PSDKLA_SDK_URL) | cut -d / -f 9`; \
+		cd $(SJ_PATH_DOWNLOAD) && chmod a+x ./`echo $(SJ_PSDKLA_SDK_URL) | cut -d / -f 9`; \
+		echo "please set your install PATH: $(SJ_PATH_PSDKLA) " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;\
+		cd $(SJ_PATH_DOWNLOAD) && ./`echo $(SJ_PSDKLA_SDK_URL) | cut -d / -f 9`; \
 		echo "please run the setup scripts " ; \
-		cd $(PSDKLA_PATH) &&  ./setup.sh; \
+		cd $(SJ_PATH_PSDKLA) &&  ./setup.sh; \
 		echo "please run: make la-install-addon-makefile to support update image to SD card:" ;\
 	else \
 		echo "sdk already installed, continue..."; \
 	fi
 
 la-install-addon-makefile: check_paths_PSDKLA 
-	$(Q)if [ ! -f $(PSDKLA_PATH)/makefile_psdkla_addon.mak ] ; then \
-		ln -s $(jacinto_PATH)/makerules/psdkla/makefile_psdkla_addon.mak  $(PSDKLA_PATH) ; \
-		ls -l $(PSDKLA_PATH)/makefile_psdkla_addon.mak; \
-		$(ECHO) "please add the makefile_psdkla_addon.mak to $(PSDKLA_PATH)/Makefile"; \
-		sed -i "2c ""-include makefile_psdkla_addon.mak" $(PSDKLA_PATH)/Makefile;\
+	$(Q)if [ ! -f $(SJ_PATH_PSDKLA)/makefile_psdkla_addon.mak ] ; then \
+		ln -s $(SJ_PATH_JACINTO)/makerules/psdkla/makefile_psdkla_addon.mak  $(SJ_PATH_PSDKLA) ; \
+		ls -l $(SJ_PATH_PSDKLA)/makefile_psdkla_addon.mak; \
+		$(ECHO) "please add the makefile_psdkla_addon.mak to $(SJ_PATH_PSDKLA)/Makefile"; \
+		sed -i "2c ""-include makefile_psdkla_addon.mak" $(SJ_PATH_PSDKLA)/Makefile;\
 		$(ECHO) "done"; \
 	else \
-		echo "$(PSDKLA_PATH)/makefile_psdkla_addon.mak already installed, continue..."; \
+		echo "$(SJ_PATH_PSDKLA)/makefile_psdkla_addon.mak already installed, continue..."; \
 	fi
 
 
 la-yocto-install: check_paths_PSDKLA 
-	$(Q)if [ ! -d  $(PSDKLA_PATH)/yocto-build/sources ] ; then \
-		cd $(PSDKLA_PATH)/yocto-build/      && ./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(YOCTO_CONFIG_FILE); \
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "INHERIT += \"own-mirrors\"" >> conf/local.conf; \
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "SOURCE_MIRROR_URL = \"http://software-dl.ti.com/processor-sdk-mirror/sources/\"" >> conf/local.conf ;\
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "ARAGO_BRAND  = \"psdkla\"" >> conf/local.conf ;\
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "DISTRO_FEATURES_append = \" virtualization\"" >> conf/local.conf ;\
-		cd $(PSDKLA_PATH)/yocto-build/build && echo "IMAGE_INSTALL_append = \" docker\"">> conf/local.conf ;\
+	$(Q)if [ ! -d  $(SJ_PATH_PSDKLA)/yocto-build/sources ] ; then \
+		cd $(SJ_PATH_PSDKLA)/yocto-build/      && ./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(SJ_YOCTO_CONFIG_FILE); \
+		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "INHERIT += \"own-mirrors\"" >> conf/local.conf; \
+		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "SOURCE_MIRROR_URL = \"http://software-dl.ti.com/processor-sdk-mirror/sources/\"" >> conf/local.conf ;\
+		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "ARAGO_BRAND  = \"psdkla\"" >> conf/local.conf ;\
+		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "DISTRO_FEATURES_append = \" virtualization\"" >> conf/local.conf ;\
+		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "IMAGE_INSTALL_append = \" docker\"">> conf/local.conf ;\
 	else \
 		echo "# Yocto already installed, continue...  "; \
 	fi
 
 la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA 
-	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv && TOOLCHAIN_BASE=$(PSDKRA_PATH) MACHINE=j7-evm bitbake -k tisdk-default-image
+	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv && TOOLCHAIN_BASE=$(SJ_PATH_PSDKRA) MACHINE=j7-evm bitbake -k tisdk-default-image
 	echo "Finished, congratulations !!!"
 
 ##########################################
 # sd install                             #
 ##########################################
 la-sd-mk-partition:
-	sudo $(SCRIPTS_PATH)/mk-linux-card-psdkla.sh
+	sudo $(SJ_PATH_SCRIPTS)/mk-linux-card-psdkla.sh
 
 la-sd-install-all:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
 	@echo ">>> starting make SD for PSDKLA"
-	$(SCRIPTS_PATH)/mk_sd_psdkla.sh $(BOOT1) $(ROOTFS) 
+	$(SJ_PATH_SCRIPTS)/mk_sd_psdkla.sh $(SJ_BOOT1) $(SJ_ROOTFS) 
 	@echo "please unplug the sd card."
 
 la-sd-install-mksdboot-scripts:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
 	@echo ">>> install the mksdboot.sh to SD /home/root"
-	@echo " test path: $(ROOTFS) "
-	@if [ ! -d $(ROOTFS) ] ; then \
+	@echo " test path: $(SJ_ROOTFS) "
+	@if [ ! -d $(SJ_ROOTFS) ] ; then \
 		echo "The extracted target filesystem directory doesn't exist."; \
 		echo "Please run setup.sh in the SDK's root directory and then try again."; \
 		exit 1; \
 	fi
-	sudo install $(PSDKLA_PATH)/bin/mksdboot.sh $(ROOTFS)/home/root
+	sudo install $(SJ_PATH_PSDKLA)/bin/mksdboot.sh $(SJ_ROOTFS)/home/root
 	@echo "done. please unplug the sd card."
 
 la-sd-setup-j7-fredy-tools:
-	scp -r $(SCRIPTS_PATH)/j7/*  root@10.85.130.220:/home/root
+	scp -r $(SJ_PATH_SCRIPTS)/j7/*  root@10.85.130.220:/home/root
 	echo "done"
 	
 #~ la-sd-mounnt: check_paths_PSDKLA 
@@ -91,15 +91,15 @@ la-sd-setup-j7-fredy-tools:
 #~ 	sudo umount /dev/sda2 /media/fredy/rootfs
 # setup nfs. 
 la-setup-env-nfs: 
-	cd $(PSDKLA_PATH) && ./setup.sh
+	cd $(SJ_PATH_PSDKLA) && ./setup.sh
 	
 la-setup-env-minicom:
-	$(SCRIPTS_PATH)/setup-minicom.sh
+	$(SJ_PATH_SCRIPTS)/setup-minicom.sh
 
 
 
 
-ubuntu-install-help:
+psdkla-install-help:
 	$(Q)$(ECHO)
 	$(Q)$(ECHO) "Available build targets are  :"
 	$(Q)$(ECHO) "    ----------------Build --------------------------------------  "

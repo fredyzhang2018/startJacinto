@@ -1,2 +1,6 @@
 downloads/ti-*
 sdks/ti-*
+sdks/*
+downloads/psdk*
+tools/*
+

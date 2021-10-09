@@ -1,0 +1,107 @@
+timeout 300
+verbose on
+expect {
+    "stop autoboot:"
+}
+send " "
+
+expect {
+    "=>"
+}
+send "env default -f -a"
+
+expect {
+    "=>"
+}
+send "saveenv"
+
+expect {
+    "=>"
+}
+send "reset"
+
+expect {
+    "stop autoboot:"
+}
+send " "
+
+expect {
+    "=>"
+}
+send "setenv serverip 192.168.1.8"
+
+expect {
+    "=>"
+}
+send "setenv nfs_root /home/fredy/j7/ti-processor-sdk-linux-j7-evm-07_02_00_07/targetNFS"
+
+expect {
+    "=>"
+}
+send "setenv name_kern Image-j7-evm.bin"
+
+expect {
+    "=>"
+}
+send "setenv bootcmd 'run findfdt; run envboot; run setup_${kern_boot}; run init_${rootfs_boot}; run get_kern_${kern_boot}; run get_fdt_${kern_boot}; run get_overlay_${kern_boot}; run run_kern'"
+
+expect {
+    "=>"
+}
+send "setenv init_net 'run args_all args_net; setenv autoload no; dhcp'"
+
+expect {
+    "=>"
+}
+send "setenv args_net 'setenv bootargs console=${console} ${optargs} rootfstype=nfs root=/dev/nfs rw nfsroot=${serverip}:${nfs_root},${nfs_options} ip=dhcp'"
+
+expect {
+    "=>"
+}
+send "setenv get_kern_net 'tftp ${loadaddr} ${name_kern}'"
+
+expect {
+    "=>"
+}
+send "setenv get_fdt_net 'tftp ${fdtaddr} ${name_fdt}'"
+
+expect {
+    "=>"
+}
+send "setenv get_overlay_net 'fdt address ${fdtaddr};fdt resize 0x100000;for overlay in ${overlay_files};do;tftp ${overlayaddr} ${overlay};fdt apply ${overlayaddr}; done'"
+
+expect {
+    "=>"
+}
+send "setenv nfs_options 'nolock,v3,tcp,rsize=4096,wsize=4096'"
+
+expect {
+    "=>"
+}
+send "setenv setup_mmc ''"
+
+expect {
+    "=>"
+}
+send "setenv setup_net 'setenv autoload no; dhcp'"
+
+expect {
+    "=>"
+}
+send "setenv kern_boot net"
+
+expect {
+    "=>"
+}
+send "setenv rootfs_boot net"
+
+expect {
+    "=>"
+}
+send "saveenv"
+
+expect {
+    "=>"
+}
+send "boot"
+

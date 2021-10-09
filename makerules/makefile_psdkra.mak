@@ -5,36 +5,36 @@
 #                                                      #
 ########################################################
 ra-sdk:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) sdk       -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk       -s -j$(CPU_NUM)
 
 ra-sdk-scrub:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) sdk_scrub -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk_scrub -s -j$(CPU_NUM)
 
 ra-sdk-help:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) sdk_help -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk_help -s -j$(CPU_NUM)
 	
 ra-vision_apps:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) vision_apps -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) vision_apps -s -j$(CPU_NUM)
 
 ra-vision_apps_scrub:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) vision_apps_scrub -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) vision_apps_scrub -s -j$(CPU_NUM)
 
 ra-vision_apps_clean:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) vision_apps_clean -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) vision_apps_clean -s -j$(CPU_NUM)
 	
 ra-sdk_show_config:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) sdk_show_config -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk_show_config -s -j$(CPU_NUM)
 ##########################################
 #                                        #
 # imaging                                #
 #                                        #
 ##########################################
 ra-imaging:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) imaging -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) imaging -s -j$(CPU_NUM)
 ra-imaging-clean:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) imaging_clean -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) imaging_clean -s -j$(CPU_NUM)
 ra-imaging-scrub: 
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) imaging_scrub -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) imaging_scrub -s -j$(CPU_NUM)
  
 ##########################################
 #                                        #
@@ -42,11 +42,11 @@ ra-imaging-scrub:
 #                                        #
 ##########################################
 ra-pdk:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) pdk -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) pdk -s -j$(CPU_NUM)
 ra-pdk-clean:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) pdk_clean -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) pdk_clean -s -j$(CPU_NUM)
 ra-pdk-scrub: 
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) pdk_scrub -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) pdk_scrub -s -j$(CPU_NUM)
 	
 ##########################################
 #                                        #
@@ -54,11 +54,11 @@ ra-pdk-scrub:
 #                                        #
 ##########################################
 ra-ethfw:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) ethfw -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) ethfw -s -j$(CPU_NUM)
 ra-ethfw-clean:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) ethfw_clean -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) ethfw_clean -s -j$(CPU_NUM)
 ra-ethfw-scrub: 
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) ethfw_scrub -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) ethfw_scrub -s -j$(CPU_NUM)
 
 ##########################################
 #                                        #
@@ -66,11 +66,11 @@ ra-ethfw-scrub:
 #                                        #
 ##########################################
 ra-tiovx:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) tiovx -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) tiovx -s -j$(CPU_NUM)
 ra-tiovx-clean:
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) tiovx_clean -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) tiovx_clean -s -j$(CPU_NUM)
 ra-tiovx-scrub: 
-	$(MAKE) -C $(VISION_SDK_BUILD_PATH) tiovx_scrub -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) tiovx_scrub -s -j$(CPU_NUM)
 
 ##########################################
 #                                        #
@@ -79,18 +79,18 @@ ra-tiovx-scrub:
 ##########################################
 ra-mcuss_can_profile_app:
 	@echo "start build the mcuss_can_profile_app";
-	$(MAKE) -C $(MCUSS_PATH)/build can_profile_app BOARD=j721e_evm SOC=j721e BUILD_PROFILE=debug CORE=mcu1_0 BUILD_OS_TYPE=tirtos -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_MCUSS)/build can_profile_app BOARD=j721e_evm SOC=j721e BUILD_PROFILE=debug CORE=mcu1_0 BUILD_OS_TYPE=tirtos -s -j$(CPU_NUM)
 	@echo "start build the mcuss_can_profile_app --done !!!";
 	
 ra-mcuss_can_profile_app_clean:
 	@echo "start build the mcuss_can_profile_app";
-	$(MAKE) -C $(MCUSS_PATH)/build can_profile_app_clean BOARD=j721e_evm SOC=j721e BUILD_PROFILE=debug CORE=mcu1_0 BUILD_OS_TYPE=tirtos -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_MCUSS)/build can_profile_app_clean BOARD=j721e_evm SOC=j721e BUILD_PROFILE=debug CORE=mcu1_0 BUILD_OS_TYPE=tirtos -s -j$(CPU_NUM)
 	@echo "start build the mcuss_can_profile_app --done !!!";	 
 
 
 ra-sd_mcu_firmware_install:
-	cp ${PSDKRA_PATH}/mcusw/binary/can_profile_app/bin/j721e_evm/can_profile_app_mcu1_0_debug.xer5f $(ROOTFS)/lib/firmware/j7-mcu-r5f0_0-fw
-	ls -l  $(ROOTFS)/lib/firmware/j7-mcu-r5f0_0-fw
+	cp ${SJ_PATH_PSDKRA}/mcusw/binary/can_profile_app/bin/j721e_evm/can_profile_app_mcu1_0_debug.xer5f $(SJ_ROOTFS)/lib/firmware/j7-mcu-r5f0_0-fw
+	ls -l  $(SJ_ROOTFS)/lib/firmware/j7-mcu-r5f0_0-fw
 	sync
 
 #
@@ -103,7 +103,7 @@ ra-sd_mcu_firmware_install:
 ##########################################	
 #~ sd_install_video: check_paths_sd_rootfs
 #~ 	@echo "rootfs install video for video testing"
-#~ 	@sudo cp -r -v $(resouce_PATH)/video/* $(ROOTFS)/home
+#~ 	@sudo cp -r -v $(SJ_PATH_RESOURCE)/video/* $(SJ_ROOTFS)/home
 #~ 	@echo "video install done!"
 
 	

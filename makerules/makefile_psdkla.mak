@@ -59,137 +59,131 @@
 #                                        #
 ##########################################	
 la-uboot:     
-	cd $(PSDKLA_PATH) && $(MAKE)  u-boot
+	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot
 la-uboot-clean:
-	cd $(PSDKLA_PATH) && $(MAKE)  u-boot-clean
-la-uboot-install:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/tispl.bin  $(BOOT1)	
-	install $(PSDKLA_PATH)/board-support/u-boot_build/r5/tiboot3.bin $(BOOT1)
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/u-boot.img $(BOOT1)	
+	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot-clean
+la-sd-install-uboot:
+	@if [ ! $(SJ_BOOT) ] ; then \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT1); \	
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT1); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT1); \
+	else \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT);\	
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT);\
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT);\
+	fi
 	sync
-la-uboot-install_tispl:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/tispl.bin $(BOOT1)
+la-sd-install-uboot-tispl:
+	@if [ ! $(SJ_BOOT) ] ; then \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin $(SJ_BOOT1); \
+	else \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin $(SJ_BOOT); \
+	fi
 	sync
-la-uboot-install_tiboot3:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/r5/tiboot3.bin $(BOOT1)	
+la-sd-install-uboot-tiboot3:
+	@if [ ! $(SJ_BOOT) ] ; then \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT1)	; \
+	else \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT)	; \
+	fi
 	sync
-la-uboot-install_uboot-img:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/u-boot.img $(BOOT1)	
+
+la-sd-install-uboot-uboot-img:
+	@if [ ! $(SJ_BOOT) ] ; then \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT1); \
+	else \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT); \
+	fi
 	sync
 	
-la-uboot-rainstall:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/tispl.bin  $(BOOT)	
-	install $(PSDKLA_PATH)/board-support/u-boot_build/r5/tiboot3.bin $(BOOT)
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/u-boot.img $(BOOT)	
-	sync
-la-uboot-install_ratispl:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/tispl.bin $(BOOT)
-	sync
-la-uboot-install_ratiboot3:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/r5/tiboot3.bin $(BOOT)	
-	sync
-la-uboot-install_rauboot-img:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a72/u-boot.img $(BOOT)	
-	sync
 ##########################################
 #                                        #
 # sysfw-image                            #
 #                                        #
 ##########################################
 la-sysfw-image:
-	$(MAKE) -C $(PSDKLA_PATH) sysfw-image -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) sysfw-image -j$(CPU_NUM)
 la-sysfw-image_clean:
-	$(MAKE) -C $(PSDKLA_PATH) sysfw-image_clean -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) sysfw-image_clean -j$(CPU_NUM)	
 la-sysfw-image_install:
-	$(MAKE) -C $(PSDKLA_PATH) sysfw-image_install -j$(CPU_NUM)	
-##########################################
-#                                        #
-# uboot-a72  r5                          #
-#                                        #
-##########################################
-la-u-boot-a53:
-	$(MAKE) -C $(PSDKLA_PATH) u-boot-a53 -j$(CPU_NUM)
-la-u-boot-a53_clean:
-	$(MAKE) -C $(PSDKLA_PATH) u-boot-a53_clean -j$(CPU_NUM)	
-la-u-boot-a53_install:
-	$(MAKE) -C $(PSDKLA_PATH) u-boot-a53_install -j$(CPU_NUM)	
-la-u-boot-a53_install_sd:
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a53/tispl.bin $(BOOT)
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a53/u-boot.img $(BOOT)
-la-u-boot-install: 
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a53/tispl.bin $(BOOT)
-	install $(PSDKLA_PATH)/board-support/u-boot_build/a53/u-boot.img $(BOOT)
-	install $(PSDKLA_PATH)/board-support/u-boot_build/r5/tiboot3.bin $(BOOT)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) sysfw-image_install -j$(CPU_NUM)	
+
 ##########################################
 #                                        #
 # linux                                  #
 #                                        #
 ##########################################
 la-linux:
-	$(MAKE) -C $(PSDKLA_PATH) linux -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux -j$(CPU_NUM)
 la-linux-clean:
-	$(MAKE) -C $(PSDKLA_PATH) linux_clean -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux_clean -j$(CPU_NUM)	
 la-linux-install:
-	$(MAKE) -C $(PSDKLA_PATH) linux_install -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux_install -j$(CPU_NUM)	
 la-sd-linux-install:
-	$(MAKE) -C $(PSDKLA_PATH) linux_install_sd -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux_install_sd -j$(CPU_NUM)
 	sync
-	#$(MAKE) -C $(PSDKLA_PATH) linux_install_sd_rootfs DESTDIR=/media/fredy/rootfs -j$(CPU_NUM)		
+	#$(MAKE) -C $(SJ_PATH_PSDKLA) linux_install_sd_rootfs DESTDIR=/media/fredy/rootfs -j$(CPU_NUM)		
 ##########################################
 #                                        #
 # linux dtb                              #
 #                                        #
 ##########################################
 la-linux-dtbs:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs -j$(CPU_NUM)
 la-linux-dtbs_clean:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs_clean -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_clean -j$(CPU_NUM)	
 la-linux-dtbs_install:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs_install -j$(CPU_NUM)		
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_install -j$(CPU_NUM)		
 la-sd-install-linux-dtbs-0601:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs-sd-install-0601 
-la-sd-install-linux-dtbs-0700:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs-sd-install-0700  -j$(CPU_NUM)
-la-sd-install-linux-dtbs-0702:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs-sd-install-0702  -j$(CPU_NUM)
-la-sd-install-linux-dtbs-0703:
-	$(MAKE) -C $(PSDKLA_PATH) linux-dtbs-sd-install-0703  -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs-sd-install-0601 
+la-sd-install-linux-dtbs:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs-sd-install  -j$(CPU_NUM)
+
 ##########################################
 #                                        #
 # uboot-r5                               #
 #                                        #
 ##########################################
 la-u-boot-r5:
-	$(MAKE) -C $(PSDKLA_PATH) u-boot-r5 -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-r5 -j$(CPU_NUM)
 la-u-boot-r5_clean:
-	$(MAKE) -C $(PSDKLA_PATH) u-boot-r5_clean -j$(CPU_NUM)	
-la-u-boot-r5_install:
-	$(MAKE) -C $(PSDKLA_PATH) u-boot-r5_install -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-r5_clean -j$(CPU_NUM)	
+
+
+##########################################
+#                                        #
+# uboot-a72                               #
+#                                        #
+##########################################
+la-u-boot-a72:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-r5 -j$(CPU_NUM)
+la-u-boot-a72-clean:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-r5_clean -j$(CPU_NUM)	
 ##########################################
 #                                        #
 # jailhouse                              #
 #                                        #
 ##########################################	
 la-jailhouse:
-	$(MAKE) -C $(PSDKLA_PATH) jailhouse -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse -j$(CPU_NUM)
 la-jailhouse_clean:
-	$(MAKE) -C $(PSDKLA_PATH) jailhouse_clean -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse_clean -j$(CPU_NUM)	
 la-jailhouse_config:
-	$(MAKE) -C $(PSDKLA_PATH) jailhouse_config -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse_config -j$(CPU_NUM)	
 la-jailhouse_install:
-	$(MAKE) -C $(PSDKLA_PATH) jailhouse_install -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse_install -j$(CPU_NUM)	
 la-jailhouse_install_sd:
-	$(MAKE) -C $(PSDKLA_PATH) jailhouse_install_sd -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse_install_sd -j$(CPU_NUM)	
 la-jailhouse_distclean:
-	$(MAKE) -C $(PSDKLA_PATH) jailhouse_distclean -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse_distclean -j$(CPU_NUM)	
 #==============================================================================
 # install the staus. 
 #==============================================================================	
 la-install_yoctolayer:	
-	cd $(PSDKLA_PATH)/yocto-build && ./oe-layertool-setup.sh -f $(PSDKLA_PATH)/yocto-build/configs/psdkla/la-06_00_01_00.txt
+	cd $(SJ_PATH_PSDKLA)/yocto-build && ./oe-layertool-setup.sh -f $(SJ_PATH_PSDKLA)/yocto-build/configs/psdkla/la-06_00_01_00.txt
 
 la-install_yocto_env:
-	cd $(PSDKLA_PATH)/yocto-build/build && . conf/setenv
+	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv
 	@echo "please use below command to compile"
 	@echo "TOOLCHAIN_BASE=/home/fredy/j7/psdk_rtos_auto_j7_06_00_00_00/ MACHINE=j7-evm bitbake -k tisdk-rootfs-image"
 #==============================================================================
@@ -197,20 +191,16 @@ la-install_yocto_env:
 #==============================================================================
 la_help:
 	@echo
-	@echo "PSDKRA_PATH : $(PSDKRA_PATH)"
-	@echo "PSDKLA_PATH : $(PSDKLA_PATH)"
-	@echo "BOOT   : $(BOOT)"
-	@echo "ROOTFS : $(ROOTFS)"
+	@echo "SJ_PATH_PSDKRA : $(SJ_PATH_PSDKRA)"
+	@echo "SJ_PATH_PSDKLA : $(SJ_PATH_PSDKLA)"
+	@echo "SJ_BOOT   : $(SJ_BOOT)"
+	@echo "SJ_ROOTFS : $(SJ_ROOTFS)"
 	@echo "Available build targets are  :"
 	@echo            
 	@echo "    sysfw-image                    : Build sysfw-image"
 	@echo "    sysfw-image_clean              : clean sysfw-image"
 	@echo "    sysfw-image_install            : sysfw-image_install"
 	@echo 
-	@echo "    u-boot-a53                     :  "
-	@echo "    u-boot-a53_clean               :  "
-	@echo "    u-boot-a53_install             :  "　
-	@echo "    u-boot-a53_spl_sd              : instal tispl.bin to SD boot partition  "　
 	@echo "    u-boot-r5                      :  "
 	@echo "    u-boot-r5_clean                :  "
 	@echo "    u-boot-r5_install              :  "

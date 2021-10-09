@@ -7,73 +7,71 @@
 #==============================================================================
 # Below is configured by env setup, please checked that.
 #==============================================================================
-#~ PSDKRA_PATH    ?= /home/fredy/j7/psdk_rtos_auto_j7_07_00_00_11
-#~ PSDKLA_PATH    ?= /home/fredy/j7/ti-processor-sdk-linux-automotive-j7-evm-07_00_01
-#~ PROJECT        ?= Jacinto7_700
-#~ WORK_PATH      ?= $(pwd)
-#~ jacinto_PATH   ?= /home/fredy/install/jacinto7
+#~ SJ_PATH_PSDKRA    ?= /home/fredy/j7/psdk_rtos_auto_j7_07_00_00_11
+#~ SJ_PATH_PSDKLA    ?= /home/fredy/j7/ti-processor-sdk-linux-automotive-j7-evm-07_00_01
+#~ SJ_PROJECT        ?= Jacinto7_700
+#~ SJ_WORK_PATH      ?= $(pwd)
+#~ SJ_PATH_JACINTO   ?= /home/fredy/install/jacinto7
 #==============================================================================
 # Common Env
 #==============================================================================
-BOOT                       ?= /media/`whoami`/BOOT
-BOOT1                      ?= /media/`whoami`/boot
-ROOTFS                     ?= /media/`whoami`/rootfs
-resouce_PATH               ?= $(jacinto_PATH)/resource
-INSTALLER                  ?= $(jacinto_PATH)/downloads
-SCRIPTS_PATH               ?= $(jacinto_PATH)/scripts
-DOWNLOADS_PATH             ?= $(jacinto_PATH)/downloads
-J7_SDK_PATH                ?= $(jacinto_PATH)/sdks
-J6_SDK_PATH                ?= $(jacinto_PATH)/sdks
-TEST_PATH                  ?= $(jacinto_PATH)/sdks
-export BOOT
-export BOOT1
-export ROOTFS
+SJ_BOOT                       ?= /media/`whoami`/BOOT
+SJ_BOOT1                      ?= /media/`whoami`/boot
+SJ_ROOTFS                     ?= /media/`whoami`/rootfs
+SJ_PATH_RESOURCE               ?= $(SJ_PATH_JACINTO)/resource
+SJ_PATH_SCRIPTS               ?= $(SJ_PATH_JACINTO)/scripts
+SJ_PATH_DOWNLOAD             ?= $(SJ_PATH_JACINTO)/downloads
+SJ_PATH_J7_SDK                ?= $(SJ_PATH_JACINTO)/sdks
+SJ_PATH_J6_SDK                ?= $(SJ_PATH_JACINTO)/sdks
+SJ_PATH_TEST                  ?= $(SJ_PATH_JACINTO)/sdks
+export SJ_BOOT
+export SJ_BOOT1
+export SJ_ROOTFS
 #==============================================================================
-# Debug use
+# Debug use debug or release
 #==============================================================================
-PROFILE=debug
+SJ_PROFILE=debug
 
 #==============================================================================
 # PSDKRA PATH
 #==============================================================================
-VX_TEST_DATA_PATH          ?= $(PSDKRA_PATH)/tiovx/conformance_tests/test_data
-MCUSS_PATH                 ?= $(PSDKRA_PATH)/mcusw
-Imaging_PATH               ?= $(PSDKRA_PATH)/imaging
-VISION_SDK_BUILD_PATH      ?= $(PSDKRA_PATH)/vision_apps
-TUTORIAL_RUN_PATH          ?= $(PSDKRA_PATH)/tiovx/out/PC/x86_64/LINUX/
-PDK_PATH                   ?= $(PSDKRA_PATH)/`ls $(PSDKRA_PATH) | grep pdk`
-export PDK_PATH
+SJ_PATH_VX_TEST_DATA          ?= $(SJ_PATH_PSDKRA)/tiovx/conformance_tests/test_data
+SJ_PATH_MCUSS                 ?= $(SJ_PATH_PSDKRA)/mcusw
+SJ_PATH_IMAGING               ?= $(SJ_PATH_PSDKRA)/imaging
+SJ_PATH_VISION_SDK_BUILD      ?= $(SJ_PATH_PSDKRA)/vision_apps
+SJ_PATH_TUTORIAL_RUN          ?= $(SJ_PATH_PSDKRA)/tiovx/out/PC/x86_64/LINUX/
+SJ_PATH_PDK                   ?= $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep pdk`
+export SJ_PATH_PDK
 #==============================================================================
 # PSDKLA PATH
 #==============================================================================
-K3_BOOTSWITCH_PATH         ?= $(PSDKLA_PATH)/board-support/host-tools/k3-bootswitch/
+SJ_PATH_K3_BOOTSWITCH         ?= $(SJ_PATH_JACINTO)/tools/host-tools/k3-bootswitch/
 #==============================================================================
 # print env
 #==============================================================================
 print_env:
 	$(Q)$(ECHO) "### -------------env setup------------------------------"
-	$(Q)$(ECHO) "# PROJECT and Username:            $(PROJECT)  $(USERNAME)"
-	$(Q)$(ECHO) "# PSDKRA_PATH:                     $(PSDKRA_PATH)"
-	$(Q)$(ECHO) "# PSDKLA_PATH:                     $(PSDKLA_PATH)"
-	$(Q)$(ECHO) "# jacinto_PATH:                    $(jacinto_PATH)"
-	$(Q)$(ECHO) "# J7_SDK_PATH                      $(J7_SDK_PATH)"	
-	$(Q)$(ECHO) "# J6_SDK_PATH                      $(J6_SDK_PATH)"	
+	$(Q)$(ECHO) "# SJ_PROJECT and Username:            $(SJ_PROJECT)  $(SJ_USERNAME)"
+	$(Q)$(ECHO) "# SJ_PATH_PSDKRA:                     $(SJ_PATH_PSDKRA)"
+	$(Q)$(ECHO) "# SJ_PATH_PSDKLA:                     $(SJ_PATH_PSDKLA)"
+	$(Q)$(ECHO) "# SJ_PATH_JACINTO:                    $(SJ_PATH_JACINTO)"
+	$(Q)$(ECHO) "# SJ_PATH_J7_SDK                      $(SJ_PATH_J7_SDK)"	
+	$(Q)$(ECHO) "# SJ_PATH_J6_SDK                      $(SJ_PATH_J6_SDK)"	
 	$(Q)$(ECHO) "-------------Common Env------------------------------"
-	$(Q)$(ECHO) "# BOOT BOOT1 and ROOTFS:           $(BOOT) $(BOOT1) $(ROOTFS)"
-	$(Q)$(ECHO) "# resouce_PATH:                    $(resouce_PATH)"
-	$(Q)$(ECHO) "# INSTALLER:                       $(INSTALLER)"
-	$(Q)$(ECHO) "# SCRIPTS_PATH:                    $(SCRIPTS_PATH)"
-	$(Q)$(ECHO) "# DOWNLOADS_PATH                   $(DOWNLOADS_PATH)"
-	$(Q)$(ECHO) "# TEST_PATH:                       $(TEST_PATH)"		
+	$(Q)$(ECHO) "# SJ_BOOT SJ_BOOT1 and SJ_ROOTFS:     $(SJ_BOOT) $(SJ_BOOT1) $(SJ_ROOTFS)"
+	$(Q)$(ECHO) "# SJ_PATH_RESOURCE:                   $(SJ_PATH_RESOURCE)"
+	$(Q)$(ECHO) "# SJ_PATH_SCRIPTS:                    $(SJ_PATH_SCRIPTS)"
+	$(Q)$(ECHO) "# SJ_PATH_DOWNLOAD                    $(SJ_PATH_DOWNLOAD)"
+	$(Q)$(ECHO) "# SJ_PATH_TEST:                       $(SJ_PATH_TEST)"		
 	$(Q)$(ECHO) "-------------debug use------------------------------"
-	$(Q)$(ECHO) "# PROFILE:                         $(PROFILE)"
+	$(Q)$(ECHO) "# SJ_PROFILE:                         $(SJ_PROFILE)"
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
-	$(Q)$(ECHO) "# VX_TEST_DATA_PATH:               $(VX_TEST_DATA_PATH)"
-	$(Q)$(ECHO) "# MCUSS_PATH:                      $(MCUSS_PATH)"
-	$(Q)$(ECHO) "# PDK_PATH:                        $(PDK_PATH)"
-	$(Q)$(ECHO) "# Imaging_PATH:                    $(Imaging_PATH)"
-	$(Q)$(ECHO) "# VISION_SDK_BUILD_PATH:           $(VISION_SDK_BUILD_PATH)"
-	$(Q)$(ECHO) "# TUTORIAL_RUN_PATH:               $(TUTORIAL_RUN_PATH)"
+	$(Q)$(ECHO) "# SJ_PATH_VX_TEST_DATA:               $(SJ_PATH_VX_TEST_DATA)"
+	$(Q)$(ECHO) "# SJ_PATH_MCUSS:                      $(SJ_PATH_MCUSS)"
+	$(Q)$(ECHO) "# SJ_PATH_PDK:                        $(SJ_PATH_PDK)"
+	$(Q)$(ECHO) "# SJ_PATH_IMAGING:                    $(SJ_PATH_IMAGING)"
+	$(Q)$(ECHO) "# SJ_PATH_VISION_SDK_BUILD:           $(SJ_PATH_VISION_SDK_BUILD)"
+	$(Q)$(ECHO) "# SJ_PATH_TUTORIAL_RUN:               $(SJ_PATH_TUTORIAL_RUN)"
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
-	$(Q)$(ECHO) "# K3_BOOTSWITCH_PATH:               $(K3_BOOTSWITCH_PATH)"
+	$(Q)$(ECHO) "# SJ_PATH_K3_BOOTSWITCH:              $(SJ_PATH_K3_BOOTSWITCH)"
 	$(Q)$(ECHO) "### ----------------------ending------------------------" 

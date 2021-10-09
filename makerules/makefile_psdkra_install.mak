@@ -7,7 +7,7 @@
 # Vision-SDK environment install 
 
 ra-install-dependencies:
-	cd $(PSDKRA_PATH); $(PSDKRA_PATH)/psdk_rtos_auto/scripts/setup_psdk_rtos_auto.sh
+	cd $(SJ_PATH_PSDKRA); $(SJ_PATH_PSDKRA)/psdk_rtos_auto/scripts/setup_psdk_rtos_auto.sh
 
 ra-ccs-setup-steps:
 	$(Q)$(ECHO) "1. Please run below in scripts";
@@ -18,54 +18,56 @@ ra-ccs-setup-steps:
 	
 
 ra-install-targetfs: 
-	cp ${PSDKLA_PATH}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${PSDKRA_PATH}/
-	cp ${PSDKLA_PATH}/filesystem/tisdk-default-image-j7-evm.tar.xz     ${PSDKRA_PATH}/
+	cp ${SJ_PATH_PSDKLA}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${SJ_PATH_PSDKRA}/
+	cp ${SJ_PATH_PSDKLA}/filesystem/tisdk-default-image-j7-evm.tar.xz     ${SJ_PATH_PSDKRA}/
 
 ra-install-sdk: check_paths_downloads check_paths_PSDKLA
 	# 1. download the package & install
-	$(Q)if [ ! -d $(PSDKRA_PATH) ] ; then \
-		if [ ! -f $(DOWNLOADS_PATH)/`echo $(PSDKRA_SDK_URL) | cut -d / -f 9` ] ; then \
-			cd $(DOWNLOADS_PATH) && wget $(PSDKRA_INSTALL_PACKAGES_LINK); \
+	$(Q)if [ ! -d $(SJ_PATH_PSDKRA) ] ; then \
+		if [ ! -f $(SJ_PATH_DOWNLOAD)/`echo $(SJ_PSDKRA_SDK_URL) | cut -d / -f 9` ] ; then \
+			cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKRA_INSTALL_PACKAGES_LINK); \
 		else \
 			echo "SDK alread download. "; \
 		fi; \
 		echo "2. untar the packages to target  dictory"; \
-		cd $(DOWNLOADS_PATH) && tar -zxvf $(PSDKRA_PG_NAME).tar.gz -C $(J7_SDK_PATH); \
+		cd $(SJ_PATH_DOWNLOAD) && tar -zxvf $(SJ_PSDKRA_PG_NAME).tar.gz -C $(SJ_PATH_J7_SDK); \
 		sync; \
 	else \
 		echo "sdk already installed, continue..."; \
 	fi
 	# 3. Setup the git
-	$(Q)if [ ! -d $(PSDKRA_PATH)/.git ] ; then \
-		cd $(PSDKRA_PATH) && git init; \
-		ln -s $(resouce_PATH)/psdkra/gitignore $(PSDKRA_PATH)/.gitignore ; \
-		cd $(PSDKRA_PATH) && git add -A ; \
-		cd $(PSDKRA_PATH) && git commit -m "repo init" ;\
+	$(Q)if [ ! -d $(SJ_PATH_PSDKRA)/.git ] ; then \
+		cd $(SJ_PATH_PSDKRA) && git init; \
+		ln -s $(SJ_PATH_RESOURCE)/psdkra/gitignore $(SJ_PATH_PSDKRA)/.gitignore ; \
+		cd $(SJ_PATH_PSDKRA) && git add -A ; \
+		cd $(SJ_PATH_PSDKRA) && git commit -m "repo init" ;\
 	else \
 		echo "Git already setup. "; \
 	fi
 	# 4. install the filesystem to PSDKRA path.  
-	$(Q)if [ ! -f ${PSDKRA_PATH}/boot-j7-evm.tar.gz ] ; then \
-		cp ${PSDKLA_PATH}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${PSDKRA_PATH} ; \
+	$(Q)if [ ! -f ${SJ_PATH_PSDKRA}/boot-j7-evm.tar.gz ] ; then \
+		cp ${SJ_PATH_PSDKLA}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${SJ_PATH_PSDKRA} ; \
 	else \
 		echo "boot image already setup!"; \
 	fi
-	$(Q)if [ ! -f ${PSDKRA_PATH}/tisdk-default-image-j7-evm.tar.xz ] ; then \
-		cp ${PSDKLA_PATH}/filesystem/tisdk-default-image-j7-evm.tar.xz ${PSDKRA_PATH} ; \
+	$(Q)if [ ! -f ${SJ_PATH_PSDKRA}/tisdk-default-image-j7-evm.tar.xz ] ; then \
+		cp ${SJ_PATH_PSDKLA}/filesystem/tisdk-default-image-j7-evm.tar.xz ${SJ_PATH_PSDKRA} ; \
 	else \
 		echo "filesystem already setup!"; \
 	fi
 	sync
 	# 5. install dependcy tools 
-	cd ${PSDKRA_PATH} && ./psdk_rtos/scripts/setup_psdk_rtos.sh
-	# 6. Ready to compiling. 
-	# 7. install additional package: 
+	cd ${SJ_PATH_PSDKRA} && ./psdk_rtos/scripts/setup_psdk_rtos.sh
+	# 6. install the ti data. 
+	cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKRA_TI_DATA_DOWNLOAD_LINK)
+	# 7. Ready to compiling. 
+	# 8. install additional package: 
 	#		a. downlaod the sdk
-	#cd $(DOWNLOADS_PATH) && wget $(PSDKRA_ADD_ON_LINK)
+	#cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKRA_ADD_ON_LINK)
 	# 		b. install add on package for run PC demo. 
-	#cd $(DOWNLOADS_PATH) && chmod a+x ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run 
-	#cd $(DOWNLOADS_PATH) && cp ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run $(PSDKRA_PATH)/
-	#cd $(PSDKRA_PATH) && ./$(PSDKRA_PG_NAME)-addon-linux-x64-installer.run
+	#cd $(SJ_PATH_DOWNLOAD) && chmod a+x ./$(SJ_PSDKRA_PG_NAME)-addon-linux-x64-SJ_INSTALLER.run 
+	#cd $(SJ_PATH_DOWNLOAD) && cp ./$(SJ_PSDKRA_PG_NAME)-addon-linux-x64-SJ_INSTALLER.run $(SJ_PATH_PSDKRA)/
+	#cd $(SJ_PATH_PSDKRA) && ./$(SJ_PSDKRA_PG_NAME)-addon-linux-x64-SJ_INSTALLER.run
 	# PSDKRA Ready to use, congrations! 
 
 ra-sd-mk-partition-method:
@@ -74,7 +76,7 @@ ra-sd-mk-partition-method:
 	@echo " >>>>> option1: Unmount the SD card before running the script"
 	@echo "                umount /dev/sdb1"
 	@echo "                umount /dev/sdb1"
-	@echo " >>>>>          cd ${PSDKRA_PATH} && sudo psdk_rtos_auto/scripts/mk-linux-card.sh /dev/sdb "
+	@echo " >>>>>          cd ${SJ_PATH_PSDKRA} && sudo psdk_rtos_auto/scripts/mk-linux-card.sh /dev/sdb "
 	@echo " >>>>>          end !!!  "
 	@echo " >>>>> option2:  you can use "gparted" utility (sudo apt install gparted) to use a GUI based interface to create the partitions "
 	@echo " >>>>>          Make sure you set the FAT32 partition flags as "boot", "lba" " 
@@ -82,39 +84,46 @@ ra-sd-mk-partition-method:
 	@echo " >>>>>          end !!!  "
 
 ra-sd-mk-partition:
-	sudo $(SCRIPTS_PATH)/mk-linux-card-psdkra.sh
+	sudo $(SJ_PATH_SCRIPTS)/mk-linux-card-psdkra.sh
 
 ra-sd-install-rootfs: check_paths_sd_boot check_paths_sd_rootfs
 	@echo "install the rootfs to SD card"
-	@if [ ! -d $(PSDKRA_PATH)psdk_rtos_auto ] ; then \
-		cd ${PSDKRA_PATH} && psdk_rtos/scripts/install_to_sd_card.sh; \
+	@if [ ! -d $(SJ_PATH_PSDKRA)psdk_rtos_auto ] ; then \
+		cd ${SJ_PATH_PSDKRA} && psdk_rtos/scripts/install_to_sd_card.sh; \
 	else \
-		cd ${PSDKRA_PATH} && psdk_rtos_auto/scripts/install_to_sd_card.sh; \
+		cd ${SJ_PATH_PSDKRA} && psdk_rtos_auto/scripts/install_to_sd_card.sh; \
 	fi
 	sync
 	@echo "install done!!!"
-ra-sd-install-auto-ti_data: check_paths_sd_rootfs  check_paths_sd_boot 
+
+ra-sd-install-auto-ti-data: check_paths_sd_rootfs  check_paths_sd_boot 
 	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$USER/rootfs/"
-	mkdir -p $(ROOTFS)/opt/vision_apps
-	cd $(ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(INSTALLER)/psdk_rtos_auto_ti_data_set_07_00_00.tar.gz
+	mkdir -p $(SJ_ROOTFS)/opt/vision_apps
+ifeq ($(SJ_PSDKRA_PG_NAME),ti-processor-sdk-rtos-j721e-evm-08_00_00_12)
+	echo "$(SJ_PSDKRA_PG_NAME)"
+	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_08_00_00.tar.gz
+endif
+ifeq ($(SJ_PSDKRA_PG_NAME),ti-processor-sdk-rtos-j721e-evm-07_03_00_07)
+	echo "$(SJ_PSDKRA_PG_NAME)"
+	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_07_03_00.tar.gz
+endif
 	@echo "install done!!!"
-
-ra-sd-install-auto-ti-data_07_02: check_paths_sd_rootfs  check_paths_sd_boot 
-	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$USER/rootfs/"
-	mkdir -p $(ROOTFS)/opt/vision_apps
-	cd $(ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(INSTALLER)/psdk_rtos_ti_data_set_07_02_00.tar.gz
-	@echo "install done!!!"	
-
-ra-sd-install-auto-ti-data_07_03: check_paths_sd_rootfs  check_paths_sd_boot 
-	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$USER/rootfs/"
-	mkdir -p $(ROOTFS)/opt/vision_apps
-	cd $(ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(DOWNLOADS_PATH)/psdk_rtos_ti_data_set_07_03_00.tar.gz
-	@echo "install done!!!"	
 
 
 ra-sd-linux-fs-install-sd: check_paths_sd_rootfs  check_paths_sd_boot
 	@echo "Do below to copy vision apps binaries to SD card"
-	cd ${PSDKRA_PATH}/vision_apps && make linux_fs_install_sd
+	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd
+	@echo "install done!!!"	
+
+ra-sd-linux-fs-install-sd-debug: check_paths_sd_rootfs  check_paths_sd_boot
+	@echo "Do below to copy vision apps binaries to SD card"
+	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd PROFILE=debug
+	@echo "install done!!!"	
+
+
+ra-sd-linux-fs-install-sd-test－data: check_paths_sd_rootfs  check_paths_sd_boot
+	@echo "Do below to copy vision apps binaries to SD card"
+	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd_test_data
 	@echo "install done!!!"	
 	
 #==============================================================================
@@ -126,10 +135,10 @@ ra-install-help:
 	@echo "    ----------------print_env --------------------------------------  "
 	@echo "    ----------------------------------------------------------------  "
 	@echo "    ----------------Build ------------------------------------------  "
-	@echo "    sdk                     : To incrementally (or for the first time) build SDK"
-	@echo "    sdk_scrub               : To clean SDK do below"
-	@echo "    sdk_help                : To see additional build targets for SDK and component builds, do below"	
-	@echo "    vision_apps             : Build all vision sdk Applications"
+	@echo "    ra-install-dependencies           : install sdk dependencies"
+	@echo "    ra-ccs-setup-steps                : print the ccs setup steps"
+	@echo "    ra-install-targetfs               : install the PSDKLA filesytem to PSDKRA"	
+	@echo "    ra-install-sdk                    : Install SDKs"
 
 ra-sd-help:
 	@echo
@@ -137,9 +146,13 @@ ra-sd-help:
 	@echo "    ----------------print_env --------------------------------------  "
 	@echo "    ----------------------------------------------------------------  "
 	@echo "    ----------------Build ------------------------------------------  "
-	@echo "    sdk                     : To incrementally (or for the first time) build SDK"
-	@echo "    sdk_scrub               : To clean SDK do below"
-	@echo "    sdk_help                : To see additional build targets for SDK and component builds, do below"	
-	@echo "    vision_apps             : Build all vision sdk Applications"
+	@echo "    ra-sd-mk-partition-method                   : print SD card partition method."
+	@echo "    ra-sd-mk-partition                          : make sd card parttion"
+	@echo "    ra-sd-install-rootfs                        : install filesystem to SD card"	
+	@echo "    ra-sd-install-auto-ti-data                  : install the auto ti data"
+	@echo "    ra-sd-linux-fs-install-sd               　　: install images to SD card"
+	@echo "    ra-sd-linux-fs-install-sd-debug             : install the debug version images to SD card"
+	@echo "    ra-sd-linux-fs-install-sd                   : install the auto ti data"
+	@echo "    ra-sd-linux-fs-install-sd-test－data         : --> internal using"
 
 .PHONY: 

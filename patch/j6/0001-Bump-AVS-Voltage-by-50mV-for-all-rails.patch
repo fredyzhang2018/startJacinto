@@ -1,0 +1,98 @@
+From 861c20ad334faf5094a34bf786376ad9674531a7 Mon Sep 17 00:00:00 2001
+From: Karthik Ramanan <a0393906@ti.com>
+Date: Sat, 3 Sep 2016 20:53:31 -0700
+Subject: [PATCH 1/2] Bump AVS Voltage by 100mV for all rails
+
+Configurable by just changing the BUMP_VOLTAGE macro
+
+Signed-off-by: Karthik Ramanan <a0393906@ti.com>
+---
+ arch/arm/cpu/armv7/omap-common/clocks-common.c | 32 +++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/cpu/armv7/omap-common/clocks-common.c b/arch/arm/cpu/armv7/omap-common/clocks-common.c
+index 1eff9c8..9c79d5b 100644
+--- a/arch/arm/cpu/armv7/omap-common/clocks-common.c
++++ b/arch/arm/cpu/armv7/omap-common/clocks-common.c
+@@ -28,7 +28,6 @@
+  * printing to console doesn't work unless
+  * this code is executed from SPL
+  */
+-#define printf(fmt, args...)
+ #define puts(s)
+ #endif
+ 
+@@ -467,6 +466,7 @@ void do_scale_vcore(u32 vcore_reg, u32 volt_mv, struct pmic_data *pmic)
+ 	debug("do_scale_vcore: volt - %d offset_code - 0x%x\n", volt_mv,
+ 		offset_code);
+ 
++        printf("PMIC programmed to 0x%x\n", offset_code);
+ 	if (pmic->pmic_write(pmic->i2c_slave_addr, vcore_reg, offset_code))
+ 		printf("Scaling voltage failed for 0x%x\n", vcore_reg);
+ 
+@@ -518,12 +518,23 @@ void __weak recalibrate_iodelay(void)
+  * enabled in bootloader. Voltage initialization in the kernel will set
+  * these to the nominal values after enabling Smart-Reflex
+  */
++
++#define BUMP_VOLTAGE 50
+ void scale_vcores(struct vcores_data const *vcores)
+ {
+ 	u32 val;
++        u32 newval;
+ 
++	/* Reference for Voltage recommendations:
++	 * Data Manual section 5.5.2 Voltage And Core Clock Specifications 
++	 * 
++	 * Reference for EFUSE registers:
++	 * TRM section 18.4.6.12 AVS Class 0 Associated Registers
++	 */
+ 	val = optimize_vcore_voltage(&vcores->core);
+-	do_scale_vcore(vcores->core.addr, val, vcores->core.pmic);
++	newval = val + BUMP_VOLTAGE;
++	printf("Value of voltage for CORE = %x (%d V)\n", val, newval);
++	do_scale_vcore(vcores->core.addr, newval, vcores->core.pmic);
+ 
+ 	/*
+ 	 * IO delay recalibration should be done immediately after
+@@ -536,7 +547,9 @@ void scale_vcores(struct vcores_data const *vcores)
+ #endif
+ 
+ 	val = optimize_vcore_voltage(&vcores->mpu);
+-	do_scale_vcore(vcores->mpu.addr, val, vcores->mpu.pmic);
++	newval = val + BUMP_VOLTAGE;
++	printf("Value of voltage for MPU = %x (%d V)\n", val, newval);
++	do_scale_vcore(vcores->mpu.addr, newval, vcores->mpu.pmic);
+ 
+ 	/* Configure MPU ABB LDO after scale */
+ 	abb_setup((*ctrl)->control_std_fuse_opp_vdd_mpu_2,
+@@ -548,16 +561,23 @@ void scale_vcores(struct vcores_data const *vcores)
+ 		  OMAP_ABB_FAST_OPP);
+ 
+ 	val = optimize_vcore_voltage(&vcores->mm);
++	printf("Value of voltage for MM = %x (%d V)\n", val, val);
+ 	do_scale_vcore(vcores->mm.addr, val, vcores->mm.pmic);
+ 
+ 	val = optimize_vcore_voltage(&vcores->gpu);
+-	do_scale_vcore(vcores->gpu.addr, val, vcores->gpu.pmic);
++	newval = val + BUMP_VOLTAGE;
++	printf("Value of voltage for GPU = %x (%d V)\n", val, newval);
++	do_scale_vcore(vcores->gpu.addr, newval, vcores->gpu.pmic);
+ 
+ 	val = optimize_vcore_voltage(&vcores->eve);
+-	do_scale_vcore(vcores->eve.addr, val, vcores->eve.pmic);
++	newval = val + BUMP_VOLTAGE;
++	printf("Value of voltage for DSPEVE = %x (%d V)\n", val, newval);
++	do_scale_vcore(vcores->eve.addr, newval, vcores->eve.pmic);
+ 
+ 	val = optimize_vcore_voltage(&vcores->iva);
+-	do_scale_vcore(vcores->iva.addr, val, vcores->iva.pmic);
++	newval = val + BUMP_VOLTAGE;
++	printf("Value of voltage for IVA = %x (%d V)\n", val, newval);
++	do_scale_vcore(vcores->iva.addr, newval, vcores->iva.pmic);
+ }
+ 
+ static inline void enable_clock_domain(u32 const clkctrl_reg, u32 enable_mode)
+-- 
+1.9.1
+

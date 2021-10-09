@@ -5,7 +5,7 @@
 ##########################################
 sd_install_video: check_paths_sd_rootfs
 	@echo "rootfs install video for video testing"
-	@sudo cp -r -v $(resouce_PATH)/video/* $(ROOTFS)/home
+	@sudo cp -r -v $(SJ_PATH_RESOURCE)/video/* $(SJ_ROOTFS)/home
 	@echo "video install done!"
 
 
@@ -28,22 +28,22 @@ sd_install_boot:
 
 sd_install_rootfs:
 	@echo "install the rootfs to SD card"
-	cd ${PSDKRA_PATH} && psdk_rtos_auto/scripts/install_to_sd_card.sh
+	cd ${SJ_PATH_PSDKRA} && psdk_rtos_auto/scripts/install_to_sd_card.sh
 	sync
 	@echo "install done!!!"
 sd_install_auto_ti_data:
 	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$USER/rootfs/"
-	mkdir -p $(ROOTFS)/opt/vision_apps
-	cd $(ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(DOWNLOADS_PATH)/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
+	mkdir -p $(SJ_ROOTFS)/opt/vision_apps
+	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
 	@echo "install done!!!"
 sd_install_apps_binaries:
 	@echo "Do below to copy vision apps binaries to SD card"
-	mkdir -p $(ROOTFS)/opt/vision_apps
-	cd ${PSDKRA_PATH}/vision_apps && make linux_fs_install_sd
+	mkdir -p $(SJ_ROOTFS)/opt/vision_apps
+	cd ${SJ_PATH_PSDKRA}/vision_apps && make linux_fs_install_sd
 	@echo "install done!!!"	
 sd_linux_fs_install_sd:
 	@echo "Do below to copy vision apps binaries to SD card"
-	cd ${PSDKRA_PATH}/vision_apps && make linux_fs_install_sd
+	cd ${SJ_PATH_PSDKRA}/vision_apps && make linux_fs_install_sd
 	@echo "install done!!!"	
 	
 

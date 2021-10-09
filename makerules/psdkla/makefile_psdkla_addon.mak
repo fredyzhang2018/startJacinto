@@ -16,10 +16,9 @@ linux-dtbs-sd-install:
 		exit 1; \
 	fi
 	sudo install -d $(SD_ROOTFS)/boot
-	@for DTB in      ti/k3-j721e-common-proc-board.dtb     ti/k3-j721e-proc-board-tps65917.dtb     ti/k3-j721e-common-proc-board-infotainment.dtbo     ti/k3-j721e-pcie-backplane.dtbo     ti/k3-j721e-common-proc-board-jailhouse.dtbo  	ti/k3-j721e-vision-apps.dtbo 	ti/k3-j721e-pcie-backplane.dtbo ; do \
+	@for DTB in      ti/k3-j721e-common-proc-board.dtb     ti/k3-j721e-proc-board-tps65917.dtb     ti/k3-j721e-common-proc-board-infotainment.dtbo     ti/k3-j721e-eaik.dtb ti/k3-j721e-vision-apps.dtbo ti/k3-j721e-edgeai-apps.dtbo ti/k3-j721e-eaik-csi2-ov5640.dtbo ti/k3-j721e-eaik-rpi-cam-imx219.dtbo ; do \
 		sudo install -m 0644 $(LINUXKERNEL_INSTALL_DIR)/arch/arm64/boot/dts/$$DTB $(SD_ROOTFS)/boot/; \
 	done
-
 
 jailhouse_install_sd:
 	@echo ================================
