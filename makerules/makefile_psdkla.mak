@@ -63,15 +63,18 @@ la-uboot:
 la-uboot-clean:
 	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot-clean
 la-sd-install-uboot:
-	@if [ ! $(SJ_BOOT) ] ; then \
-		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT1); \	
+	$(Q)if [ ! -d $(SJ_BOOT) ] ; then \
+		echo "hello world "; \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT1); \
 		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT1); \
 		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT1); \
+		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
 	else \
-		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT);\	
-		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT);\
-		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT);\
-	fi
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/u-boot.img $(SJ_BOOT); \
+		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
+	fi 
 	sync
 la-sd-install-uboot-tispl:
 	@if [ ! $(SJ_BOOT) ] ; then \
@@ -130,9 +133,9 @@ la-sd-linux-install:
 ##########################################
 la-linux-dtbs:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs -j$(CPU_NUM)
-la-linux-dtbs_clean:
+la-linux-dtbs-clean:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_clean -j$(CPU_NUM)	
-la-linux-dtbs_install:
+la-linux-dtbs-install:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_install -j$(CPU_NUM)		
 la-sd-install-linux-dtbs-0601:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs-sd-install-0601 
@@ -156,9 +159,32 @@ la-u-boot-r5_clean:
 #                                        #
 ##########################################
 la-u-boot-a72:
-	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-r5 -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-a72 -j$(CPU_NUM)
 la-u-boot-a72-clean:
-	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-r5_clean -j$(CPU_NUM)	
+	$(MAKE) -C $(SJ_PATH_PSDKLA) u-boot-a72_clean -j$(CPU_NUM)	
+
+
+##########################################
+#                                        #
+# remote run                               #
+#                                        #
+##########################################
+la-remote-run-command:
+	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_command.sh --ip $(SJ_EVM_IP) ./remote_run.sh-------------------------------- start !!!");
+	cd $(SJ_PATH_SCRIPTS)/j7 && ./remote_command.sh --ip $(SJ_EVM_IP) ./remote_run.sh
+	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_command.sh --ip $(SJ_EVM_IP) ./remote_run.sh-------------------------------- done !!!");
+
+la-remote-run-ssh:
+	$(Q)$(call sj_echo_log, 0 , " 0. Run the remote ssh -------------------------------- start !!!");
+	ssh  root@$(SJ_EVM_IP) 
+	
+
+la-hs-uboot:
+	cd $(SJ_PATH_JACINTO)/sdks && git clone git://git.ti.com/security-development-tools/core-secdev-k3.git
+	export TI_SECURE_DEV_PKG=$(SJ_PATH_JACINTO)/sdks/core-secdev-k3 && \
+	
+
+
 ##########################################
 #                                        #
 # jailhouse                              #

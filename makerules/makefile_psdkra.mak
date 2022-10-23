@@ -5,7 +5,9 @@
 #                                                      #
 ########################################################
 ra-sdk:
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk       -s -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the sdk");
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk  -s -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the sdk --done!!! ");	
 
 ra-sdk-scrub:
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk_scrub -s -j$(CPU_NUM)

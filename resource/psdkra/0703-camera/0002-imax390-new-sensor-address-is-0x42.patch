@@ -1,0 +1,28 @@
+From b052a5132d2b7e1d61a8f832fc4ac65694638874 Mon Sep 17 00:00:00 2001
+From: Fredy Zhang <fredyzhang2018@gmail.com>
+Date: Thu, 18 Nov 2021 04:01:36 -0500
+Subject: [PATCH 2/2] imax390 new sensor address is 0x42
+
+---
+ imaging/sensor_drv/src/imx390/imx390_serdes_config.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/imaging/sensor_drv/src/imx390/imx390_serdes_config.h b/imaging/sensor_drv/src/imx390/imx390_serdes_config.h
+index 9e356f37..84eae42c 100755
+--- a/imaging/sensor_drv/src/imx390/imx390_serdes_config.h
++++ b/imaging/sensor_drv/src/imx390/imx390_serdes_config.h
+@@ -75,9 +75,9 @@ SoC will communicate with the devices using alias adresses
+ #define FUSION_BOARD_VER 1 //RevC
+ 
+ #if (CAM_MODULE_VER == 0)
+-#define IMX390_I2C_ADDR 0x40
++#define IMX390_I2C_ADDR 0x42
+ #elif (CAM_MODULE_VER == 1)
+-#define IMX390_I2C_ADDR 0x40
++#define IMX390_I2C_ADDR 0x42
+ #else
+ Unsuppprted version
+ #endif
+-- 
+2.17.1
+

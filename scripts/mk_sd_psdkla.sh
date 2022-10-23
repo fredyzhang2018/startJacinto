@@ -16,8 +16,8 @@ if [ "$rootfs" == "y" ]||[ "$boot" == "y" ];then
 	echo "SD_DEVICE: $SD_DEVICE"
 	read -p ">>>>>Please sure to y:" yyy
 	if [ "$yyy" == "y" ];then
-		echo "sudo ${PSDKLA_PATH}/bin/mksdboot.sh --device ${SD_DEVICE} --sdk ${PSDKLA_PATH}"
-		sudo ${PSDKLA_PATH}/bin/mksdboot.sh --device ${SD_DEVICE} --sdk ${PSDKLA_PATH}
+		echo "sudo ${SJ_PATH_PSDKLA}/bin/mksdboot.sh --device ${SD_DEVICE} --sdk ${SJ_PATH_PSDKLA}"
+		sudo ${SJ_PATH_PSDKLA}/bin/mksdboot.sh --device ${SD_DEVICE} --sdk ${SJ_PATH_PSDKLA}
 		sync
 	fi
 else

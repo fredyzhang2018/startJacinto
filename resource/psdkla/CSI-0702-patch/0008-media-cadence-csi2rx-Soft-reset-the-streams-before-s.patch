@@ -1,0 +1,56 @@
+From e2418309f36f054df53a731ea78e4cc6954c626e Mon Sep 17 00:00:00 2001
+From: Pratyush Yadav <p.yadav@ti.com>
+Date: Thu, 18 Feb 2021 17:39:32 +0530
+Subject: [PATCH 08/20] media: cadence: csi2rx: Soft reset the streams before
+ starting capture
+
+This resets the stream state machines and FIFOs, giving them a clean
+slate. On J721E if the streams are not reset before starting the
+capture, the captured frame gets wrapped around vertically on every run
+after the first.
+
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Fredy Zhang <fredyzhang2018@gmail.com>
+---
+ drivers/media/platform/cadence/cdns-csi2rx.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/media/platform/cadence/cdns-csi2rx.c b/drivers/media/platform/cadence/cdns-csi2rx.c
+index a6416ed07..df054fc04 100644
+--- a/drivers/media/platform/cadence/cdns-csi2rx.c
++++ b/drivers/media/platform/cadence/cdns-csi2rx.c
+@@ -39,6 +39,7 @@
+ #define CSI2RX_STREAM_BASE(n)		(((n) + 1) * 0x100)
+ 
+ #define CSI2RX_STREAM_CTRL_REG(n)		(CSI2RX_STREAM_BASE(n) + 0x000)
++#define CSI2RX_STREAM_CTRL_SOFT_RST			BIT(4)
+ #define CSI2RX_STREAM_CTRL_START			BIT(0)
+ 
+ #define CSI2RX_STREAM_DATA_CFG_REG(n)		(CSI2RX_STREAM_BASE(n) + 0x008)
+@@ -151,12 +152,22 @@ struct csi2rx_priv *v4l2_subdev_to_csi2rx(struct v4l2_subdev *subdev)
+ 
+ static void csi2rx_reset(struct csi2rx_priv *csi2rx)
+ {
++	int i;
++
+ 	writel(CSI2RX_SOFT_RESET_PROTOCOL | CSI2RX_SOFT_RESET_FRONT,
+ 	       csi2rx->base + CSI2RX_SOFT_RESET_REG);
+ 
+ 	udelay(10);
+ 
+ 	writel(0, csi2rx->base + CSI2RX_SOFT_RESET_REG);
++
++	/* Reset individual streams. */
++	for (i = 0; i < csi2rx->max_streams; i++) {
++		writel(CSI2RX_STREAM_CTRL_SOFT_RST,
++		       csi2rx->base + CSI2RX_STREAM_CTRL_REG(i));
++		usleep_range(10, 20);
++		writel(0, csi2rx->base + CSI2RX_STREAM_CTRL_REG(i));
++	}
+ }
+ 
+ static int csi2rx_configure_external_dphy(struct csi2rx_priv *csi2rx)
+-- 
+2.17.1
+

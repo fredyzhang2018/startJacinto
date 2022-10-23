@@ -9,7 +9,7 @@ SJ_BUILD_FLAGS_MAK = 1
 endif
 
 # build verbose
-SJ_PROJECT_VERSION                                    ?= 20_02_00
+SJ_PROJECT_VERSION                                    ?= 30_00_00
 SJ_BUILD_FLAG_VERBOSE                                 ?=no
 # build include
 SJ_BUILD_INCLUDE_PSDKLA          ?=yes
@@ -22,23 +22,13 @@ SJ_BUILD_INCLUDE_MCUSS           ?=yes
 SJ_BUILD_INCLUDE_K3_BOOTSWITCH   ?=yes
 SJ_BUILD_INCLUDE_PDK             ?=yes
 SJ_BUILD_INCLUDE_UBUNTU          ?=yes
+SJ_BUILD_INCLUDE_MANIFEST        ?=yes
 SJ_BUILD_INCLUDE_GATEWAYDEMO     ?=yes
+SJ_BUILD_INCLUDE_DEMO            ?=yes
+SJ_BUILD_INCLUDE_NFS             ?=yes
+SJ_BUILD_INCLUDE_TIDL            ?=yes
+SJ_BUILD_INCLUDE_PC_RUN_DEMO     ?=yes
 
-#PSDKLA
-SJ_YOCTO_CONFIG_FILE             ?=processor-sdk-linux-07_03_00.txt
-SJ_PSDKLA_SDK_URL                ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/07_03_00_05/exports/ti-processor-sdk-linux-j7-evm-07_03_00_05-Linux-x86-Install.bin
-
-#PSDKRA
-SJ_PSDKRA_PG_NAME                ?=ti-processor-sdk-rtos-j721e-evm-07_03_00_07
-SJ_PSDKRA_INSTALL_PACKAGES_LINK  ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/ti-processor-sdk-rtos-j721e-evm-07_03_00_07.tar.gz
-SJ_PSDKRA_TI_DATA_DOWNLOAD_LINK  ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/psdk_rtos_ti_data_set_07_03_00.tar.gz
-SJ_PSDKRA_TI_DATA_PTK_LINK		 ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/psdk_rtos_ti_data_set_ptk_07_01_00.tar.gz
-SJ_PSDKRA_ADD_ON_LINK			 ?=https://software-dl.ti.com/secure/software/adas/PSDK-RTOS-AUTO/PSDK_RTOS_v7.03.00/ti-processor-sdk-rtos-j721e-evm-07_03_00_07-addon-linux-x64-installer.run
-
-ifeq ($(SJ_PROJECT),Workarea_08_00_00_08)
-SJ_PSDKRA_BRANCH    ?= PSDKRA_08_00_00_12
-SJ_PSDKLA_BRANCH    ?= 08_00_00_08
-endif
 
 print_config:
 	$(Q)$(ECHO)
@@ -56,22 +46,17 @@ print_config:
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_K3_BOOTSWITCH       = $(SJ_BUILD_INCLUDE_K3_BOOTSWITCH)"
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PDK                 = $(SJ_BUILD_INCLUDE_PDK)"	
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_UBUNTU              = $(SJ_BUILD_INCLUDE_UBUNTU)"
-	$(Q)$(ECHO) "#"
+	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_MANIFEST            = $(SJ_BUILD_INCLUDE_MANIFEST)"
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_GATEWAYDEMO         = $(SJ_BUILD_INCLUDE_GATEWAYDEMO)"
+	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_DEMO                = $(SJ_BUILD_INCLUDE_DEMO)"
+	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_NFS                 = $(SJ_BUILD_INCLUDE_NFS)"
+	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_TIDL                = $(SJ_BUILD_INCLUDE_TIDL)"
+	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PC_RUN_DEMO         = $(SJ_BUILD_INCLUDE_PC_RUN_DEMO)"
 ifeq  ($(SJ_BUILD_INCLUDE_PSDKRA_INSTALL),yes)
-	# PSDKRA INSTALL PATH 
-	$(Q)$(ECHO) "	SJ_PSDKRA_PG_NAME               --> $(SJ_PSDKRA_PG_NAME)"
-	$(Q)$(ECHO) "	SJ_PSDKRA_INSTALL_PACKAGES_LINK --> $(SJ_PSDKRA_INSTALL_PACKAGES_LINK)"
-	$(Q)$(ECHO) "	SJ_PSDKRA_TI_DATA_DOWNLOAD_LINK --> $(SJ_PSDKRA_TI_DATA_DOWNLOAD_LINK)"
-	$(Q)$(ECHO) "	SJ_PSDKLA_TI_DATA_PTK_LINK      --> $(SJ_PSDKRA_TI_DATA_PTK_LINK)"
-	$(Q)$(ECHO) "	SJ_PSDKRA_ADD_ON_LINK           --> $(SJ_PSDKRA_ADD_ON_LINK)"
-	$(Q)$(ECHO) "	SJ_PSDKRA_BRANCH                --> $(SJ_PSDKRA_BRANCH)"
+	$(Q)$(ECHO) "# SJ_PSDKRA_BRANCH                --> $(SJ_PSDKRA_BRANCH)"
 endif
 ifeq  ($(SJ_BUILD_INCLUDE_PSDKLA_INSTALL),yes)
-	# PSDKLA INSTALL PATH 
-	$(Q)$(ECHO) "	SJ_YOCTO_CONFIG_FILE            --> $(SJ_YOCTO_CONFIG_FILE)"
-	$(Q)$(ECHO) "	SJ_PSDKLA_SDK_URL               --> $(SJ_PSDKLA_SDK_URL)"
-	$(Q)$(ECHO) "	SJ_PSDKLA_BRANCH                --> $(SJ_PSDKLA_BRANCH)"
+	$(Q)$(ECHO) "# SJ_PSDKLA_BRANCH                --> $(SJ_PSDKLA_BRANCH)"
 endif
 
 #==============================================================================
@@ -166,6 +151,21 @@ ifeq ($(SJ_BUILD_INCLUDE_GATEWAYDEMO),yes)
 include makerules/makefile_gateway_demo.mak
 endif
 
-ifeq ($(SJ_BUILD_INCLUDE_CIIE_DEMO),yes)
-include makerules/makefile_ciie_demo.mak
+ifeq ($(SJ_BUILD_INCLUDE_DEMO),yes)
+include makerules/makefile_demo.mak
+endif
+
+
+ifeq ($(SJ_BUILD_INCLUDE_NFS),yes)
+include makerules/makefile_nfs.mak
+endif
+
+
+ifeq ($(SJ_BUILD_INCLUDE_TIDL),yes)
+include makerules/makefile_tidl.mak
+endif
+
+
+ifeq ($(SJ_BUILD_INCLUDE_PC_RUN_DEMO),yes)
+include makerules/makefile_pc_run_demo.mak
 endif

@@ -5,9 +5,9 @@
 #
 
 ubuntu-install-basic: 
-	$(Q)$(ECHO) "install ubuntu basic"
-	sudo apt install vim git repo wget curl gitk
-	$(Q)$(ECHO) "ubuntu install done!"
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install ubuntu basic $(SJ_PATH_SCRIPTS)/ubuntu/install_sw.sh  !!!");
+	cd $(SJ_PATH_SCRIPTS)/ubuntu/ && ./install_sw.sh -i install_ubuntu_basic
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install ubuntu basic $(SJ_PATH_SCRIPTS)/ubuntu/install_sw.sh --done !!!");
 
 # docker --------------start
 ubuntu-docker-install:
@@ -21,19 +21,19 @@ ubuntu-install-docker-yocto:
 	docker pull jwidic/ubuntu18.04yocto
 # docker --------------done
 
-ubuntu18-install-tftp: check_paths_fredy_scripts
-	sudo apt-get install tftpd
+ubuntu-install-tftp: 
+	sudo apt-get install tftpd tftp
 	# install ubuntu18 the tftp
-	cd $(SJ_PATH_SCRIPTS)/ubuntu && ./setup-tftp.sh
+	cd $(SJ_PATH_SCRIPTS)/ubuntu && ./setup-tftp.sh -s $(SJ_PATH_PSDKLA) # ./setup-tftp.sh SDK Path. 
 	# ubuntu18 install done!
 
-ubuntu18-install-nfs: check_paths_fredy_scripts
-	sudo apt install nfs-kernel-server
+ubuntu-install-nfs: 
+	sudo apt install nfs-kernel-server nfs-common
 	# install ubuntu18 the tftp
-	cd $(SJ_PATH_SCRIPTS)/ubuntu && ./setup-targetfs-nfs.sh
+	cd $(SJ_PATH_SCRIPTS)/ubuntu && ./setup-targetfs-nfs.sh -p $(SJ_PATH_PSDKLA)/targetNFS
 	# ubuntu18 install done!
 
-ubuntu-install-usbrelay: 
+ubuntu-usbrelay-install: 
 	# install ubuntu18 usbrelay
 	sudo apt install usbrelay
 	# ubuntu18 install usbrepay done!
@@ -48,7 +48,7 @@ ubuntu-usbrelay-close:
 	usbrelay HURTM_1=0 HURTM_2=0
 	# ubuntu18 install usbrepay done!
 
-ubuntu18-install-chromium: 
+ubuntu-install-chromium: 
 	# install ubuntu18 
 	sudo apt install chromium-browser
 	# ubuntu18 install done!
@@ -57,6 +57,34 @@ ubuntu-install-geany:
 	# install ubuntu18
 	sudo apt install geany
 	# ubuntu18 install done!
+
+
+ubuntu-jupyter-start: 
+	# install ubuntu18
+	nohup jupyter notebook >/dev/null 2>&1 &
+	# ubuntu18 install done!
+	
+ubuntu-jupyter-setup: 
+	# install ubuntu18
+	pip3 install jupyter  -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install pillow -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install pycocotools -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install colorama -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install tqdm -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install pyyaml -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install pytest -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install notebook -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install ipywidgets -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install papermill --ignore-installed -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install munkres -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install json_tricks -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	pip3 install --extra-index-url https://testpypi.python.org/pypi prototxt-parser -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+	# ubuntu18 install done!
+
+ubuntu-install-sublime:
+	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+	sudo apt-get update
+	sudo apt-get install sublime-text
 
 ubuntu-docker-yocto-ubuntu18-j7: check_paths_PSDKLA
 	$(Q$(ECHO) "please below account:"
@@ -74,7 +102,7 @@ ubuntu-install-jacinto7-host-tools:
 
 # install opecv: two pamerater needed
 SJ_OPENCV_PATH= $(SJ_PATH_JACINTO)/sdks
-SJ_OPENCV_VERSION = 3.4.0
+SJ_OPENCV_VERSION = 4.1.0
 ubuntu-install-opencv:
 	# install opecv: two pamerater needed 
 	#     SJ_OPENCV_PATH    = $(SJ_OPENCV_PATH)
@@ -83,6 +111,53 @@ ubuntu-install-opencv:
 	# setup done!
 
 
+ubuntu-ssh-agent:
+	echo "ssh-agent -s && ssh-agent bash && ssh-add ~/.ssh/id_rsa"
+
+ubuntu-confluence-install:
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/setup-confluence.sh -i yes
+
+ubuntu-confluence-launch:
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/setup-confluence.sh -l
+
+ubuntu-postgresql-install:
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/setup-postgresql.sh -i yes
+
+ubuntu-bitbucket-install:
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/setup-bitbucket.sh -i yes
+
+ubuntu-bitbucket-launch:
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/setup-bitbucket.sh -l
+
+ubuntu-bitbucket-backup:
+	# create a package for backup. May need some time. 
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/backup-bitbucket_server.sh -i yes
+	# back the packge to server. 
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/backup-bitbucket_server.sh -p 
+
+ubuntu-confluence-backup:
+	cd $(SJ_PATH_SCRIPTS) && ./ubuntu/setup/backup-confluence_server.sh -i yes
+
+ubuntu-install-ftp:
+	sudo apt update && sudo apt install vsftpd	
+	sudo service vsftpd status
+	# configure firewall
+	sudo ufw allow OpenSSH
+	sudo ufw allow 20/tcp
+	sudo ufw allow 21/tcp
+	sudo ufw allow 40000:50000/tcp
+	sudo ufw allow 990/tcp
+	sudo ufw enable
+	sudo ufw status
+	# configure setting for USER
+	sudo cp $(SJ_PATH_RESOURCE)/ubuntu18/vsftpd.conf /etc
+	sudo service sshd restart
+	sudo systemctl restart vsftpd
+
+ubuntu-setup-uniflash:
+	cd ./downloads && wget https://dr-download.ti.com/software-development/software-programming-tool/MD-QeJBJLj8gq/7.2.0/uniflash_sl.7.2.0.3893.run
+	sudo chmod 777 ./downloads/uniflash_sl.7.2.0.3893.run
+	./downloads/uniflash_sl.7.2.0.3893.run
 
 ubuntu-help:
 	$(Q)$(ECHO)

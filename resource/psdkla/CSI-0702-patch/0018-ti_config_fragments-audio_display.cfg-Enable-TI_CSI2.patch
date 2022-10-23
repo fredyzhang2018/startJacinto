@@ -1,0 +1,34 @@
+From ec39720c552ac0c0c16395e5a321dc2e39f32199 Mon Sep 17 00:00:00 2001
+From: Pratyush Yadav <p.yadav@ti.com>
+Date: Thu, 18 Feb 2021 17:39:42 +0530
+Subject: [PATCH 18/20] ti_config_fragments/audio_display.cfg: Enable TI_CSI2RX
+
+This is the CSI2RX V4L2 driver which enables CSI2RX capture on J721E.
+Enable its dependencies and then enable it as a module.
+
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Fredy Zhang <fredyzhang2018@gmail.com>
+---
+ ti_config_fragments/audio_display.cfg | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/ti_config_fragments/audio_display.cfg b/ti_config_fragments/audio_display.cfg
+index feefc8b49..413d43df0 100644
+--- a/ti_config_fragments/audio_display.cfg
++++ b/ti_config_fragments/audio_display.cfg
+@@ -124,6 +124,11 @@ CONFIG_VIDEO_AM437X_VPFE=m
+ CONFIG_VIDEO_TI_CAL=m
+ CONFIG_VIDEO_TI_VIP=m
+ 
++CONFIG_VIDEO_CADENCE=y
++CONFIG_VIDEO_CADENCE_CSI2RX=m
++CONFIG_PHY_CADENCE_DPHY=m
++CONFIG_VIDEO_TI_CSI2RX=m
++
+ CONFIG_V4L_MEM2MEM_DRIVERS=y
+ CONFIG_VIDEO_TI_VPE=m
+ 
+-- 
+2.17.1
+

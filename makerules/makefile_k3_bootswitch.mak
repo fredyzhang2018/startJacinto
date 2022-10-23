@@ -7,7 +7,7 @@
 k3_bootswitch_install: check_paths_PSDKLA_K3_BOOTSWITCH
 	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo apt-get install dfu-util
 
-k3_bootswitch_boot_mmc: check_paths_PSDKLA_K3_BOOTSWITCH
+k3_bootswitch_boot_mmc: check_paths_PSDKLA_K3_BOOTSWITCH umount
 	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode mmc
 
 k3_bootswitch_boot_emmc: check_paths_PSDKLA_K3_BOOTSWITCH
@@ -19,6 +19,10 @@ k3_bootswitch_boot_uart: check_paths_PSDKLA_K3_BOOTSWITCH
 	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode uart
 k3_bootswitch_boot_noboot: check_paths_PSDKLA_K3_BOOTSWITCH
 	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --bootmode noboot
+
+k3_bootswitch_boot_nfs: check_paths_PSDKLA_K3_BOOTSWITCH
+	# read -p "[ 10.85.130.60 ] " IP_ADDRESS ;\
+	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --tftp 10.85.130.60
 
 k3_bootswitch_mount_mmc: check_paths_PSDKLA_K3_BOOTSWITCH
 	cd $(SJ_PATH_K3_BOOTSWITCH) && sudo ./dfu-boot.sh --j721e-evm --mount 1
@@ -41,6 +45,9 @@ k3_bootswitch_help: check_paths_PSDKLA_K3_BOOTSWITCH
 	# sudo ./dfu-boot.sh --j721e-evm --bootmode uart
 	# sudo ./dfu-boot.sh --j721e-evm --bootmode noboot
 	##### mount the sd/emmc
+	# sudo ./dfu-boot.sh --j721e-evm --mount 0 //eMMC
+	# sudo ./dfu-boot.sh --j721e-evm --mount 1 //SD
+	##### sudo ./dfu-boot.sh --j721e-evm --tftp ip
 	# sudo ./dfu-boot.sh --j721e-evm --mount 0 //eMMC
 	# sudo ./dfu-boot.sh --j721e-evm --mount 1 //SD
 	#########################################################

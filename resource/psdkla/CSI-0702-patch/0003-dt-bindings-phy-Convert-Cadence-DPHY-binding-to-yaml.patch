@@ -1,0 +1,111 @@
+From 3f40f2c619479efdd6e4874bd5566a10552efe2a Mon Sep 17 00:00:00 2001
+From: Pratyush Yadav <p.yadav@ti.com>
+Date: Thu, 18 Feb 2021 17:39:27 +0530
+Subject: [PATCH 03/20] dt-bindings: phy: Convert Cadence DPHY binding to yaml
+
+Convert Cadence DPHY binding to YAML. While here, make the clocks
+optional and add an optional "power-domains" property.
+
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Fredy Zhang <fredyzhang2018@gmail.com>
+---
+ .../devicetree/bindings/phy/cdns,dphy.txt     | 20 -------
+ .../devicetree/bindings/phy/cdns,dphy.yaml    | 58 +++++++++++++++++++
+ 2 files changed, 58 insertions(+), 20 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/phy/cdns,dphy.txt
+ create mode 100644 Documentation/devicetree/bindings/phy/cdns,dphy.yaml
+
+diff --git a/Documentation/devicetree/bindings/phy/cdns,dphy.txt b/Documentation/devicetree/bindings/phy/cdns,dphy.txt
+deleted file mode 100644
+index 1095bc4e7..000000000
+--- a/Documentation/devicetree/bindings/phy/cdns,dphy.txt
++++ /dev/null
+@@ -1,20 +0,0 @@
+-Cadence DPHY
+-============
+-
+-Cadence DPHY block.
+-
+-Required properties:
+-- compatible: should be set to "cdns,dphy".
+-- reg: physical base address and length of the DPHY registers.
+-- clocks: DPHY reference clocks.
+-- clock-names: must contain "psm" and "pll_ref".
+-- #phy-cells: must be set to 0.
+-
+-Example:
+-	dphy0: dphy@fd0e0000{
+-		compatible = "cdns,dphy";
+-		reg = <0x0 0xfd0e0000 0x0 0x1000>;
+-		clocks = <&psm_clk>, <&pll_ref_clk>;
+-		clock-names = "psm", "pll_ref";
+-		#phy-cells = <0>;
+-	};
+diff --git a/Documentation/devicetree/bindings/phy/cdns,dphy.yaml b/Documentation/devicetree/bindings/phy/cdns,dphy.yaml
+new file mode 100644
+index 000000000..6716e31d3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/phy/cdns,dphy.yaml
+@@ -0,0 +1,58 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/phy/cdns,dphy.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Cadence DPHY Device Tree Bindings
++
++maintainers:
++  - Pratyush Yadav <p.yadav@ti.com>
++
++properties:
++  compatible:
++    items:
++      - const: cdns,dphy
++
++  reg:
++    maxItems: 1
++    description: Physical base address and length of the DPHY registers.
++
++  power-domains:
++    maxItems: 1
++
++  clocks:
++    maxItems: 2
++    description: DPHY reference clocks.
++
++  clock-names:
++    items:
++      - const: psm
++      - const: pll_ref
++
++  "#address-cells":
++    const: 2
++
++  "#size-cells":
++    const: 2
++
++  "#phy-cells":
++    const: 0
++
++required:
++  - compatible
++  - reg
++  - "#phy-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++
++    dphy0: dphy@fd0e0000{
++        compatible = "cdns,dphy";
++        reg = <0x0 0xfd0e0000 0x0 0x1000>;
++        clocks = <&psm_clk>, <&pll_ref_clk>;
++        clock-names = "psm", "pll_ref";
++        #phy-cells = <0>;
++    };
+-- 
+2.17.1
+
