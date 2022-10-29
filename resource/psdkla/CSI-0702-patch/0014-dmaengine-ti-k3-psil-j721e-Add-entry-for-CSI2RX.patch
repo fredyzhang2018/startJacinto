@@ -1,0 +1,47 @@
+From 27c3f6aa68fe493c0ea5d802373edfc12b079d28 Mon Sep 17 00:00:00 2001
+From: Pratyush Yadav <p.yadav@ti.com>
+Date: Thu, 18 Feb 2021 17:39:38 +0530
+Subject: [PATCH 14/20] dmaengine: ti: k3-psil-j721e: Add entry for CSI2RX
+
+The CSI2RX subsystem uses PSI-L DMA to transfer frames to memory. It can
+have up to 32 threads but the current driver only supports using one. So
+add an entry for that one thread.
+
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Fredy Zhang <fredyzhang2018@gmail.com>
+---
+ drivers/dma/ti/k3-psil-j721e.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/dma/ti/k3-psil-j721e.c b/drivers/dma/ti/k3-psil-j721e.c
+index 7580870ed..19ffa31e6 100644
+--- a/drivers/dma/ti/k3-psil-j721e.c
++++ b/drivers/dma/ti/k3-psil-j721e.c
+@@ -58,6 +58,14 @@
+ 		},					\
+ 	}
+ 
++#define PSIL_CSI2RX(x)					\
++	{						\
++		.thread_id = x,				\
++		.ep_config = {				\
++			.ep_type = PSIL_EP_NATIVE,	\
++		},					\
++	}
++
+ /* PSI-L source thread IDs, used for RX (DMA_DEV_TO_MEM) */
+ static struct psil_ep j721e_src_ep_map[] = {
+ 	/* SA2UL */
+@@ -138,6 +146,8 @@ static struct psil_ep j721e_src_ep_map[] = {
+ 	PSIL_PDMA_XY_PKT(0x4707),
+ 	PSIL_PDMA_XY_PKT(0x4708),
+ 	PSIL_PDMA_XY_PKT(0x4709),
++	/* CSI2RX */
++	PSIL_CSI2RX(0x4940),
+ 	/* CPSW9 */
+ 	PSIL_ETHERNET(0x4a00),
+ 	/* CPSW0 */
+-- 
+2.17.1
+

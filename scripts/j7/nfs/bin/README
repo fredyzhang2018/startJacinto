@@ -1,0 +1,8 @@
+******************************
+Processor SDK Linux Bin README
+******************************
+
+All of the included scripts within the bin/ directory
+are called directly from the setup.sh script. Please
+refer to the Processor SDK Linux documentation for more
+information of how to use the setup.sh script.

@@ -11,23 +11,11 @@ la-install-ubuntu-lib:
 	sudo dpkg-reconfigure dash
 	echo "configure done !!!"
 
-la-install-sdk: check_paths_downloads la-install-ubuntu-lib
-	echo "install $(SJ_PATH_PSDKLA)"
-	echo "1. downlaod the SDK"
-	$(Q)if [ ! -d $(SJ_PATH_PSDKLA) ] ; then \
-		if [ ! -f $(SJ_PATH_DOWNLOAD)/`echo $(SJ_PSDKLA_SDK_URL) | cut -d / -f 9` ] ; then \
-			cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKLA_SDK_URL); \
-		fi; \
-		echo "2. run setup scripts"; \
-		cd $(SJ_PATH_DOWNLOAD) && chmod a+x ./`echo $(SJ_PSDKLA_SDK_URL) | cut -d / -f 9`; \
-		echo "please set your install PATH: $(SJ_PATH_PSDKLA) " && read -p "please input y to continue and CTRL +C to quit! : "  SELECT ;\
-		cd $(SJ_PATH_DOWNLOAD) && ./`echo $(SJ_PSDKLA_SDK_URL) | cut -d / -f 9`; \
-		echo "please run the setup scripts " ; \
-		cd $(SJ_PATH_PSDKLA) &&  ./setup.sh; \
-		echo "please run: make la-install-addon-makefile to support update image to SD card:" ;\
-	else \
-		echo "sdk already installed, continue..."; \
-	fi
+
+la-install-sdk:check_paths_downloads la-install-ubuntu-lib
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKLA sdk");
+	./scripts/j7/install_psdkla.sh -s $(SJ_PSDKLA_BRANCH) -i yes -p $(SJ_PATH_PSDKLA)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKLA sdk --done");
 
 la-install-addon-makefile: check_paths_PSDKLA 
 	$(Q)if [ ! -f $(SJ_PATH_PSDKLA)/makefile_psdkla_addon.mak ] ; then \
@@ -61,14 +49,20 @@ la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA
 # sd install                             #
 ##########################################
 la-sd-mk-partition:
-	sudo $(SJ_PATH_SCRIPTS)/mk-linux-card-psdkla.sh
+	if [ $(SJ_ENABLE_UI) = "YES" ]; then \
+		echo "[ `date` ] >>> UI  :  la-sd-mk-partition"  >> $(SJ_PATH_JACINTO)/.sj_log; \
+		sudo $(SJ_PATH_SCRIPTS)/mk-linux-card-psdkla-ui.sh; \
+	else \
+		sudo $(SJ_PATH_SCRIPTS)/mk-linux-card-psdkla.sh; \
+	fi
+	
 
 la-sd-install-all:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
 	@echo ">>> starting make SD for PSDKLA"
 	$(SJ_PATH_SCRIPTS)/mk_sd_psdkla.sh $(SJ_BOOT1) $(SJ_ROOTFS) 
 	@echo "please unplug the sd card."
 
-la-sd-install-mksdboot-scripts:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
+la-sd-install-scripts:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
 	@echo ">>> install the mksdboot.sh to SD /home/root"
 	@echo " test path: $(SJ_ROOTFS) "
 	@if [ ! -d $(SJ_ROOTFS) ] ; then \
@@ -76,13 +70,35 @@ la-sd-install-mksdboot-scripts:  check_paths_PSDKLA check_paths_sd_boot1 check_p
 		echo "Please run setup.sh in the SDK's root directory and then try again."; \
 		exit 1; \
 	fi
-	sudo install $(SJ_PATH_PSDKLA)/bin/mksdboot.sh $(SJ_ROOTFS)/home/root
+	$(Q)sudo ls -l $(SJ_ROOTFS)/home/root
+	$(Q)sudo install $(SJ_PATH_PSDKLA)/bin/mksdboot.sh $(SJ_ROOTFS)/home/root
+	$(Q)sudo install $(SJ_PATH_SCRIPTS)/j7/ub960_pattern_start.sh $(SJ_ROOTFS)/home/root
+	$(Q)sudo install $(SJ_PATH_SCRIPTS)/j7/yavta_catch_camera.sh $(SJ_ROOTFS)/home/root
+	$(Q)sudo ls -l $(SJ_ROOTFS)/home/root
 	@echo "done. please unplug the sd card."
 
 la-sd-setup-j7-fredy-tools:
-	scp -r $(SJ_PATH_SCRIPTS)/j7/*  root@10.85.130.220:/home/root
+	scp -r $(SJ_PATH_SCRIPTS)/j7/*  root@$(SJ_EVM_IP):/home/root
 	echo "done"
-	
+
+la-psdkla-0702-csi-ub960-demo: check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs  
+	$(Q)echo "# 0. reset the default sdks"
+	#cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && git reset --hard
+	$(Q)echo "# 1. apply the patches"
+	#cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && git am --signoff $(SJ_PATH_RESOURCE)/psdkla/CSI-0702-patch/00*
+	$(Q)echo "# 2. build the sdk"
+	cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && ./ti_config_fragments/defconfig_builder.sh -t ti_sdk_arm64_release 
+	cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && make ARCH=arm64 ti_sdk_arm64_release_defconfig
+	cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && make ARCH=arm64 CROSS_COMPILE=$(SJ_PATH_PSDKLA)/linux-devkit/sysroots/x86_64-arago-linux/usr/bin/aarch64-none-linux-gnu-  Image
+	cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && make ARCH=arm64 CROSS_COMPILE=$(SJ_PATH_PSDKLA)/linux-devkit/sysroots/x86_64-arago-linux/usr/bin/aarch64-none-linux-gnu-  modules
+	cd $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a && make ARCH=arm64 CROSS_COMPILE=$(SJ_PATH_PSDKLA)/linux-devkit/sysroots/x86_64-arago-linux/usr/bin/aarch64-none-linux-gnu-  dtbs
+	#$(Q)echo "# 3. update the sd card"
+	make la-sd-linux-install 
+	sudo install $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a/arch/arm64/boot/Image $(SJ_ROOTFS)/boot
+	sudo install $(SJ_PATH_PSDKLA)/board-support/linux-5.4.74+gitAUTOINC+9574bba32a-g9574bba32a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dtb $(SJ_ROOTFS)/boot
+	make la-sd-install-scripts
+	$(Q)echo "setup done, please insert to board, and restart the system. "
+
 #~ la-sd-mounnt: check_paths_PSDKLA 
 #~ 	sudo mount /dev/sda1 /media/fredy/boot 
 #~ 	sudo mount /dev/sda2 /media/fredy/rootfs
@@ -96,13 +112,16 @@ la-setup-env-nfs:
 la-setup-env-minicom:
 	$(SJ_PATH_SCRIPTS)/setup-minicom.sh
 
+la-setup-env-minicom-all:
+	# this command will open all the UART terminal.
+	$(SJ_PATH_SCRIPTS)/setup-minicom-all.sh
+	# open done
 
 
-
-psdkla-install-help:
+la-install-help:
 	$(Q)$(ECHO)
 	$(Q)$(ECHO) "Available build targets are  :"
-	$(Q)$(ECHO) "    ----------------Build --------------------------------------  "
+	$(Q)$(ECHO) "    ----------------Install --------------------------------------  "
 	$(Q)$(ECHO) "    la-install-ubuntu-lib        : ubuntu dependent lib;    "
 	$(Q)$(ECHO) "    la-install-sdk               : Install SDK;   "
 	$(Q)$(ECHO) "    la-install-addon-makefile    : additial makefile; "
@@ -113,8 +132,10 @@ psdkla-install-help:
 	$(Q)$(ECHO) "    la-sd-mk-partition       "
 	$(Q)$(ECHO) "    la-sd-install-all        "
 	$(Q)$(ECHO) "    la-sd-mk-partition       "
-	$(Q)$(ECHO) "    la-sd-install-mksdboot-scripts       "
+	$(Q)$(ECHO) "    la-sd-install-scripts       "
 	$(Q)$(ECHO) "    -------------------SD --------------------------------------  "
 	$(Q)$(ECHO) "    la-setup-env-nfs       "
 	$(Q)$(ECHO) "    la-setup-env-minicom      "
+	$(Q)$(ECHO) "    -------------------Demo --------------------------------------  "
+	$(Q)$(ECHO) "    la-psdkla-0702-csi-ub960-demo   # 0703 will not work with 0702"
 	$(Q)$(ECHO) "    ---------------- ending  !!!--------------------------------------  "

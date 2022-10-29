@@ -1,0 +1,66 @@
+From 4d27ce9c3f966293332ff81f747a28f06e04ab1f Mon Sep 17 00:00:00 2001
+From: Pratyush Yadav <p.yadav@ti.com>
+Date: Thu, 18 Feb 2021 17:39:29 +0530
+Subject: [PATCH 05/20] phy: cdns-dphy: Allow setting mode
+
+Allow callers to set the PHY mode. The main mode should always be
+PHY_MODE_MIPI_DPHY but the submode can either be
+PHY_MIPI_DPHY_SUBMODE_RX or PHY_MIPI_DPHY_SUBMODE_TX. Update the ops
+based on the requested submode.
+
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Fredy Zhang <fredyzhang2018@gmail.com>
+---
+ drivers/phy/cadence/cdns-dphy.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
+index 7500963cf..af375d470 100644
+--- a/drivers/phy/cadence/cdns-dphy.c
++++ b/drivers/phy/cadence/cdns-dphy.c
+@@ -365,11 +365,41 @@ static int cdns_dphy_configure(struct phy *phy, union phy_configure_opts *opts)
+ 	return 0;
+ }
+ 
++static int cdns_dphy_set_mode(struct phy *phy, enum phy_mode mode, int submode)
++{
++	struct cdns_dphy *dphy = phy_get_drvdata(phy);
++	const struct cdns_dphy_driver_data *ddata;
++
++	ddata = of_device_get_match_data(dphy->dev);
++	if (!ddata)
++		return -EINVAL;
++
++	if (mode != PHY_MODE_MIPI_DPHY)
++		return -EINVAL;
++
++	if (submode == PHY_MIPI_DPHY_SUBMODE_TX) {
++		if (!ddata->tx)
++			return -EOPNOTSUPP;
++
++		dphy->ops = ddata->tx;
++	} else if (submode == PHY_MIPI_DPHY_SUBMODE_RX) {
++		if (!ddata->rx)
++			return -EOPNOTSUPP;
++
++		dphy->ops = ddata->rx;
++	} else {
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++
+ static const struct phy_ops cdns_dphy_ops = {
+ 	.configure	= cdns_dphy_configure,
+ 	.validate	= cdns_dphy_validate,
+ 	.power_on	= cdns_dphy_power_on,
+ 	.power_off	= cdns_dphy_power_off,
++	.set_mode	= cdns_dphy_set_mode,
+ };
+ 
+ static int cdns_dphy_probe(struct platform_device *pdev)
+-- 
+2.17.1
+

@@ -1,0 +1,687 @@
+From 5a08fe8deb7b93607c2969f27ef6d685d4513cac Mon Sep 17 00:00:00 2001
+From: Fredy Zhang <fredyzhang2018@gmail.com>
+Date: Thu, 18 Nov 2021 03:18:53 -0500
+Subject: [PATCH 1/2] imax390 works well for old sensing
+
+---
+ imaging/sensor_drv/include/iss_sensors.h      |   2 +-
+ .../src/imx390/imx390_serdes_config.h         | 119 ++++-
+ .../sensor_drv/src/imx390/iss_sensor_imx390.c |   4 +
+ imaging/sensor_drv/src/iss_sensors.c          | 450 +++++++++++++++---
+ 4 files changed, 491 insertions(+), 84 deletions(-)
+
+diff --git a/imaging/sensor_drv/include/iss_sensors.h b/imaging/sensor_drv/include/iss_sensors.h
+index a0e0886e..2117fdfa 100755
+--- a/imaging/sensor_drv/include/iss_sensors.h
++++ b/imaging/sensor_drv/include/iss_sensors.h
+@@ -1050,7 +1050,7 @@ int32_t enableUB960Streaming(uint32_t chId);
+  *******************************************************************************
+ */
+ int32_t disableUB960Streaming(uint32_t chId);
+-
++int32_t UB960CheckLock(void);
+ 
+ /**
+  *******************************************************************************
+diff --git a/imaging/sensor_drv/src/imx390/imx390_serdes_config.h b/imaging/sensor_drv/src/imx390/imx390_serdes_config.h
+index da347079..9e356f37 100755
+--- a/imaging/sensor_drv/src/imx390/imx390_serdes_config.h
++++ b/imaging/sensor_drv/src/imx390/imx390_serdes_config.h
+@@ -75,41 +75,108 @@ SoC will communicate with the devices using alias adresses
+ #define FUSION_BOARD_VER 1 //RevC
+ 
+ #if (CAM_MODULE_VER == 0)
+-#define IMX390_I2C_ADDR 0x42
++#define IMX390_I2C_ADDR 0x40
+ #elif (CAM_MODULE_VER == 1)
+-#define IMX390_I2C_ADDR 0x34
++#define IMX390_I2C_ADDR 0x40
+ #else
+ Unsuppprted version
+ #endif
+ 
+-#define IMX390_D3_SER_CFG_SIZE    (10U)
++#define IMX390_D3_SER_CFG_SIZE    (50U)
+ 
+ I2cParams ub953SerCfg_D3IMX390[IMX390_D3_SER_CFG_SIZE] = {
+-    {0x01, 0x01, 0x20},
+-    {0x02, 0x72, 0x10},
+-
+-#if (FUSION_BOARD_VER == 0)
+-    {0x06, 0x21, 0x1F},
+-#elif (FUSION_BOARD_VER == 1)
+-    {0x06, 0x41, 0x1F},
+-#else
+-Unsuppprted version
++		{0x06, 0x41, 0x100},
++	
++		{0x07, 0x28, 0x100},
++	
++		{0x05, 0x0B, 0x10},
++	
++		{0x02, 0x33, 0x10},
++	
++	
++	
++#ifdef _TEST_PATTERN_ENABLE_
++	
++#define AR0233_WIDTH_HIBYTE  ((1936 >> 8)& 0xFF)
++	
++#define AR0233_WIDTH_LOBYTE  (1936 & 0xFF)
++	
++#define AR0233_HEIGHT_HIBYTE  ((1096 >> 8)& 0xFF)
++	
++#define AR0233_HEIGHT_LOBYTE  (1096 & 0xFF)
++	
++	
++	
++#define BAR_WIDTH_HIBYTE  (((1936/4) >> 8)& 0xFF)
++	
++#define BAR_WIDTH_LOBYTE  ((1936/4) & 0xFF)
++	
++			{0xB0, 0x00, 0x10}, // Indirect Pattern Gen Registers
++	
++			{0xB1, 0x01, 0x10}, // PGEN_CTL
++	
++			{0xB2, 0x01, 0x10}, //
++	
++			{0xB1, 0x02, 0x10}, // PGEN_CFG
++	
++			{0xB2, 0x33, 0x10}, //
++	
++			{0xB1, 0x03, 0x10}, // PGEN_CSI_DI
++	
++			{0xB2, 0x2C, 0x10}, //RAW12
++	
++			{0xB1, 0x04, 0x10}, // PGEN_LINE_SIZE1
++	
++			{0xB2, 0x0B, 0x10}, //
++	
++			{0xB1, 0x05, 0x10}, // PGEN_LINE_SIZE0
++	
++			{0xB2, 0x58, 0x10}, //
++	
++			{0xB1, 0x06, 0x10}, // PGEN_BAR_SIZE1
++	
++			{0xB2, 0x01, 0x10}, //
++	
++			{0xB1, 0x07, 0x10}, // PGEN_BAR_SIZE0
++	
++			{0xB2, 0x6B, 0x10}, //
++	
++			{0xB1, 0x08, 0x10}, // PGEN_ACT_LPF1
++	
++			{0xB2, 0x04, 0x10}, //
++	
++			{0xB1, 0x09, 0x10}, // PGEN_ACT_LPF0
++	
++			{0xB2, 0x48, 0x10}, //
++	
++			{0xB1, 0x0A, 0x10}, // PGEN_TOT_LPF1
++	
++			{0xB2, 0x06, 0x10}, //
++	
++			{0xB1, 0x0B, 0x10}, // PGEN_TOT_LPF0
++	
++			{0xB2, 0x4A, 0x10}, //
++	
++			{0xB1, 0x0C, 0x10}, // PGEN_LINE_PD1
++	
++			{0xB2, 0x08, 0x10}, //
++	
++			{0xB1, 0x0D, 0x10}, // PGEN_LINE_PD0
++	
++			{0xB2, 0x16, 0x10}, //
++	
++			{0xB1, 0x0E, 0x10}, // PGEN_VBP
++	
++			{0xB2, 0x21, 0x10}, //
++	
++			{0xB1, 0x0F, 0x10}, // PGEN_VF
++	
++			{0xB2, 0x0A, 0x10}, //
++	
+ #endif
++	
++		{0xFFFF, 0x00, 0x0} //End of script
+ 
+-#if (CAM_MODULE_VER == 0)
+-    {0x07, 0x28, 0x1F},
+-    {0x0D, 0x01, 0x10},
+-#elif (CAM_MODULE_VER == 1)
+-    {0x07, 	0x25, 0x1F},
+-    {0x0D, 0x03, 0x10},
+-#else
+-Unsuppprted version
+-#endif
+-    {0x0E, 0xF0, 0x10},
+-    {0xB0, 0x04, 0x10},
+-    {0xB1, 0x08, 0x10},
+-    {0xB2, 0x07, 0x10},
+-    {0xFFFF, 0x00, 0x0} //End of script
+ };
+ 
+ #endif /* _IMX390_SERDES_H_ */
+diff --git a/imaging/sensor_drv/src/imx390/iss_sensor_imx390.c b/imaging/sensor_drv/src/imx390/iss_sensor_imx390.c
+index 4d2dccb7..7e7e513b 100755
+--- a/imaging/sensor_drv/src/imx390/iss_sensor_imx390.c
++++ b/imaging/sensor_drv/src/imx390/iss_sensor_imx390.c
+@@ -403,6 +403,10 @@ static int32_t IMX390_StreamOn(uint32_t chId, void *pSensorHdl)
+     status |= IMX390_WriteReg(i2cInstId, sensorI2cAddr, 0x0, 0x0, 1u);/*ACTIVE*/
+     appLogWaitMsecs(10);
+     status |= enableUB960Streaming(chId);
++    printf("# fredy: >>>> stream on \n \n ");
++    UB960CheckLock();
++
++
+     return (status);
+ }
+ 
+diff --git a/imaging/sensor_drv/src/iss_sensors.c b/imaging/sensor_drv/src/iss_sensors.c
+index d03a2a81..2ad51f29 100755
+--- a/imaging/sensor_drv/src/iss_sensors.c
++++ b/imaging/sensor_drv/src/iss_sensors.c
+@@ -86,83 +86,380 @@ static uint8_t gISS_Sensor_ByteOrder = BOARD_I2C_REG_ADDR_MSB_FIRST;
+ static uint8_t num_sensors_open = 0;
+ static IssSensors_Handle * g_pSenHndl[ISS_SENSORS_MAX_SUPPORTED_SENSOR];
+ 
+-#define COMMON_DES_CFG_SIZE    (59U)
++#define COMMON_DES_CFG_SIZE    (160U)
+ static I2cParams ub960DesCfg_Common[COMMON_DES_CFG_SIZE] = {
+-    {0x01, 0x02, 0x20},
+-    {0x1f, 0x00, 0x00},
++    {0x01, 0x02, 0x10},
+ 
+-    {0x0D, 0x90, 0x1}, /*I/O to 3V3 - Options not valid with datashee*/
+-    {0x0C, 0x0F, 0x1}, /*Enable All ports*/
++    {0x1f, 0x00, 0x10},
++
++                       
++
++    {0xB0, 0x1C,0x10},
++
++    {0xB1, 0x16,0x10},
++
++    {0xB2, 0x00,0x10},
++
++    {0xB1, 0x17,0x10},
++
++    {0xB2, 0x00,0x10},
++
++    {0xB1, 0x18,0x10},
++
++    {0xB2, 0x00,0x10},
++
++    {0xB1, 0x19,0x10},
++
++    {0xB2, 0x00,0x10},
++
++    {0xB0, 0x1C,0x10},
++
++    {0xB1, 0x15,0x10},
++
++    {0xB2, 0x0A,0x100},
++
++    {0xB2, 0x00,0x100},
++
++
++
++    {0x0D, 0x90, 0x10}, /*I/O to 3V3 - Options not valid with datashee*/
++
++    {0x0C, 0x0F, 0x10}, /*Enable All ports*/
++
++
++
++    /*Select Channel 0*/
+ 
+-    /*Select Channel 0*/                                               
+     {0x4C, 0x01, 0x10},
+-    {0x58, 0x5E, 0x1}, /*Enable Back channel, set to 50Mbs*/
+-    {0x72, 0x00, 0x1}, /*VC map*/
++
++    {0x58, 0x5E, 0x10}, /*Enable Back channel, set to 50Mbs*/
++
++    {0x72, 0x00, 0x10}, /*VC map*/
++
++
+ 
+     /*Select Channel 1*/
++
+     {0x4C, 0x12, 0x10},
+-    {0x58, 0x5E, 0x1},/*Enable Back channel, set to 50Mbs*/
++
++    {0x58, 0x5E, 0x10},/*Enable Back channel, set to 50Mbs*/
++
++
+ 
+     /*Select Channel 2*/
++
+     {0x4C, 0x24, 0x10},
+-    {0x58, 0x5E, 0x1},/*Enable Back channel, set to 50Mbs*/
+-   
++
++    {0x58, 0x5E, 0x10},/*Enable Back channel, set to 50Mbs*/
++
++
++
+     /*Select Channel 3*/
++
++    {0x4C, 0x38, 0x10},
++
++    {0x58, 0x5E, 0x10},/*Enable Back channel, set to 50Mbs*/
++
++
++
++    /*Select Channel 0*/
++
++    {0x4C, 0x01, 0x10},
++
++    {0xB0, 0x04, 0x10},
++
++    {0xB1, 0x03, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB1, 0x13, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB0, 0x04, 0x10},
++
++    {0xB1, 0x04, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0xB1, 0x14, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0x42, 0x71, 0x10}, /*Unknown*/
++
++    {0x41, 0xF0, 0x10}, /*Unknown*/
++
++    {0xB9, 0x18, 0x10},
++
++                       
++
++    /*Select Channel 1*/                                               
++
++    {0x4C, 0x12, 0x10},
++
++    {0xB0, 0x08, 0x10},
++
++    {0xB1, 0x03, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB1, 0x13, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB0, 0x08, 0x10},
++
++    {0xB1, 0x04, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0xB1, 0x14, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0xB0, 0x08, 0x10},
++
++    {0x42, 0x71, 0x10}, /*Unknown*/
++
++    {0x41, 0xF0, 0x10}, /*Unknown*/
++
++    {0xB9, 0x18, 0x10},
++
++                       
++
++    /*Select Channel 2*/                                               
++
++    {0x4C, 0x24, 0x10},
++
++    {0xB0, 0x0C, 0x10},
++
++    {0xB1, 0x03, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB1, 0x13, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB0, 0x0C, 0x10},
++
++    {0xB1, 0x04, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0xB1, 0x14, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0x42, 0x71, 0x10},/*Unknown*/
++
++    {0x41, 0xF0, 0x10},/*Unknown*/
++
++    {0xB9, 0x18, 0x10},
++
++                       
++
++    /*Select Channel 3*/                                               
++
+     {0x4C, 0x38, 0x10},
+-    {0x58, 0x5E, 0x1},/*Enable Back channel, set to 50Mbs*/
+-  
+-    {0x20, 0x00, 0x1}, /*Forwarding and using CSIport 0 */
++
++    {0xB0, 0x10, 0x10},
++
++    {0xB1, 0x03, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB1, 0x13, 0x10},
++
++    {0xB2, 0x20, 0x10},
++
++    {0xB0, 0x10, 0x10},
++
++    {0xB1, 0x04, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0xB1, 0x14, 0x10},
++
++    {0xB2, 0x3F, 0x10},
++
++    {0x42, 0x71, 0x10},/*Unknown*/
++
++    {0x41, 0xF0, 0x10},/*Unknown*/
++
++    {0xB9, 0x18, 0x10},
++
++                       
++
++    {0x32, 0x01, 0x10}, /*Enable TX port 0*/
++
++    {0x20, 0x00, 0x10}, /*Forwarding and using CSIport 0 */
++
++                       
+ 
+     /*Sets GPIOS*/     
+-    {0x10, 0x83, 0x1},
+-    {0x11, 0xA3, 0x1},
+-    {0x12, 0xC3, 0x1},
+-    {0x13, 0xE3, 0x1},
++
++    {0x10, 0x83, 0x10},
++
++    {0x11, 0xA3, 0x10},
++
++    {0x12, 0xC3, 0x10},
++
++    {0x13, 0xE3, 0x10},
++
++
+ 
+     {0x4C, 0x01, 0x10}, /* 0x01 */
+-    {0x32, 0x01, 0x1}, /*Enable TX port 0*/
+-    {0x33, 0x02, 0x1}, /*Enable Continuous clock mode and CSI output*/
+-    {0xBC, 0x00, 0x1}, /*Unknown*/
+-    {0x5D, 0x30, 0x1}, /*Serializer I2C Address*/
+-    {0x65, 0xFF, 0x1},
+-    {0x5E, 0xFF, 0x1}, /*Sensor I2C Address*/
+-    {0x66, 0xFF, 0x1},
+-    {0x6D, 0x6C,0x0}, /*CSI Mode*/
+-    {0x72, 0x00,0x0}, /*VC Map - All to 0 */
++
++    {0x32, 0x01, 0x10}, /*Enable TX port 0*/
++
++    {0x33, 0x02, 0x10}, /*Enable Continuous clock mode and CSI output*/
++
++    {0xBC, 0x00, 0x10}, /*Unknown*/
++
++    {0x5D, 0x30, 0x10}, /*Serializer I2C Address*/
++
++    {0x65, (0x74U << 1U), 0x10},
++
++    {0x5E, 0x40, 0x10}, /*Sensor I2C Address*/
++
++    {0x66, (0x40U << 1U), 0x10},
++
++    {0x6D, 0x6C,0x10}, /*CSI Mode*/
++
++    {0x72, 0x00,0x10}, /*VC Map - All to 0 */
++
++    {0x7C, 0x20, 0x100}, /*Line Valid active high, Frame Valid active high*/
++
++    {0xD5, 0xF3, 0x100}, /*Auto Attenuation*/
++
++    {0xB0,0x1C, 0x10},
++
++    {0xB1,0x15, 0x10},
++
++    {0xB2,0x0A, 0x10},
++
++    {0xB2,0x00, 0x10},
++
++
+ 
+     {0x4C, 0x12, 0x10}, /* 0x12 */
+-    {0x32, 0x01, 0x1}, /*Enable TX port 0*/
+-    {0x33, 0x02, 0x1}, /*Enable Continuous clock mode and CSI output*/
+-    {0xBC, 0x00, 0x1}, /*Unknown*/
+-    {0x5D, 0x30, 0x1}, /*Serializer I2C Address*/
+-    {0x65, 0xFF, 0x1},
+-    {0x5E, 0xFF, 0x1}, /*Sensor I2C Address*/
+-    {0x66, 0xFF, 0x1},
+-    {0x6D, 0x6C,0x0}, /*CSI Mode*/
+-    {0x72, 0x55,0x0}, /*VC Map - All to 1 */
++
++    {0x32, 0x01, 0x10}, /*Enable TX port 0*/
++
++    {0x33, 0x02, 0x10}, /*Enable Continuous clock mode and CSI output*/
++
++    {0xBC, 0x00, 0x10}, /*Unknown*/
++
++    {0x5D, 0x30, 0x10}, /*Serializer I2C Address*/
++
++    {0x65, (SER_1_I2C_ALIAS << 1U), 0x10},
++
++    {0x5E, 0x40, 0x10}, /*Sensor I2C Address*/
++
++    {0x66, (SENSOR_1_I2C_ALIAS << 1U), 0x10},
++
++    {0x6D, 0x6C,0x10}, /*CSI Mode*/
++
++    {0x72, 0x55,0x10}, /*VC Map - All to 1 */
++
++    {0x7C, 0x20, 0x100}, /*Line Valid active high, Frame Valid active high*/
++
++    {0xD5, 0xF3, 0x100}, /*Auto Attenuation*/
++
++    {0xB0,0x1C, 0x10},
++
++    {0xB1,0x15, 0x10},
++
++    {0xB2,0x0A, 0x10},
++
++    {0xB2,0x00, 0x10},
++
++
+ 
+     {0x4C, 0x24, 0x10}, /* 0x24 */
+-    {0x32, 0x01, 0x1}, /*Enable TX port 0*/
+-    {0x33, 0x02, 0x1}, /*Enable Continuous clock mode and CSI output*/
+-    {0xBC, 0x00, 0x1}, /*Unknown*/
+-    {0x5D, 0x30, 0x1}, /*Serializer I2C Address*/
+-    {0x65, 0xFF, 0x1},
+-    {0x5E, 0xFF, 0x1}, /*Sensor I2C Address*/
+-    {0x66, 0xFF, 0x1},
+-    {0x6D, 0x6C,0x0}, /*CSI Mode*/
+-    {0x72, 0xaa,0x0}, /*VC Map - All to 2 */
++
++    {0x32, 0x01, 0x10}, /*Enable TX port 0*/
++
++    {0x33, 0x02, 0x10}, /*Enable Continuous clock mode and CSI output*/
++
++    {0xBC, 0x00, 0x10}, /*Unknown*/
++
++    {0x5D, 0x30, 0x10}, /*Serializer I2C Address*/
++
++    {0x65, (SER_2_I2C_ALIAS<< 1U), 0x10},
++
++    {0x5E, 0x40, 0x10}, /*Sensor I2C Address*/
++
++    {0x66, (SENSOR_2_I2C_ALIAS << 1U), 0x10},
++
++    {0x6D, 0x6C,0x10}, /*CSI Mode*/
++
++    {0x72, 0xaa,0x10}, /*VC Map - All to 2 */
++
++    {0x7C, 0x20, 0x100}, /*Line Valid active high, Frame Valid active high*/
++
++    {0xD5, 0xF3, 0x100}, /*Auto Attenuation*/
++
++    {0xB0,0x1C, 0x10},
++
++    {0xB1,0x15, 0x10},
++
++    {0xB2,0x0A, 0x10},
++
++    {0xB2,0x00, 0x10},
++
++
+ 
+     {0x4C, 0x38, 0x10}, /* 0x38 */
+-    {0x32, 0x01, 0x1}, /*Enable TX port 0*/
+-    {0x33, 0x02, 0x1}, /*Enable Continuous clock mode and CSI output*/
+-    {0xBC, 0x00, 0x1}, /*Unknown*/
+-    {0x5D, 0x30, 0x1}, /*Serializer I2C Address*/
+-    {0x65, 0xFF, 0x1},
+-    {0x5E, 0xFF, 0x1}, /*Sensor I2C Address*/
+-    {0x66, 0xFF, 0x1},
+-    {0x6D, 0x6C,0x0}, /*CSI Mode*/
+-    {0x72, 0xFF,0x0}, /*VC Map - All to 3 */
++
++    {0x32, 0x01, 0x10}, /*Enable TX port 0*/
++
++    {0x33, 0x02, 0x10}, /*Enable Continuous clock mode and CSI output*/
++
++    {0xBC, 0x00, 0x10}, /*Unknown*/
++
++    {0x5D, 0x30, 0x10}, /*Serializer I2C Address*/
++
++    {0x65, (SER_3_I2C_ALIAS << 1U), 0x10},
++
++    {0x5E, 0x40, 0x10}, /*Sensor I2C Address*/
++
++    {0x66, (SENSOR_3_I2C_ALIAS<< 1U), 0x10},
++
++    {0x6D, 0x6C,0x10}, /*CSI Mode*/
++
++    {0x72, 0xFF,0x10}, /*VC Map - All to 3 */
++
++    {0x7C, 0x20, 0x100}, /*Line Valid active high, Frame Valid active high*/
++
++    {0xD5, 0xF3, 0x100}, /*Auto Attenuation*/
++
++    {0xB0, 0x1C, 0x10},
++
++    {0xB1, 0x15, 0x10},
++
++    {0xB2, 0x0A, 0x10},
++
++    {0xB2, 0x00, 0x10},
++
++
++
++
++
++
++
++    {0x32, 0x21, 0x1},
++
++    {0x33, 0x02, 0x1},
++
++    {0x21, 0x03, 0x1},
++
++    {0x20, 0x00, 0x1},
++
+     {0xFFFF, 0x00, 0x0} //End of script
++
+ };
+ 
+ int32_t initFusion2_UB97x()
+@@ -1021,11 +1318,11 @@ int32_t IssSensor_Control(void* handle, uint32_t cmd, void* cmdArgs, void* cmdRe
+                     I2cParams sensorI2cParams;
+                     sensorI2cParams.nDelay = 1U;
+                     sensorI2cParams.nRegAddr = (uint16_t)(regAddr32);
+-                    sensorI2cParams.nRegValue = (uint16_t)(regAddr32);
++                    sensorI2cParams.nRegValue = (uint16_t)(regVal32);
+                     status = pSenHndl->sensorFxns->readWriteReg(chId, pSenHndl, rw_flag, &sensorI2cParams);
+                     if(0 != status)
+                     {
+-                        printf("IMAGE_SENSOR_CTRLCMD_DEBUG : Error reading from register 0x%x on the image sensor %s \n", regAddr, pSenHndl->createPrms->name);
++                        printf("IMAGE_SENSOR_CTRLCMD_DEBUG : Error reading from register 0x%x on the image sensor %s \n", regAddr32, pSenHndl->createPrms->name);
+                     }
+                     else
+                     {
+@@ -1043,7 +1340,7 @@ int32_t IssSensor_Control(void* handle, uint32_t cmd, void* cmdArgs, void* cmdRe
+                         {
+                             printf("IMAGE_SENSOR_CTRLCMD_DEBUG : Error reading from register 0x%x on slave device 0x%x \n", regAddr, slaveI2cAddr);
+                         }
+-                        issLogPrintf("IMAGE_SENSOR_CTRLCMD_DEBUG : Read 0x%x from register 0x%x on slave device 0x%x \n", regVal, regAddr, slaveI2cAddr);
++                        printf("IMAGE_SENSOR_CTRLCMD_DEBUG : Read 0x%x from register 0x%x on slave device 0x%x \n", regVal, regAddr, slaveI2cAddr);
+                     }
+                     else if (1U == rw_flag)
+                     {
+@@ -1823,3 +2120,42 @@ int32_t IssSensor_DeInit()
+     return status;
+ }
+ 
++int32_t UB960CheckLock(void)
++{
++	uint8_t  ub960I2cInstId;
++	uint8_t  ub960I2cAddr;
++	int32_t status = 0;
++	uint8_t tempData;
++	uint8_t tempAddr;
++
++	Board_fpdU960GetI2CAddr(&ub960I2cInstId, &ub960I2cAddr, BOARD_CSI_INST_0);
++
++	tempAddr = 0x4C;
++        tempData = 0x01;//0x12 for RX1
++        /* Select Channel */
++	status |= UB960_WriteReg(ub960I2cInstId, ub960I2cAddr, tempAddr, tempData);
++        appLogWaitMsecs(100);
++	tempAddr = 0x4D;
++	tempData = 0;
++	status |= UB960_ReadReg(ub960I2cInstId, ub960I2cAddr, tempAddr, &tempData);
++	printf("UB960 : Reg RX_PORT_STS(0x4D) 0x%x \n", tempData);
++
++	tempAddr = 0x73;
++	tempData = 0;
++	status |= UB960_ReadReg(ub960I2cInstId, ub960I2cAddr, tempAddr, &tempData);
++	printf("UB960 : Reg LINE_COUNT_HI(0x73) 0x%x \n", tempData);
++	tempAddr = 0x74;
++	tempData = 0;
++	status |= UB960_ReadReg(ub960I2cInstId, ub960I2cAddr, tempAddr, &tempData);
++	printf("UB960 : Reg LINE_COUNT_LO(0x74) 0x%x \n", tempData);
++	tempAddr = 0x75;
++	tempData = 0;
++	status |= UB960_ReadReg(ub960I2cInstId, ub960I2cAddr, tempAddr, &tempData);
++	printf("UB960 : Reg LINE_LEN_HI(0x75) 0x%x \n", tempData);
++	tempAddr = 0x76;
++	tempData = 0;
++	status |= UB960_ReadReg(ub960I2cInstId, ub960I2cAddr, tempAddr, &tempData);
++	printf("UB960 : Reg LINE_LEN_LO(0x76) 0x%x \n", tempData);
++
++	return (status);
++}
+-- 
+2.17.1
+

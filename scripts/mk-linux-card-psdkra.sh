@@ -1,7 +1,7 @@
 #! /bin/sh
 # mk-card.sh
 # Fredy Zhang Create for PSDKRA mk sd boot and rootfs partition. 
-# 	If you have any questions, Please contact :fredy-zhang@ti.com
+# 	If you have any questions, Please contact :fredyzhang2018@gmail.com
 
 export LC_ALL=C
 should_I_stay()

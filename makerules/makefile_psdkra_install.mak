@@ -21,11 +21,17 @@ ra-install-targetfs:
 	cp ${SJ_PATH_PSDKLA}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${SJ_PATH_PSDKRA}/
 	cp ${SJ_PATH_PSDKLA}/filesystem/tisdk-default-image-j7-evm.tar.xz     ${SJ_PATH_PSDKRA}/
 
-ra-install-sdk: check_paths_downloads check_paths_PSDKLA
+ra-install-sdk:check_paths_downloads check_paths_PSDKLA
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk");
+	./scripts/j7/install_psdkra.sh -s $(SJ_PSDKRA_BRANCH) -i yes -p $(SJ_PATH_J7_SDK)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk --done");
+
+ra-install-sdk1: check_paths_downloads check_paths_PSDKLA
 	# 1. download the package & install
 	$(Q)if [ ! -d $(SJ_PATH_PSDKRA) ] ; then \
 		if [ ! -f $(SJ_PATH_DOWNLOAD)/`echo $(SJ_PSDKRA_SDK_URL) | cut -d / -f 9` ] ; then \
-			cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKRA_INSTALL_PACKAGES_LINK); \
+			# cd $(SJ_PATH_DOWNLOAD) && wget $(SJ_PSDKRA_INSTALL_PACKAGES_LINK); \
+			echo "test"; \
 		else \
 			echo "SDK alread download. "; \
 		fi; \
@@ -96,9 +102,29 @@ ra-sd-install-rootfs: check_paths_sd_boot check_paths_sd_rootfs
 	sync
 	@echo "install done!!!"
 
+ra-sd-install-prebuild-rootfs: check_paths_sd_boot check_paths_sd_rootfs
+	$(Q)$(call sj_echo_log, 0 , " --- 1.  install the rootfs to SD card!");
+	@if [ ! -d ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt ] ; then \
+		cd ${SJ_PATH_PSDKRA}  && tar -zxvf ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt.tar.gz; \
+	else \
+		echo "- ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt already installed ! "; 	 \
+		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_to_sd_card.sh ;    \
+	fi
+	sync
+	$(Q)$(call sj_echo_log, 0 , " --- 1.  rootfs data set install done!!!");
+
+SJ_PSDKRA_PG_NAME=ti-processor-sdk-rtos-j721e-evm-08_04_00_11
 ra-sd-install-auto-ti-data: check_paths_sd_rootfs  check_paths_sd_boot 
-	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$USER/rootfs/"
+	@echo "Untar the file psdk_rtos_auto_ti_data_set_xx_xx_xx_xx.tar.gz to the SD card at below folder /media/$(USER)/rootfs/"
 	mkdir -p $(SJ_ROOTFS)/opt/vision_apps
+ifeq ($(SJ_PSDKRA_PG_NAME),ti-processor-sdk-rtos-j721e-evm-08_04_00_11)
+	echo "$(SJ_PSDKRA_PG_NAME)"
+	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_08_01_00.tar.gz
+endif	
+ifeq ($(SJ_PSDKRA_PG_NAME),ti-processor-sdk-rtos-j721e-evm-08_01_00_11)
+	echo "$(SJ_PSDKRA_PG_NAME)"
+	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_08_01_00.tar.gz
+endif		
 ifeq ($(SJ_PSDKRA_PG_NAME),ti-processor-sdk-rtos-j721e-evm-08_00_00_12)
 	echo "$(SJ_PSDKRA_PG_NAME)"
 	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_08_00_00.tar.gz
@@ -107,6 +133,7 @@ ifeq ($(SJ_PSDKRA_PG_NAME),ti-processor-sdk-rtos-j721e-evm-07_03_00_07)
 	echo "$(SJ_PSDKRA_PG_NAME)"
 	cd $(SJ_ROOTFS)/opt/vision_apps && tar --strip-components=1 -xf $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_07_03_00.tar.gz
 endif
+	@sync
 	@echo "install done!!!"
 
 
@@ -115,17 +142,37 @@ ra-sd-linux-fs-install-sd: check_paths_sd_rootfs  check_paths_sd_boot
 	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd
 	@echo "install done!!!"	
 
-ra-sd-linux-fs-install-sd-debug: check_paths_sd_rootfs  check_paths_sd_boot
-	@echo "Do below to copy vision apps binaries to SD card"
-	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd PROFILE=debug
-	@echo "install done!!!"	
+ra-sd-linux-fs-install-scp:
+	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_update_vision_sdk.sh --ip $(SJ_EVM_IP) ------------------------------- start !!!");
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) linux_fs_install -s -j$(CPU_NUM) 
+	cd $(SJ_PATH_SCRIPTS)/j7 &&  ./remote_update_vision_sdk.sh --ip $(SJ_EVM_IP)
+	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_update_vision_sdk.sh --ip $(SJ_EVM_IP) ------------------------------- done !!!");
+
+# KEY_WRITER_VERSION ?=OTP_KEYWRITER_ADD_ON_j721e_v2021.05b-linux-installer.run
+KEY_WRITER_VERSION ?=OTP_KEYWRITER_ADD_ON_j721e_sr1_1_v2021.05b-linux-installer.run
+KEY_WRITER_ADDON ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/$(SJ_PSDKRA_BRANCH)/exports/keywriter_patch.tar.gz
+ra-install-keywriter: check_paths_PSDKRA #check_paths_sd_boot
+	$(Q)$(call sj_echo_log, 0 , " 0. downnload the keywriter: https://www.ti.com/securesoftware/docs/securesoftware download from here !!!");
+	$(Q)$(call sj_echo_log, 0 , " 1. install the keywriter: cd $(SJ_PATH_SCRIPTS)/j7/install_keywriter.sh  !!!");
+	$(Q)cd $(SJ_PATH_SCRIPTS)/j7/ && ./install_keywriter.sh  --ver $(SJ_PATH_DOWNLOAD)/$(KEY_WRITER_VERSION) -p $(SJ_PATH_PDK) -a $(KEY_WRITER_ADDON)
+	# $(Q)cd $(SJ_PATH_SCRIPTS)/j7/ && ./install_keywriter.sh  --ver $(SJ_PATH_DOWNLOAD)/$(KEY_WRITER_VERSION) -p $(SJ_PATH_PDK) # test for SDK8.2
+	$(Q)$(call sj_echo_log, 0 , " 1. install key keywriter done   !!!");
+	$(Q)$(call sj_echo_log, 0 , " 2. update the image to SD card  !!!");
+	# cp $(SJ_PATH_PDK)/packages/ti/boot/keywriter/binary/j721e/keywriter_img_j721e_release.bin $(SJ_BOOT)/tiboot3.bin
+	# cp $(SJ_PATH_PDK)/packages/ti/boot/keywriter/tifs_bin/j721e/ti-fs-keywriter.bin           $(SJ_BOOT)/tifs.bin
+	$(Q)$(call sj_echo_log, 0 , " 2. update the image to SD card --done !!!");
+	$(Q)$(call sj_echo_log, 0 , " 3. Userguide :  https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/08_01_00_13/exports/docs/pdk_jacinto_08_01_00_36/docs/userguide/jacinto/modules/keywriter.html  !!!");
 
 
-ra-sd-linux-fs-install-sd-test－data: check_paths_sd_rootfs  check_paths_sd_boot
-	@echo "Do below to copy vision apps binaries to SD card"
-	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd_test_data
-	@echo "install done!!!"	
-	
+ra-hs-check-uart-boot-log: 
+	$(Q)$(call sj_echo_log, 0 , " 0. anlysis hs log : uart_boot_socid.py uart_log_file")
+	python3 $(SJ_PATH_SCRIPTS)/j7/hs/uart_boot_socid.py $(SJ_PATH_SCRIPTS)/j7/hs/default_uart_hs.log
+	$(Q)$(call sj_echo_log, 0 , " 0. anlysis hs log : uart_boot_socid.py uart_log_file")
+
+
+
+
+
 #==============================================================================
 # A help message target.
 #==============================================================================
@@ -150,9 +197,9 @@ ra-sd-help:
 	@echo "    ra-sd-mk-partition                          : make sd card parttion"
 	@echo "    ra-sd-install-rootfs                        : install filesystem to SD card"	
 	@echo "    ra-sd-install-auto-ti-data                  : install the auto ti data"
-	@echo "    ra-sd-linux-fs-install-sd               　　: install images to SD card"
+	@echo "    ra-sd-linux-fs-install-sd               	   : install images to SD card"
 	@echo "    ra-sd-linux-fs-install-sd-debug             : install the debug version images to SD card"
 	@echo "    ra-sd-linux-fs-install-sd                   : install the auto ti data"
-	@echo "    ra-sd-linux-fs-install-sd-test－data         : --> internal using"
+	@echo "    ra-sd-linux-fs-install-sd-test-data         : --> internal using"
 
 .PHONY: 

@@ -18,9 +18,6 @@
 SJ_BOOT                       ?= /media/`whoami`/BOOT
 SJ_BOOT1                      ?= /media/`whoami`/boot
 SJ_ROOTFS                     ?= /media/`whoami`/rootfs
-SJ_PATH_RESOURCE               ?= $(SJ_PATH_JACINTO)/resource
-SJ_PATH_SCRIPTS               ?= $(SJ_PATH_JACINTO)/scripts
-SJ_PATH_DOWNLOAD             ?= $(SJ_PATH_JACINTO)/downloads
 SJ_PATH_J7_SDK                ?= $(SJ_PATH_JACINTO)/sdks
 SJ_PATH_J6_SDK                ?= $(SJ_PATH_JACINTO)/sdks
 SJ_PATH_TEST                  ?= $(SJ_PATH_JACINTO)/sdks
@@ -30,7 +27,7 @@ export SJ_ROOTFS
 #==============================================================================
 # Debug use debug or release
 #==============================================================================
-SJ_PROFILE=debug
+SJ_PROFILE=release
 
 #==============================================================================
 # PSDKRA PATH
@@ -57,6 +54,7 @@ print_env:
 	$(Q)$(ECHO) "# SJ_PATH_JACINTO:                    $(SJ_PATH_JACINTO)"
 	$(Q)$(ECHO) "# SJ_PATH_J7_SDK                      $(SJ_PATH_J7_SDK)"	
 	$(Q)$(ECHO) "# SJ_PATH_J6_SDK                      $(SJ_PATH_J6_SDK)"	
+	$(Q)$(ECHO) "# SJ_PATH_SDK                         $(SJ_PATH_SDK)"	
 	$(Q)$(ECHO) "-------------Common Env------------------------------"
 	$(Q)$(ECHO) "# SJ_BOOT SJ_BOOT1 and SJ_ROOTFS:     $(SJ_BOOT) $(SJ_BOOT1) $(SJ_ROOTFS)"
 	$(Q)$(ECHO) "# SJ_PATH_RESOURCE:                   $(SJ_PATH_RESOURCE)"
@@ -74,4 +72,7 @@ print_env:
 	$(Q)$(ECHO) "# SJ_PATH_TUTORIAL_RUN:               $(SJ_PATH_TUTORIAL_RUN)"
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
 	$(Q)$(ECHO) "# SJ_PATH_K3_BOOTSWITCH:              $(SJ_PATH_K3_BOOTSWITCH)"
+	$(Q)$(ECHO) "------------- User Guide   ------------------------------"	
+	$(Q)$(ECHO) "# PSDKRA：  http://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/latest/index_FDS.html "
+	$(Q)$(ECHO) "# PSDKLA：  http://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/latest/index_FDS.html "
 	$(Q)$(ECHO) "### ----------------------ending------------------------" 
