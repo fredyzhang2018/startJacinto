@@ -1,6 +1,6 @@
 # StartJacinto Project
 
-startJacinto project is used to manage the Jacinto6 and Jacinto7 SDK, include Ubuntu.
+startJacinto project is used to manage the Jacinto6,Jacinto7,Sitara AM62x/AM62Ax SDK, include Ubuntu.
 
 - manage different SDKs.
 - update image to SD card.
