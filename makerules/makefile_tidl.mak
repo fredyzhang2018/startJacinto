@@ -49,6 +49,11 @@ endef
 # 4. Model output:
 # 		outputNetFile      = "ti_dl/test/testvecs/config/tidl_models/caffe/tidl_net_suqeezenet_1_1.bin"
 #		outputParamsFile   = "ti_dl/test/testvecs/config/tidl_models/caffe/tidl_io_suqeezenet_1_1_"
+
+######################################################################################
+### edge AI 
+#######################################################################################
+
 tidl-model-import-inference-run:
 	$(eval $(call sj_tidl_path,SJ_TIDL_PATH_FREDY))
 ifeq ($(SJ_TIDL_RUNTIME_TYPE),tflite)
@@ -432,6 +437,31 @@ tidl-src-build-evm:
 	$(Q)$(call sj_echo_log, 0 , " --- 1. build the tidl src code");
 	$(MAKE) -C $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`  all  -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 2. build the tidl src code");
+
+tidl-edgeai-tidl-tools-setup: 
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -i yes
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
+
+tidl-edgeai-tidl-tools-validate: check_paths_EDGEAI_TIDL_TOOLS
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -b yes
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
+
+
+tidl-edgeai-tidl-tools-run-tensorflow: check_paths_EDGEAI_TIDL_TOOLS
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m tensorflow
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
+
+tidl-edgeai-tidl-tools-run-onnx: check_paths_EDGEAI_TIDL_TOOLS
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m onnx
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
 tidl-edgeai-tflite-env-setup:
 	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source prepare_model_compliation_env.sh"

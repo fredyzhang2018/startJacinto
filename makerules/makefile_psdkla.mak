@@ -76,6 +76,22 @@ la-sd-install-uboot:
 		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
 	fi 
 	sync
+	
+la-sd-install-uboot-a53:
+	$(Q)if [ ! -d $(SJ_BOOT) ] ; then \
+		echo "hello world "; \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a53/tispl.bin  $(SJ_BOOT1); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT1); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a53/u-boot.img $(SJ_BOOT1); \
+		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
+	else \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a53/tispl.bin  $(SJ_BOOT); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT); \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a53/u-boot.img $(SJ_BOOT); \
+		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
+	fi 
+	sync
+	
 la-sd-install-uboot-tispl:
 	@if [ ! $(SJ_BOOT) ] ; then \
 		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin $(SJ_BOOT1); \
@@ -84,10 +100,10 @@ la-sd-install-uboot-tispl:
 	fi
 	sync
 la-sd-install-uboot-tiboot3:
-	@if [ ! $(SJ_BOOT) ] ; then \
-		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT1)	; \
-	else \
+	@if [ -d $(SJ_BOOT) ] ; then \
 		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT)	; \
+	else \
+		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin $(SJ_BOOT1)	; \
 	fi
 	sync
 
@@ -169,10 +185,16 @@ la-u-boot-a72-clean:
 # remote run                               #
 #                                        #
 ##########################################
-la-remote-run-command:
+la-remote-run-command: la-update-remote-image
 	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_command.sh --ip $(SJ_EVM_IP) ./remote_run.sh-------------------------------- start !!!");
 	cd $(SJ_PATH_SCRIPTS)/j7 && ./remote_command.sh --ip $(SJ_EVM_IP) ./remote_run.sh
 	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_command.sh --ip $(SJ_EVM_IP) ./remote_run.sh-------------------------------- done !!!");
+
+la-update-remote-image: 
+	$(Q)$(call sj_echo_log, 0 , " 0. update the iamge:$(SJ_PATH_PSDKRA)/$(SJ_TIDL_TYPE)/vision_apps/out/J7/A72/LINUX/release/vx_app_srv_fileio.out ---- start !!!");
+	scp $(SJ_PATH_PSDKRA)/$(SJ_TIDL_TYPE)/vision_apps/out/J7/A72/LINUX/release/vx_app_srv_fileio.out   root@$(SJ_EVM_IP):/opt/vision_apps
+	$(Q)$(call sj_echo_log, 0 , " 0. update the iamge:$(SJ_PATH_PSDKRA)/$(SJ_TIDL_TYPE)/vision_apps/out/J7/A72/LINUX/release/vx_app_srv_fileio.out ---- Done !!!");
+
 
 la-remote-run-ssh:
 	$(Q)$(call sj_echo_log, 0 , " 0. Run the remote ssh -------------------------------- start !!!");

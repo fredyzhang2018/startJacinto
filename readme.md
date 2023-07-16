@@ -37,14 +37,14 @@ check the env_setup_jacinto.sh first. make sure the SDK path.
 
 `$ source ui_env_setup_*`
 
-After you run this command, you will see the below contect in your console. Please select one for your environment. Thanks. 
+After you run this command, you will see the below contect in your console. Please select one for your environment. Thanks.
 
 ![img](https://github.com/fredyzhang2018/startJacinto/blob/master/docs/.pictures/Screenshot%20from%202022-10-23%2011-05-25.png "StartJacinto")
 
 ## run command to build the system
 
 Print variable :
-    `make print_all       print_config    print_env   print_variable`
+`make print_all       print_config    print_env   print_variable`
 
 ## TIDL
 
@@ -100,6 +100,44 @@ tidl-src-build-pc        # build all TIDL for PC emulation
 tidl-src-download-setup  # Download Repo
 tidl-src-build-dependent # graphviz build 
 ```
+
+## Edge AI
+
+- ra-edgeai               : build the edgeai.
+- ra-edgeai-install       : install teh edgeai to sdk.
+- ra-edgeai-scrub         : clean the edgeai build.
+- ra-sdk-edgeai            : setup the SDK for edgeai
+- ra-nfs-linux-fs-install-edgeai
+
+### Steps to setup edge AI SDK.
+
+Method 1 :  use the edge ai filesystem, this already setuped .
+
+Method 2 :  follow the steps: [https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/index.html](https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/index.html)
+
+- Setup the PSDKLA
+- Setup the PSDKRA
+- Build the edgeAI : ra-sdk-edgeai
+- build the edgeai:  ra-edgeai
+- PC 👍
+
+  ```shell
+  /media/<user-name>/rootfs/opt#git clone --single-branch --branch master git://git.ti.com/edgeai/edge_ai_apps.git
+  /media/<user-name>/rootfs/opt/edge_ai_apps#./setup_script.sh
+  /media/<user-name>/rootfs/opt/edge_ai_apps#./download_models.sh --recommended
+  ```
+- Setup the edgeai: ra-nfs-linux-fs-install-edgeai
+- Setup the edgeai: ra-edgeai-install
+- boot the board :  only need to run once 👍 setup_script.sh
+
+### Run the Demo
+
+```shell
+cd /opt/edge_ai_apps
+source ./init_scripts.sh. 
+```
+
+Running :Gst treamer demo :  [https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/end_to_end_gstreamer_demos.html](https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/end_to_end_gstreamer_demos.html%E2%80%B8)
 
 ## BOOT FLow
 
@@ -264,6 +302,8 @@ make ra-*
     ra-ccs-setup-steps                : print the ccs setup steps
     ra-install-targetfs               : install the PSDKLA filesytem to PSDKRA
     ra-install-sdk                    : Install SDKs
+    ra-install-sdk-addon              : Install the addon package. 
+    ra-install-dataset                : Install the dataset
 ```
 
 ### SD card setup
@@ -334,8 +374,8 @@ build yocto use below command:
 # Remote Environment
 
 You can use the TDA4 EVM board to setup a remote debug envrionment. More details, please refer to below:
-    **Hardware**: USBRELAY to power-on and power-off the baord.
-    **K3-Switch Tool**: boot the board  with different boot mode over the DFU.
+**Hardware**: USBRELAY to power-on and power-off the baord.
+**K3-Switch Tool**: boot the board  with different boot mode over the DFU.
 
 ## USBRELAY
 
@@ -376,6 +416,71 @@ mount the sd/emmc
 	sudo ./dfu-boot.sh --j721e-evm --mount 1 //SD
 ```
 
+## NFS
+
+NFS Boot
+
+Resource : [[https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1165196/tda4vm-q1-how-to-use-nfs-on-tda4vm?tisearch=e2e-sitesearch&amp;keymatch=tda4vm%25252520nfs%25252520boot#](https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1165196/tda4vm-q1-how-to-use-nfs-on-tda4vm?tisearch=e2e-sitesearch&keymatch=tda4vm%25252520nfs%25252520boot#%E2%80%B8)](https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1165196/tda4vm-q1-how-to-use-nfs-on-tda4vm?tisearch=e2e-sitesearch&keymatch=tda4vm%25252520nfs%25252520boot#](https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1165196/tda4vm-q1-how-to-use-nfs-on-tda4vm?tisearch=e2e-sitesearch&keymatch=tda4vm%25252520nfs%25252520boot#%E2%80%B8))
+
+need to
+install the tftp and nfs server first.
+
+```
+make ubuntu-install-tftp
+make ubuntu-install-nfs
+```
+
+# PSDKLA
+
+sdk setup
+scripts setup the basic environment.
+
+```
+
+nfs-help  
+# help
+nfs-setup-psdkla             # reference the sdk to setup the environment. 
+nfs-setup-minicom-psdkla     # open the minicom port to recevie the uart data. 
+nfs-setup-uboot-img          # update host tools boot partition images for current sdk. 
+```
+
+SDK 0804: test works well. Thannks.
+
+PSDKRA
+
+```
+
+make nfs-setup-psdkra
+make nfs-setup-minicom   # this command will setup the uboot env and boot PSDKRA from NFS automatically. 
+
+# Below two command for update NFS targetfs.  
+
+make ra-nfs-linux-fs-install # update nfs linux fs. 
+
+```
+
+0805 Version ：
+
+```
+issue on TIDL . 
+```
+
+# Yocto
+
+## Yocto Ubuntu14
+
+Build psdk0304 yocto
+
+```
+export INSTALL_DIR=/home/fredy/startjacinto/sdks1/ti-processor-sdk-linux-automotive-dra7xx-evm-03_04_00_03 
+cd $INSTALL_DIR
+export PATH=${INSTALL_DIR}/bin:$PATH
+export PATH=/home/fredy/startjacinto/sdks1/ti-processor-sdk-linux-automotive-dra7xx-evm-03_04_00_03/gcc-linaro-5.3-2016.02-x86_64_arm-linux-gnueabihf/bin:$PATH
+cd yocto-layers
+./build-core-sdk.sh dra7xx-evm
+
+```
+
 # Ubuntu
 
 ## ubuntu install opencv
@@ -383,6 +488,12 @@ mount the sd/emmc
 `make ubuntu-install-opencv`
 
 # Release notes
+
+## 202307 Release
+
+1. suppot am6x device.
+2. support TDA4VH /VM eco etc.
+3. update useful scripts.
 
 ## 202209 1st release : 30_00_00
 

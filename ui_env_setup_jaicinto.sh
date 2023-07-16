@@ -133,8 +133,11 @@ sj_sdk_setting()
 			SJ_PROJECT=$Var1
 			SJ_PSDKLA_BRANCH=$Var2 
 			SJ_PSDKRA_BRANCH=$Var3 
-			# PSDKRA
+			SJ_SOC_TYPE=`echo $Var1 | awk -F "-" '{print $3}'`
+			echo "[ $(date) ] >>> SOC TYPE: $SJ_SOC_TYPE"
+			# For AM62axx using xx.xx.xx.xx tda4x using xx_xx_xx_xx, pls install the am62x as the xx_xx_xx_xx
 			Temp_SJ_PATH_PSDKLA=$SJ_PATH_JACINTO/sdks/ti-processor-sdk-linux-j7-evm-$Var2
+			
 			if [ $SJ_PROJECT == "SDK-WORKAREA" ];then
 				Temp_SJ_PATH_PSDKRA=/ti/j7/workarea 
 			else
@@ -171,8 +174,17 @@ sj_sdk_setting()
 	done <  $SJ_PATH_JACINTO/.sj_config_sdks
 
 	if [ $SJ_SOC_TYPE == "j721s2" ];then 
+		echo "- update the J721S2"
 		SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/j721s2/g`
 		SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/j721e/j721s2/g`
+	elif [ $SJ_SOC_TYPE == "am62axx" ];then 
+		echo "- update the am62axx"
+		SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/am62axx/g`
+		SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/-j721e-evm-/_am62ax_/g | sed s/ti-processor-sdk-rtos/mcu_plus_sdk/g`
+	elif [ $SJ_SOC_TYPE == "am62xx" ];then 
+		echo "- update the am62xx"
+		SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/am62xx/g`
+		SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/-j721e-evm-/_am62x_/g | sed s/ti-processor-sdk-rtos/mcu_plus_sdk/g`
 	elif [ $SJ_SOC_TYPE == "j721s84" ];then
 		echo "please add"
 	else
@@ -203,11 +215,15 @@ sj_sdk_setting()
 	SJ_PATH_RESOURCE=$SJ_PATH_JACINTO/resource
 	SJ_PATH_SCRIPTS=$SJ_PATH_JACINTO/scripts
 	SJ_PATH_DOWNLOAD=$SJ_PATH_JACINTO/downloads
+	SJ_PATH_TOOLS=$SJ_PATH_JACINTO/tools
 	SJ_PATH_SDK=$SJ_PATH_JACINTO/sdks
 	export_variable SJ_PATH_RESOURCE
 	export_variable SJ_PATH_SCRIPTS
 	export_variable SJ_PATH_DOWNLOAD
+	export_variable SJ_PATH_TOOLS
 	export_variable SJ_PATH_SDK
+
+	echo "Yocto ENV Setting : $SJ_YOCTO_CONFIG_FILE"
 
 }
 

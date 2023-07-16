@@ -153,3 +153,4 @@ tiovx-pyovx-generate-new-app:
 
 tiovx-pyovx-generate-new-app-run:
 	cd $(SJ_PATH_VISION_SDK_BUILD)//out/PC/x86_64/LINUX/$(SJ_PROFILE)/ &&  ./vx_app_vx_tutorial_graph_$(SJ_TIOVX_APP_DEMO_NAME)
+

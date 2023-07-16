@@ -17,6 +17,7 @@ REPO_INSTALL_PATH=$SJ_PATH_JACINTO/downloads/
 VERSION="08_01_00_11"
 SETUP_YES_NO="no"
 CPU_NUM=`nproc`
+DATASET_YES_NO="no"
 
 
 # --- log 
@@ -40,6 +41,7 @@ echo " Usage: $0 <options>
 	--verbose | -v           : verbose print output.
 	--version | -s           : set the version (Default : $VERSION )
 	--install | -i           : default no, set yes
+	--dataset | -d           : default no, set yes
 
 More details , please visit : xxx
 "
@@ -124,6 +126,11 @@ update_args_value()
 				get_arg_value APP_INSTALL_PATH $# $args $args_list
 				echo_log "--- -p APP_INSTALL_PATH: $APP_INSTALL_PATH"
 				;;
+			"--dataset" | "-d")
+				get_arg_value DATASET_YES_NO $# $args $args_list
+				echo_log "--- -p DATASET_YES_NO: $DATASET_YES_NO"
+				;;
+				
 			"*")
 				echo "option is not correct, please check!!!"
 				;;
@@ -164,6 +171,13 @@ launch()
 		else
 			echo_log "[ $(date) ] --- ${FUNCNAME[0]}: please use -i yes to setup" 
 		fi
+		echo_log "[ $(date) ] --- ${FUNCNAME[0]}: args ---DATASET_YES_NO  $DATASET_YES_NO" 
+		if [ $DATASET_YES_NO == "yes" ];then
+			setup_dataset_app
+		else
+			echo_log "[ $(date) ] --- ${FUNCNAME[0]}: please use -d yes to install the dataset" 
+		fi
+
 	fi
 }
 
@@ -173,20 +187,35 @@ setup_release_app()
 	echo_log "[ $(date) ] - 1. download the package" 
 	if [ $SJ_SOC_TYPE == "j721e" ];then
 		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
+	elif [ $SJ_SOC_TYPE == "am62xx" ];then
+		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
 	else 
-		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8 | sed s/j721e/$SJ_SOC_TYPE/g` #TODO please check 
+		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8 | sed s/j7/j721s2/g` #TODO please check 
 	fi
 	echo " ---------------------- $Pkg_name"
-	local Pkg_Dir=`echo $Pkg_name| cut -d . -f 1`
-	# echo "- $Pkg_name $Pkg_Dir"
+
+	if [ $SJ_SOC_TYPE == "am62xx" ];then
+		local Pkg_Dir=`echo $Pkg_name| cut -d - -f 1`
+	elif [ $SJ_SOC_TYPE == "am62axx" ];then
+		local Pkg_Dir=`echo $Pkg_name| cut -d - -f 1`
+	else 
+		local Pkg_Dir=`echo $Pkg_name| cut -d . -f 1`
+	fi
+	echo "- Pkg_name=$Pkg_name Pkg_Dir=$Pkg_Dir"
 	if [ -d $REPO_INSTALL_PATH ];then
 		if [ ! -f $REPO_INSTALL_PATH/$Pkg_name ]; then
 			# echo "- $REPO_INSTALL_PATH/$Pkg_name "
 			# download the URL : package
-			cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL;
-			# download the URL1 : data set.
-			cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL1;
-			# echo "- $REPO_INSTALL_PATH/$Pkg_name download done!"
+			if [ $SJ_SOC_TYPE == "am62xx" ];then
+				cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL;
+			elif [ $SJ_SOC_TYPE == "am62axx" ];then
+				cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL;
+			else 
+				cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL;
+				# download the URL1 : data set.
+				cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL1;
+				# echo "- $REPO_INSTALL_PATH/$Pkg_name download done!"
+			fi
 		else 
 			echo "- download the sdk."
 		fi
@@ -195,12 +224,18 @@ setup_release_app()
 	fi
 	echo_log "[ $(date) ] - 2. install the sdk. " 
 	if [ -f $REPO_INSTALL_PATH/$Pkg_name ]; then
-		# echo "- $REPO_INSTALL_PATH/$Pkg_name download done!"
+		echo "- $REPO_INSTALL_PATH/$Pkg_name download done!"
 		if [ ! -d $APP_INSTALL_PATH/$Pkg_Dir ];then
-			# echo "- setup the :$APP_INSTALL_PATH $cwd   "
-			# echo "- $REPO_INSTALL_PATH/$Pkg_name $APP_INSTALL_PATH/../ "
-			# echo "cd $REPO_INSTALL_PATH && tar -zxvf $Pkg_name.tar.gz -C $APP_INSTALL_PATH/../"
-			cd $REPO_INSTALL_PATH && tar -zxvf ./$Pkg_name -C $APP_INSTALL_PATH
+			echo "- setup the :$APP_INSTALL_PATH $cwd   "
+			echo "- $REPO_INSTALL_PATH/$Pkg_name $APP_INSTALL_PATH/../ "
+			echo "cd $REPO_INSTALL_PATH && tar -zxvf $Pkg_name.tar.gz -C $APP_INSTALL_PATH/../"
+			if [ $SJ_SOC_TYPE == "am62xx" ];then
+				cd $REPO_INSTALL_PATH && sudo chmod 777 ./$Pkg_name &&  ./$Pkg_name
+			elif [ $SJ_SOC_TYPE == "am62axx" ];then
+				cd $REPO_INSTALL_PATH && sudo chmod 777 ./$Pkg_name &&  ./$Pkg_name
+			else 
+				cd $REPO_INSTALL_PATH && tar -zxvf ./$Pkg_name -C $APP_INSTALL_PATH
+			fi
 			cd $APP_INSTALL_PATH/$Pkg_Dir
 			if [ ! -d $APP_INSTALL_PATH/$Pkg_Dir/.git ] ; then 
 				cd $APP_INSTALL_PATH/$Pkg_Dir && git init;
@@ -263,6 +298,58 @@ setup_release_app()
 	echo_log "[ $(date) ] - 7. installed done !!! " 
 }
 
+setup_dataset_app()
+{
+	echo_log "[ $(date) ] --- ${FUNCNAME[0]}: args --- $#" 
+	echo_log "[ $(date) ] - 1. download the dataset package" 
+	local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
+	echo " ---------------------- $Pkg_name"
+	local Pkg_Dir=`echo $Pkg_name| cut -d . -f 1`
+	echo "- $Pkg_name $Pkg_Dir"
+	if [ -d $REPO_INSTALL_PATH ];then
+		if [ ! -f $REPO_INSTALL_PATH/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`.tar.gz ]; then
+			# echo "- $REPO_INSTALL_PATH/$Pkg_name "
+			# download the URL1 : data set.
+			cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL1;
+		else 
+			echo "- download the sdk."
+		fi
+		if [ ! -f $REPO_INSTALL_PATH/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`_$SJ_SOC_TYPE.tar.gz ]; then
+			# echo "- $REPO_INSTALL_PATH/$Pkg_name "
+			# download the URL1 : data set for special soc.
+			cd $REPO_INSTALL_PATH &&  wget $APP_DOWNLOAD_URL3;
+		else 
+			echo "- download the sdk."
+		fi
+	else 
+		echo "- Already setup. please continuing ---"
+	fi
+	echo_log "[ $(date) ] - 2. install the dataset. " 
+	if [ -f $REPO_INSTALL_PATH/$Pkg_name ]; then
+		# echo "- $REPO_INSTALL_PATH/$Pkg_name download done!"
+		if [ -d $APP_INSTALL_PATH/$Pkg_Dir ];then
+			echo_log "[ $(date) ] - 2.1 untar the dataset. " 
+			if [ -f $REPO_INSTALL_PATH/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`.tar.gz ]; then
+				cd $REPO_INSTALL_PATH && tar -zxvf ./psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`.tar.gz;
+				cp -v $REPO_INSTALL_PATH//psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`/test_data/*  $SJ_PATH_PSDKRA/tiovx/conformance_tests/test_data/
+			fi
+			echo_log "[ $(date) ] - 2.2 untar the dataset. $SJ_SOC_TYPE " 
+			if [ -f $REPO_INSTALL_PATH/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`_$SJ_SOC_TYPE.tar.gz ]; then
+				cd $REPO_INSTALL_PATH && tar -zxvf ./psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`_$SJ_SOC_TYPE.tar.gz;
+			fi
+			cp -rv $REPO_INSTALL_PATH//psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`/test_data/*  $SJ_PATH_PSDKRA/tiovx/conformance_tests/test_data/
+			# update the soc tidl module
+		
+#			cp -rv $REPO_INSTALL_PATH//psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`/test_data/psdkra $SJ_PATH_PSDKRA/tiovx/conformance_tests/test_data/tidl_models/$SJ_SOC_TYPE
+#			cp -rv $REPO_INSTALL_PATH//psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`/test_data/tivx   $SJ_PATH_PSDKRA/tiovx/conformance_tests/test_data/tidl_models/$SJ_SOC_TYPE
+		else
+			 echo "- already untar the package :$REPO_INSTALL_PATH "
+		fi  
+	else 
+		echo "- file is not exist please check"
+	fi
+}
+
 # Starting to run
 echo "[ $(date) $0] start---"
 # Current Dictionary name : 
@@ -276,10 +363,36 @@ update_args_value $*
 # APP_DOWNLOAD_URL="https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/$VERSION/exports/ti-processor-sdk-rtos-j721e-evm-$VERSION.tar.gz" # github repo
 # APP_DOWNLOAD_URL1="https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/$VERSION/exports/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`.tar.gz"
 # APP_DOWNLOAD_URL2="https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/$VERSION/exports/ti-processor-sdk-rtos-j721e-evm-$VERSION-prebuilt.tar.gz"
+if [ $SJ_SOC_TYPE == "j721e" ];then
+	LINK_ADDR="MD-bA0wfI4X2g"
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
+elif [ $SJ_SOC_TYPE == "j721s2" ];then
+	LINK_ADDR="MD-50weZVBfzl"
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
+elif [ $SJ_SOC_TYPE == "am62axx" ];then
+	LINK_ADDR="MD-b4i0McWpWx"
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
+elif [ $SJ_SOC_TYPE == "am62xx" ];then
+	LINK_ADDR="MD-IIN1zFBAlS"
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
+else 
+	echo " not support , pls check LINK_ADDR... "; 
+	exit 1
+fi
 
-APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-bA0wfI4X2g/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-rtos-$SJ_SOC_TYPE-evm-$VERSION.tar.gz" # github repo
-APP_DOWNLOAD_URL1="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-bA0wfI4X2g/`echo $VERSION | sed s/_/./g`/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`.tar.gz"
-APP_DOWNLOAD_URL2="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-bA0wfI4X2g/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-rtos-$SJ_SOC_TYPE-evm-$VERSION-prebuilt.tar.gz"
+# https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-b4i0McWpWx/08.06.00.18/mcu_plus_sdk_am62ax_08_06_00_18-linux-x64-installer.run
+# https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-b4i0McWpWx/08.06.00.18/ti-processor-sdk-rtos-am62axx-evm-08_06_00_18.tar.gz
+# https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-IIN1zFBAlS/08.06.00.18/mcu_plus_sdk_am62x_08_06_00_18-linux-x64-installer.run
+# https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-IIN1zFBAlS/08.06.00.18/mcu_plus_sdk_am62x-08_06_00_18-linux-x64-installer.run
+if [ $SJ_SOC_TYPE == "am62xx" ] || [ $SJ_SOC_TYPE == "am62axx" ];then
+	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/mcu_plus_sdk_`echo $SJ_SOC_TYPE | sed s/xx/x/g`_$VERSION-linux-x64-installer.run" # github repo
+else
+	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-rtos-$SJ_SOC_TYPE-evm-$VERSION.tar.gz" # github repo
+fi
+APP_DOWNLOAD_URL1="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`.tar.gz"
+APP_DOWNLOAD_URL2="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-rtos-$SJ_SOC_TYPE-evm-$VERSION-prebuilt.tar.gz"
+APP_DOWNLOAD_URL3="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/psdk_rtos_ti_data_set_`echo $VERSION | cut -c 1-8`_$SJ_SOC_TYPE.tar.gz"
+
 # -------------------------------------------------------------------------------------------------------------------------------------
 parse_args
 # Launch the application:  $1 : number of args

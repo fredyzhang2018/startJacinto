@@ -10,3 +10,5 @@ scripts/ubuntu/.targetfs
 scripts/j7/nfs/bin/setupBoard.minicom
 *__pycache__*
 .vscode/settings.json
+.Trash-1000/
+sdks1/*

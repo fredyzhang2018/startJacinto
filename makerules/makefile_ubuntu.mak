@@ -58,12 +58,52 @@ ubuntu-install-geany:
 	sudo apt install geany
 	# ubuntu18 install done!
 
+ubuntu-launch-conky:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: launch the conky monitor!!!");
+	conky -c $(SJ_PATH_SCRIPTS)/ubuntu/conkyrc &
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: launch the conky monitor --done!!!");
+	
 
 ubuntu-jupyter-start: 
 	# install ubuntu18
 	nohup jupyter notebook >/dev/null 2>&1 &
 	# ubuntu18 install done!
-	
+
+ubuntu-unixbench-test:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install ubuntu basic $(SJ_PATH_SCRIPTS)/ubuntu/unixbench.sh !!!");
+	cd $(SJ_PATH_SCRIPTS)/ubuntu/ && ./unixbench.sh -i yes -r yes
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install ubuntu basic $(SJ_PATH_SCRIPTS)/ubuntu/unixbench.sh --done !!!");
+
+ubuntu-cpu-performance:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: CPU mode performace !!!");
+	sudo cpufreq-set -r -g performance
+	cpufreq-info | grep "current CPU frequency"
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: CPU mode performace --done!!!");
+
+ubuntu-cpu-powersave:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: CPU mode performace !!!");
+	sudo cpufreq-set -r -g powersave
+	cpufreq-info | grep "current CPU frequency"
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: CPU mode performace --done!!!");
+
+
+ubuntu-install-krusader:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install the krusader !!!");
+	sudo apt-get install krusader
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install the krusader done !!!");
+
+
+ubuntu-install-grabserial:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install the grabserial !!!");
+	sudo apt-get install grabserial
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install the grabserial done !!!");
+
+ubuntu-launch-grabserial:
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install the grabserial !!!");
+	sudo grabserial -v -S -d /dev/ttyUSB0 -t -m "Starting kernel"
+	$(Q)$(call sj_echo_log, 0 , "ubuntu: install the grabserial done !!!");
+
+
 ubuntu-jupyter-setup: 
 	# install ubuntu18
 	pip3 install jupyter  -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
@@ -86,7 +126,14 @@ ubuntu-install-sublime:
 	sudo apt-get update
 	sudo apt-get install sublime-text
 
-ubuntu-docker-yocto-ubuntu18-j7: check_paths_PSDKLA
+ubuntu-docker-ubuntu14: check_paths_PSDKLA
+	$(Q$(ECHO) "please below account:"
+	$(Q$(ECHO) "   USER: fredy"
+	$(Q$(ECHO) "   PWD:  123 or xxx"
+	docker run -t -i -v $(SJ_PATH_JACINTO):$(SJ_PATH_JACINTO) jwidic/ubuntu:14.04yocto /bin/bash
+	$(Q$(ECHO) "   Yocto build done, happy using !!!"
+
+ubuntu-docker-ubuntu18: check_paths_PSDKLA
 	$(Q$(ECHO) "please below account:"
 	$(Q$(ECHO) "   USER: fredy"
 	$(Q$(ECHO) "   PWD:  123"

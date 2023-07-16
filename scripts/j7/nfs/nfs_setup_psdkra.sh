@@ -86,8 +86,18 @@ if [ "$host_upper" -gt "$min_ver_upper" -o "$host_upper" -eq "$min_ver_upper" ];
     fi
 fi
 
+
+# update the tftpboot 
+echo "[ `date` ]: update PSDKRA NFS BOOT /tftpboot images: "
+rm -f  /tftpboot/*
+cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/Image-j7-evm.bin               /tftpboot
+cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/k3-j721e-common-proc-board.dtb /tftpboot
+cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/k3-j721e-vision-apps.dtbo      /tftpboot
+ls -l /tftpboot
+echo "[ `date` ]: update /tftpboot images --done "
+
 if [ -f $cwd/bin/setup-uboot-env.sh ]; then
-    $cwd/bin/setup-uboot-env.sh $1  $2 #$1 TargetNFS PATH $2 Scirpts path
+    $cwd/bin/setup-uboot-env.sh $1  $2 psdkra #$1 TargetNFS PATH $2 Scirpts path  $3 SDK_FLAG : psdkra or psdkla
     check_status
 else
     echo "setup-uboot-env.sh does not exist in the bin directory"

@@ -37,7 +37,9 @@ SJ_PATH_MCUSS                 ?= $(SJ_PATH_PSDKRA)/mcusw
 SJ_PATH_IMAGING               ?= $(SJ_PATH_PSDKRA)/imaging
 SJ_PATH_VISION_SDK_BUILD      ?= $(SJ_PATH_PSDKRA)/vision_apps
 SJ_PATH_TUTORIAL_RUN          ?= $(SJ_PATH_PSDKRA)/tiovx/out/PC/x86_64/LINUX/
+SJ_PATH_EDGEAI_TIDL_TOOLS     ?= $(SJ_PATH_SDK)/edgeai-tidl-tools/
 SJ_PATH_PDK                   ?= $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep pdk`
+
 export SJ_PATH_PDK
 #==============================================================================
 # PSDKLA PATH
@@ -55,6 +57,7 @@ print_env:
 	$(Q)$(ECHO) "# SJ_PATH_J7_SDK                      $(SJ_PATH_J7_SDK)"	
 	$(Q)$(ECHO) "# SJ_PATH_J6_SDK                      $(SJ_PATH_J6_SDK)"	
 	$(Q)$(ECHO) "# SJ_PATH_SDK                         $(SJ_PATH_SDK)"	
+	$(Q)$(ECHO) "# SJ_SOC_TYPE                         $(SJ_SOC_TYPE)"	
 	$(Q)$(ECHO) "-------------Common Env------------------------------"
 	$(Q)$(ECHO) "# SJ_BOOT SJ_BOOT1 and SJ_ROOTFS:     $(SJ_BOOT) $(SJ_BOOT1) $(SJ_ROOTFS)"
 	$(Q)$(ECHO) "# SJ_PATH_RESOURCE:                   $(SJ_PATH_RESOURCE)"
@@ -70,9 +73,12 @@ print_env:
 	$(Q)$(ECHO) "# SJ_PATH_IMAGING:                    $(SJ_PATH_IMAGING)"
 	$(Q)$(ECHO) "# SJ_PATH_VISION_SDK_BUILD:           $(SJ_PATH_VISION_SDK_BUILD)"
 	$(Q)$(ECHO) "# SJ_PATH_TUTORIAL_RUN:               $(SJ_PATH_TUTORIAL_RUN)"
+	$(Q)$(ECHO) "# SJ_PATH_EDGEAI_TIDL_TOOLS:          $(SJ_PATH_EDGEAI_TIDL_TOOLS)"
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
 	$(Q)$(ECHO) "# SJ_PATH_K3_BOOTSWITCH:              $(SJ_PATH_K3_BOOTSWITCH)"
 	$(Q)$(ECHO) "------------- User Guide   ------------------------------"	
-	$(Q)$(ECHO) "# PSDKRA：  http://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/latest/index_FDS.html "
-	$(Q)$(ECHO) "# PSDKLA：  http://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/latest/index_FDS.html "
+	$(Q)$(ECHO) "# PSDKRA: http://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/latest/index_FDS.html"
+	$(Q)$(ECHO) "# PSDKLA: http://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/latest/index_FDS.html"
+	$(Q)$(ECHO) "# AM62xx: https://www.ti.com/product/AM625?keyMatch=&tisearch=search-everything&usecase=partmatches"
+	$(Q)$(ECHO) "# AM62Ax: https://www.ti.com/product/AM62A7-Q1?keyMatch=&tisearch=search-everything&usecase=partmatches"
 	$(Q)$(ECHO) "### ----------------------ending------------------------" 

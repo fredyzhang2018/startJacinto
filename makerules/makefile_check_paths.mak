@@ -35,6 +35,10 @@ check_paths_PSDKRA:
 check_paths_PSDKLA_K3_BOOTSWITCH:
 	$(call sj_check_path,$(SJ_PATH_K3_BOOTSWITCH));
 
+check_paths_EDGEAI_TIDL_TOOLS:
+	$(call sj_check_path,$(SJ_PATH_EDGEAI_TIDL_TOOLS));
+
+
 check_paths_help:
 	# check_paths_sdk
 	# check_paths_sd

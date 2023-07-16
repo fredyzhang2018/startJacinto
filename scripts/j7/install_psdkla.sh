@@ -171,11 +171,7 @@ setup_release_app()
 {
 	echo_log "[ $(date) ] --- ${FUNCNAME[0]}: args --- $#" 
 	echo_log "[ $(date) ] - 1. download the package" 
-	if [ $SJ_SOC_TYPE == "j721e" ];then
-		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
-	else 
-		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8 | sed s/j7/j721s2/g` #TODO please check 
-	fi
+	local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
 	echo_log "[ $(date) ] --- Pkg_name : $Pkg_name" 
 	# echo "- $Pkg_name"
 	if [ -d $REPO_INSTALL_PATH ];then
@@ -233,9 +229,41 @@ cwd=`pwd`/$cwd_c
 echo_log "[ $(date) ] --- running dictionary:  $cwd/install_psdkla.sh" 
 check_args $*
 update_args_value $*
-#---------------------------------------------------------------------------------------------------------------------------------
+
+if [ $SJ_SOC_TYPE == "j721e" ];then
+	LINK_ADDR="MD-U6uMjOroyO"
+	SOC_TYPE_temp="j7"
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR $SOC_TYPE_temp"
+elif [ $SJ_SOC_TYPE == "j721s2" ];then
+	LINK_ADDR="MD-Snl3iJzGTW"
+	SOC_TYPE_temp=$SJ_SOC_TYPE
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR  $SOC_TYPE_temp"
+elif [ $SJ_SOC_TYPE == "am62axx" ];then
+	LINK_ADDR="MD-D37Ls3JjkT"
+	SOC_TYPE_temp=$SJ_SOC_TYPE
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR  $SOC_TYPE_temp"
+elif [ $SJ_SOC_TYPE == "am62xx" ];then
+	LINK_ADDR="MD-PvdSyIiioq"
+	SOC_TYPE_temp=$SJ_SOC_TYPE
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR  $SOC_TYPE_temp"
+else
+	echo " not support , pls check LINK_ADDR... "; 
+	exit 1
+fi
+
+# AM62Axx version using xx.xx.xx.xx , TDA4 using xx_xx_xx_xx
+if [ $SJ_SOC_TYPE == "am62axx" ];then
+	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-`echo $VERSION | sed s/_/./g`-Linux-x86-Install.bin"
+elif [ $SJ_SOC_TYPE == "am62xx" ];then
+	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-`echo $VERSION | sed s/_/./g`-Linux-x86-Install.bin"
+else 
+	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-$VERSION-Linux-x86-Install.bin" 
+fi
 # APP_DOWNLOAD_URL="https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/$VERSION/exports/ti-processor-sdk-linux-j7-evm-$VERSION-Linux-x86-Install.bin" # github repo
-APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-U6uMjOroyO/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-j7-evm-$VERSION-Linux-x86-Install.bin" # github repo
+# APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-U6uMjOroyO/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-j7-evm-$VERSION-Linux-x86-Install.bin" # github repo
+# APP_DOWNLOAD_URL1="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-Snl3iJzGTW/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-j721s2-evm-$VERSION-Linux-x86-Install.bin" # github rep
+# AM62A : https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-D37Ls3JjkT/08.06.00.45/ti-processor-sdk-linux-am62axx-evm-08.06.00.45-Linux-x86-Install.bin
+#         https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-D37Ls3JjkT/08.06.00.45/ti-processor-sdk-linux-am62axx-evm-08_06_00_45-Linux-x86-Install.bin
 # APP_DOWNLOAD_URL1="https://github.com/protocolbuffers/protobuf/archive/refs/tags/v$VERSION.tar.gz"
 #----------------------------------------------------------------------------------------------------------------------------------
 parse_args

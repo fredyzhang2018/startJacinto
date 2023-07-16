@@ -4,6 +4,20 @@
 #  Utility makefile to build Vison SDK libraries       #
 #                                                      #
 ########################################################
+##########################################
+#                                        #
+# MCU SDK                                #
+#                                        #
+##########################################
+ra-mcu-all:
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the MCU SDK");
+	$(MAKE) -C $(SJ_PATH_PSDKRA) all  -s -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the MCU SDK --done!!! ");	
+##########################################
+#                                        #
+# VISION SDK                             #
+#                                        #
+##########################################
 ra-sdk:
 	$(Q)$(call sj_echo_log, 0 , " --- 1. build the sdk");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sdk  -s -j$(CPU_NUM)
@@ -31,6 +45,7 @@ ra-sdk_show_config:
 # imaging                                #
 #                                        #
 ##########################################
+
 ra-imaging:
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) imaging -s -j$(CPU_NUM)
 ra-imaging-clean:
@@ -73,6 +88,24 @@ ra-tiovx-clean:
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) tiovx_clean -s -j$(CPU_NUM)
 ra-tiovx-scrub: 
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) tiovx_scrub -s -j$(CPU_NUM)
+
+
+##########################################
+#                                        #
+# edge ai                                #
+#                                        #
+##########################################
+
+BUILD_EDGEAI=yes make sdk -j8
+ra-sdk-edgeai:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) BUILD_EDGEAI=yes sdk -s -j$(CPU_NUM)	
+
+ra-edgeai:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) edgeai -s -j$(CPU_NUM)
+ra-edgeai-install:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) edgeai_install -s -j$(CPU_NUM)
+ra-edgeai-scrub: 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) edgeai_scrub -s -j$(CPU_NUM)
 
 ##########################################
 #                                        #

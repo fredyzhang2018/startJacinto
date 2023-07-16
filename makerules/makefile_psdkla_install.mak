@@ -62,6 +62,23 @@ la-sd-install-all:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootf
 	$(SJ_PATH_SCRIPTS)/mk_sd_psdkla.sh $(SJ_BOOT1) $(SJ_ROOTFS) 
 	@echo "please unplug the sd card."
 
+
+la-sd-am62x-install-all: check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
+	$(Q)$(call sj_echo_log, 0 , " --- 1. install am62x rootfs to sdcard... ");
+	sudo $(SJ_PATH_PSDKLA)/bin/create-sdcard.sh
+	# sudo cp $(SJ_PATH_PSDKLA)/board-support/prebuilt-images/tiboot3-am62x-hs-evm.bin $(SJ_BOOT1)/tiboot3.bin
+	$(Q)$(call sj_echo_log, 0 , " --- 1. install am62x rootfs to sdcard... done!!!");
+
+la-dfu-boot-am62x:
+	$(Q)$(call sj_echo_log, 0 , " --- 1. install am62x rootfs to sdcard... ");
+	# sudo $(SJ_PATH_PSDKLA)/bin/DFU_flash/u-boot_flashwriter.sh emmc am62x
+	sudo dfu-util -R -a bootloader -D $(SJ_PATH_PSDKLA)/board-support/u-boot_build/r5/tiboot3.bin
+	sudo dfu-util -l
+	sudo dfu-util -R -a tispl.bin  -D $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a53/tispl.bin
+	sudo dfu-util -R -a u-boot.img -D $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a53/u-boot.img
+	$(Q)$(call sj_echo_log, 0 , " --- 1. install am62x rootfs to sdcard... done!!!");
+
+
 la-sd-install-scripts:  check_paths_PSDKLA check_paths_sd_boot1 check_paths_sd_rootfs 
 	@echo ">>> install the mksdboot.sh to SD /home/root"
 	@echo " test path: $(SJ_ROOTFS) "
@@ -117,6 +134,8 @@ la-setup-env-minicom-all:
 	$(SJ_PATH_SCRIPTS)/setup-minicom-all.sh
 	# open done
 
+la-open-uart-terminal: la-setup-env-minicom
+	minicom
 
 la-install-help:
 	$(Q)$(ECHO)
