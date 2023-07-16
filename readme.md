@@ -489,7 +489,7 @@ cd yocto-layers
 
 # Release notes
 
-## 202307 Release
+## 202307 Release : 30_10_00
 
 1. suppot am6x device.
 2. support TDA4VH /VM eco etc.

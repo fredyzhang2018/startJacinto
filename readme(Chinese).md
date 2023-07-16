@@ -33,7 +33,7 @@
 4. 选择要使用的SDK
 5. 执行相关的命令
 
- **查看工具的配置，变量使用如下的命令** ：
+**查看工具的配置，变量使用如下的命令** ：
 
 ```
 make print_all
@@ -44,12 +44,13 @@ make print_variable
 
 ## 开发环境及工具下载
 
-| 类型              | 说明                                                                                          |
-| ----------------- | --------------------------------------------------------------------------------------------- |
+
+| 类型              | 说明                                                                                             |
+| ------------------- | -------------------------------------------------------------------------------------------------- |
 | 项目地址          | [https://github.com/fredyzhang2018/startJacinto](https://github.com/fredyzhang2018/startJacinto) |
-| PC环境            | Ubuntu18.04                                                                                   |
-| Jacinto7 支持版本 | SDK0703 SDK0800 SDK0802 SDK0804                                                               |
-| 支持的Soc         | TDA4VM TDA4AL/VL/VM Eco                                                                       |
+| PC环境            | Ubuntu18.04                                                                                      |
+| Jacinto7 支持版本 | SDK0703 SDK0800 SDK0802 SDK0804                                                                  |
+| 支持的Soc         | TDA4VM TDA4AL/VL/VM Eco                                                                          |
 
 # Rules
 
@@ -77,10 +78,7 @@ make print_variable
 
 执行上面的命令后，出现如下界面，选择对应的SDK版本。
 
-
-
 ![img](https://github.com/fredyzhang2018/startJacinto/blob/master/docs/.pictures/Screenshot%20from%202022-10-23%2011-05-25.png "StartJacinto")
-
 
 ## TIDL
 
@@ -370,8 +368,8 @@ build yocto use below command:
 # Remote Environment
 
 You can use the TDA4 EVM board to setup a remote debug envrionment. More details, please refer to below:
-    **Hardware**: USBRELAY to power-on and power-off the baord.
-    **K3-Switch Tool**: boot the board  with different boot mode over the DFU.
+**Hardware**: USBRELAY to power-on and power-off the baord.
+**K3-Switch Tool**: boot the board  with different boot mode over the DFU.
 
 ## USBRELAY
 
@@ -419,6 +417,12 @@ mount the sd/emmc
 `make ubuntu-install-opencv`
 
 # Release notes
+
+## 202307 Release : 30_10_00
+
+1. suppot am6x device.
+2. support TDA4VH /VM eco etc.
+3. update useful scripts.
 
 ## 202209 1st release : 30_00_00
 
