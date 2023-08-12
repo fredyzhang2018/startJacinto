@@ -4,7 +4,7 @@
 
 **StartJacinto Tools** 是由Fredy 开发的”All in One” 的开发环境。 目的是在一个终端下能够进行嵌入式处理器的所有工作。 也可适用于日常的项目的部署和管理。
 
-当前StartJacinto tools 主要涉及的处理器是Jacinto处理器，未来还可能扩展到sitara处理器， 主要功能如下：
+目前不仅支持Jacinto7处理器的全系列，也已经支持sitara处理器， 主要功能如下：
 
 1. 管理SDK的不同版本 （SDK开发过程中会使用到多个版本的SDK）
 2. 直接更新image 到SD，制作SD卡，更新文件系统、资源文件到SD。
