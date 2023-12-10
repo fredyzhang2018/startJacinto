@@ -48,9 +48,9 @@ make print_variable
 | 类型              | 说明                                                                                             |
 | ------------------- | -------------------------------------------------------------------------------------------------- |
 | 项目地址          | [https://github.com/fredyzhang2018/startJacinto](https://github.com/fredyzhang2018/startJacinto) |
-| PC环境            | Ubuntu18.04                                                                                      |
-| Jacinto7 支持版本 | SDK0703 SDK0800 SDK0802 SDK0804                                                                  |
-| 支持的Soc         | TDA4VM TDA4AL/VL/VM Eco                                                                          |
+| PC环境            | Ubuntu22.04; Ubuntu18.04;                                                                        |
+| Jacinto7 支持版本 | SDK0703 SDK0800 SDK0802 SDK0804 SDK0900 SDK0901                                                 |
+| 支持的Soc         | TDA4VM TDA4AL/VL/VM Eco TDA4VH/TDA4VP                                                            |
 
 # Rules
 
