@@ -4,18 +4,19 @@
 # Edit this file to suit your specific build needs
 #
 
-SJ_PDK_BOARD = j721e_evm
+SJ_PDK_BOARD          ?= j721s2_evm
 # mpu1_0, mcu1_0, mcu1_1, mcu2_0, mcu2_1, mcu3_0, mcu3_1, c66xdsp_1, c66xdsp_2, c7
-SJ_PDK_CORE = mcu1_0
-# csl osal_nonos sciclient udma dmautils pdk_examples csl_uart_test_app csl_uart_test_app csl_i2c_led_blink_app sciserver_testapp_freertos  ipc_echo_testb_freertos
-SJ_PDK_MODULES =  ipc_echo_testb_freertos
-# PROFILE: debug or release
-SJ_PDK_BUILD_PROFILE=release
+SJ_PDK_CORE           ?= mcu2_0
+# csl osal_nonos sciclient udma dmautils pdk_examples csl_uart_test_app csl_uart_test_app csl_i2c_led_blink_app sciserver_testapp_freertos  ipc_echo_testb_freertos boot_app_mmcsd_linux
+#  pdk_libs pdk_app_libs 
+SJ_PDK_MODULES        ?= pdk_examples
+ # PROFILE: debug or release
+SJ_PDK_BUILD_PROFILE  ?= release
 
 
 pdk-build: check_paths_PSDKRA pdk-build-configure
 	$(Q)$(call sj_echo_log, 0 ,"--- 0 board : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  ");
-	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES) SOC=j721e BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) -s BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES) SOC=$(SJ_SOC_TYPE) BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) -s BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM) 
 	$(Q)$(call sj_echo_log, 0 ,"--- 1 build SJ_PDK_BOARD : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE) done!");
 
 pdk-build-configure: check_paths_PSDKRA
@@ -23,7 +24,7 @@ pdk-build-configure: check_paths_PSDKRA
 
 pdk-build-clean: check_paths_PSDKRA pdk-build-configure
 	$(Q)echo "board : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  "
-	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES)_clean SOC=j721e BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) -s BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES)_clean SOC=j721e BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) -s TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM)
 	$(Q)echo "build SJ_PDK_BOARD : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE) done!"
 
 pdk-clean:
@@ -71,34 +72,36 @@ pdk-help:
 	$(Q)$(ECHO) "#   SJ_PDK_MODULES = $(SJ_PDK_MODULES)"
 	$(Q)$(ECHO) "#   SJ_PDK_BUILD_PROFILE = $(SJ_PDK_BUILD_PROFILE)"
 
-
-
 sbl-bootimage-sd:
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_mcusw_bootimage_sd !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_sd
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_sd -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_mcusw_bootimage_sd done!!!");
+
+sbl-bootimage-emmc-boot0:
+	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_bootimage_emmc_boot0 !!!");
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) 	sbl_bootimage_emmc_boot0 -s -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_bootimage_emmc_boot0 done!!!");
+
+sbl-bootimage-emmc-uda:
+	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_bootimage_emmc_uda !!!");
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) 	sbl_bootimage_emmc_uda -s -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_bootimage_emmc_uda done!!!");
 
 sbl-bootimage-ospi:
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_mcusw_bootimage_sd !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_ospi
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_ospi -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_mcusw_bootimage_sd done!!!");
 
 sbl-vision_apps-bootimage:
 	$(Q)$(call sj_echo_log, 0 , " --- 0.   sbl_vision_apps_bootimage !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_vision_apps_bootimage
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_vision_apps_bootimage -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1.   sbl_vision_apps_bootimage done!!!");
 
 # build the linux: dtb kernel etc 
 sbl-linux-bootimage:
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  linux boot image !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_linux_bootimage
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_linux_bootimage -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  linux boot image done!!!");
-
-sbl-sd-bootimage-install:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   update sd boot partition images for linux boot!!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_bootimage_install_sd -s -j$(CPU_NUM)
-	$(Q)ls -l  $(SJ_BOOT)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.   update sd boot partition images for linux boot--done!!!");
 
 # This should run on UART BOOT Mode
 sbl-ospi-bootimage-install-tftp:
@@ -174,32 +177,46 @@ hs-sd-sbl-bootimage-install-sd:
 # mcusw-sbl-mmcsd-img-hlos :  kernel build 
 # sbl_bootimage_sd         :  SBL boot image
 # sbl_vision_apps_bootimage:  vision apps image. 
-SJ_SBL_PREBUILT?=yes
-sbl-sd-bootimage:  
+SJ_SBL_PREBUILT?=no
+sbl-sd-bootimage:  check_paths_sd_boot
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  update boot image to SD !!!");
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_bootfiles/tiboot3.bin $(SJ_BOOT)
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_bootfiles/tifs.bin    $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/tiboot3.bin $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/tifs.bin    $(SJ_BOOT)
 ifeq ($(SJ_SBL_PREBUILT), yes)
 	$(INSTALL) $(SJ_PATH_RESOURCE)/psdkra/0801/can_boot_app_mcu_rtos_mcu1_0_release.appimage          $(SJ_BOOT)/app
 else
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_bootfiles/app                                      $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/app                                      $(SJ_BOOT)
 endif
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_combined_bootfiles/atf_optee.appimage              $(SJ_BOOT)
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_combined_bootfiles/tidtb_linux.appimage            $(SJ_BOOT)
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_combined_bootfiles/tikernelimage_linux.appimage    $(SJ_BOOT)
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_bootfiles/lateapp1    $(SJ_BOOT)
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_bootfiles/lateapp2    $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/atf_optee.appimage              $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/tidtb_linux.appimage            $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/tikernelimage_linux.appimage    $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/lateapp1                                 $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/lateapp2                                 $(SJ_BOOT)
 	sync
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  update boot image to SD done!!!");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
 	
-sbl-sd-combined-image:
+sbl-sd-combined-image-opt: check_paths_sd_boot
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  update boot image to SD !!!");
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_combined_bootfiles/tiboot3.bin $(SJ_BOOT)
-	$(INSTALL) $(SJ_PATH_VISION_SDK_BUILD)/out/sbl_combined_bootfiles/tifs.bin    $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tiboot3.bin              $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tifs.bin                 $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/combined_opt.appimage    $(SJ_BOOT)/app
 	sync
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  update boot image to SD done!!!");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+
+
+sbl-sd-combined-image-dev: check_paths_sd_boot
+	$(Q)$(call sj_echo_log, 0 , " --- 0.  update boot image to SD !!!");
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tiboot3.bin              $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tifs.bin                 $(SJ_BOOT)
+	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/combined_dev.appimage    $(SJ_BOOT)/app
+	$(INSTALL) $(SJ_PATH_PSDKLA)/board-support/prebuilt-images/u-boot.img                        $(SJ_BOOT)/
+	$(INSTALL) $(SJ_PATH_PSDKLA)/board-support/prebuilt-images/uEnv.txt                          $(SJ_BOOT)/
+	sync
+	$(Q)$(call sj_echo_log, 0 , " --- 1.  update boot image to SD done!!!");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+
 
 
 sbl-bootimage-clean:
@@ -207,20 +224,39 @@ sbl-bootimage-clean:
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_clean 
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_bootimage_clean !!!");
 
-sbl-linux-combined-bootimage: 
+sbl-combined-bootimage-opt: 
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage
+	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
+	$(Q)sed -i '/^HLOS_BOOT ?=/c HLOS_BOOT ?= optimized'  $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk
+	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1. sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+
+
+sbl-combined-bootimage-dev: 
+	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
+	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
+	$(Q)sed -i '/^HLOS_BOOT ?=/c HLOS_BOOT ?= development'  $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk
+	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_linux_combined_bootimage_dev -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+
+sbl-combined-bootimage-emmc-boot0: 
+	$(Q)$(call sj_echo_log, 0 , " --- 0.   atf_optee  sbl_vision_apps sbl_linux_combined_bootimage sbl_emmc_boot0 !!!");
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_emmc_boot0  -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1.    atf_optee  sbl_vision_apps sbl_linux_combined_bootimage sbl_emmc_boot0 done!!!");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
 
 sbl-combined-bootimage-install-sd:
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_clean !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_install_sd 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_install_sd  -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_bootimage_clean !!!");
 
 sbl-combined-bootimage-clean:
 	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_combined_bootimage_clean !!!");
-	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_clean 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_clean -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_combined_bootimage_clean !!!");
 
 sbl-help:

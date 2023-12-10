@@ -58,7 +58,7 @@ endif
 ifeq  ($(SJ_BUILD_INCLUDE_PSDKLA_INSTALL),yes)
 	$(Q)$(ECHO) "# SJ_PSDKLA_BRANCH                --> $(SJ_PSDKLA_BRANCH)"
 endif
-
+	$(Q)$(ECHO) "# SJ_VER_SDK                      --> $(SJ_VER_SDK)"
 #==============================================================================
 # config make used tools
 #==============================================================================

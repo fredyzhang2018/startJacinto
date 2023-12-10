@@ -3,22 +3,21 @@
 # MCUSS                                  #
 #                                        #
 ##########################################
-# Soc J721e J7200
-SJ_MCUSW_SOC = j721e
+# Soc J721e J7200 j721s2
+SJ_MCUSW_SOC        ?= $(SJ_SOC_TYPE)
 # EVM Board: j721e_evm
-SJ_MCUSW_BOARD = j721e_evm
+SJ_MCUSW_BOARD      ?= $(SJ_SOC_TYPE)_evm
 # mpu1_0, mcu1_0, mcu1_1, mcu2_0, mcu2_1, mcu3_0, mcu3_1, c66xdsp_1, c66xdsp_2, c7
-SJ_MCUSW_CORE = mcu1_0
+SJ_MCUSW_CORE       ?= mcu1_0
 # Modules: can_boot_app_mcu_rtos can_profile_app
 #		CDD IPC :  cdd_ipc_app (mcu2_1 ) cdd_ipc_app_rc_linux  (mcu2_1) cdd_ipc_profile_app_rc_linux (mcu1_0))
 #       	cdd_ipc_profile_app_rc_linux tirtos  mcu1_0 (SDK8.0) Verified. 
 #			cdd_ipc_profile_app_rc_linux tirtos
-SJ_MCUSW_MODULES =can_boot_app_mcu_rtos
+SJ_MCUSW_MODULES    ?= can_boot_app_mcu_rtos
 # debug or release
-SJ_MCUSW_BUILD_PROFILE=release
+SJ_MCUSW_BUILD_PROFILE  ?= release
 # OS TYPE :  baremetal fro MCAL examples  freertos (tirtos remove from 8.0 SDK.)
-SJ_MCUSW_BUILD_OS_TYPE =freertos
-
+SJ_MCUSW_BUILD_OS_TYPE  ?= freertos
 
 mcusw-build: check_paths_PSDKRA mcusw-build-configure
 ifeq ($(SJ_MCUSW_BUILD_OS_TYPE),tirtos)
@@ -80,9 +79,9 @@ endif
 # ## Can Profiling Application
 mcusw-sbl-mmcsd-img:
 	$(Q)echo "start build sbl for mmcsd ";
-	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build BOARD=j721e_evm CORE=mcu1_0 BUILD_PROFILE=release pdk_libs      -s -j$(CPU_NUM)
-	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build BOARD=j721e_evm CORE=mcu1_0 BUILD_PROFILE=release sbl_mmcsd_img -s -j$(CPU_NUM)
-	cd $(SJ_PATH_MCUSS)/mcuss_demos/boot_app_mcu_rtos/main_domain_apps/scripts/ && ./makemulticore.sh j721e_evm
+	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build BOARD=$(SJ_MCUSW_BOARD)  CORE=$(SJ_MCUSW_CORE) BBUILD_PROFILE=$(SJ_MCUSW_BUILD_PROFILE) TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) pdk_libs      -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build BOARD=$(SJ_MCUSW_BOARD)  CORE=$(SJ_MCUSW_CORE) BBUILD_PROFILE=$(SJ_MCUSW_BUILD_PROFILE) TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) sbl_mmcsd_img -s -j$(CPU_NUM)
+	cd $(SJ_PATH_MCUSS)/mcuss_demos/boot_app_mcu_rtos/main_domain_apps/scripts/ && ./makemulticore.sh $(SJ_MCUSW_BOARD)
 	$(Q)echo "test !!!";
 # please run :  mcuss-sbl-mmcsd-img mcusw-build-can-boot-app-mcu before run below command. 
 mcusw-sd-install-sbl-mmcsd-imgs: check_paths_sd_boot # mcuss-sbl-mmcsd-img mcusw-build-can-boot-app-mcu
@@ -228,7 +227,7 @@ mcusw-sbl-boot-u-boot:
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BIN_PATH ?=" 
 	$(Q)$(call sj_echo_log, 0 , " --- 4. KERNEL_IMG. It essentially points to A72 SPL $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk  !!!");
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "SPL_IMG    ?=" 
-	$(Q)sed -i '/^SPL_IMG    ?=/c SPL_IMG    ?= load_only,$(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/spl/u-boot-spl.bin,0x80080000,0x80080000'  $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk
+	$(Q)sed -i '/^SPL_IMG    ?=/c SPL_IMG    ?= load_only,$(SJ_PATH_PSDKLA)/board-support/prebuilt-images/u-boot-spl.bin-$(SJ_SOC_TYPE)-evm,0x80080000,0x80080000'  $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "SPL_IMG    ?=" 
 	$(Q)$(call sj_echo_log, 0 , " --- 5. KERNEL_IMG. It essentially points to A72 SPL $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk  !!!");
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "IMG1 ?=" 
@@ -238,7 +237,7 @@ mcusw-sbl-boot-u-boot:
 	$(Q)if [ -f $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/bin/j721e_evm/combined.appimage ]; then \
 		rm $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/bin/j721e_evm/combined.appimage; \
 	fi
-	cd $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/ && make
+	cd $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/ && make all
 	$(Q)$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/
 	$(Q)$(call sj_echo_log, 0 , " --- 7. It's ready for boot your EVM    !!!");
 

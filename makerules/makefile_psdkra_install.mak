@@ -14,22 +14,27 @@ ra-ccs-setup-steps:
 	$(Q)$(ECHO) "load(\"/home/fredy/j7/psdk_rtos_auto_j7_06_01_00_15/pdk/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
 	$(Q)$(ECHO) "load(\"/home/fredy/j7/ti-processor-sdk-rtos-j721e-evm-07_03_00_07/pdk_jacinto_07_03_00_29/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
 	$(Q)$(ECHO) "2. make sure the M3 has the gel file";
-	$(Q)$(ECHO) "3. check the log happey debugging ！";
+	$(Q)$(ECHO) "3. check the log happey debugging !";
 	
 
-ra-install-targetfs: 
+ra-install-targetfs:
+ifeq ($(SJ_VER_SDK),09) 
+	cp ${SJ_PATH_PSDKLA}/board-support/prebuilt-images/boot-adas-$(SJ_SOC_TYPE)-evm.tar.gz ${SJ_PATH_PSDKRA}/
+	cp ${SJ_PATH_PSDKLA}/filesystem/tisdk-adas-image-$(SJ_SOC_TYPE)-evm.tar.xz     ${SJ_PATH_PSDKRA}/
+else
 	cp ${SJ_PATH_PSDKLA}/board-support/prebuilt-images/boot-j7-evm.tar.gz ${SJ_PATH_PSDKRA}/
 	cp ${SJ_PATH_PSDKLA}/filesystem/tisdk-default-image-j7-evm.tar.xz     ${SJ_PATH_PSDKRA}/
 	cp ${SJ_PATH_PSDKLA}/filesystem/tisdk-edgeai-image-j7-evm.tar.xz     ${SJ_PATH_PSDKRA}/
+endif
 
 ra-install-sdk:check_paths_downloads check_paths_PSDKLA
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk");
-	./scripts/j7/install_psdkra.sh -s $(SJ_PSDKRA_BRANCH) -i yes -p $(SJ_PATH_J7_SDK)
+	./scripts/j7/install_psdkra.sh -s $(SJ_PSDKRA_BRANCH) -i yes -p $(SJ_PATH_SDK)
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk --done");
 
 ra-install-dataset:check_paths_downloads check_paths_PSDKLA
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk dataset");
-	./scripts/j7/install_psdkra.sh -s $(SJ_PSDKRA_BRANCH) -d  yes -p $(SJ_PATH_J7_SDK)
+	./scripts/j7/install_psdkra.sh -s $(SJ_PSDKRA_BRANCH) -d  yes -p $(SJ_PATH_SDK)
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk dataset --done");
 
 ra-install-sdk-addon:check_paths_downloads check_paths_PSDKLA check_paths_PSDKRA
@@ -63,11 +68,13 @@ ra-sd-mk-partition:
 	sudo $(SJ_PATH_SCRIPTS)/mk-linux-card-psdkra.sh
 
 ra-sd-install-rootfs: check_paths_sd_boot check_paths_sd_rootfs
-	@echo "install the rootfs to SD card"
-	@if [ ! -d $(SJ_PATH_PSDKRA)psdk_rtos_auto ] ; then \
+	$(Q)$(call sj_echo_log, 0 , " --- 0.  install the rootfs to sd card!");
+	@if [ -d $(SJ_PATH_PSDKRA)/psdk_rtos_auto ] ; then \
 		cd ${SJ_PATH_PSDKRA} && psdk_rtos/scripts/install_to_sd_card.sh; \
+	elif [ -d $(SJ_PATH_PSDKRA)/sdk_builder ]; then  \
+		cd ${SJ_PATH_PSDKRA} && sdk_builder/scripts/install_to_sd_card.sh; \
 	else \
-		cd ${SJ_PATH_PSDKRA} && psdk_rtos_auto/scripts/install_to_sd_card.sh; \
+		cd ${SJ_PATH_PSDKRA} && psdk_rtos/scripts/install_to_sd_card.sh; \
 	fi
 	sync
 	@echo "install done!!!"
@@ -79,11 +86,12 @@ ra-sd-install-tiny-rootfs: check_paths_sd_boot check_paths_sd_rootfs
 
 ra-sd-install-prebuild-rootfs: check_paths_sd_boot check_paths_sd_rootfs
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  install the rootfs to SD card!");
-	@if [ ! -d ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt ] ; then \
-		cd ${SJ_PATH_PSDKRA}  && tar -zxvf ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt.tar.gz; \
+	@if [ ! -d ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt ] ; then \
+		cd ${SJ_PATH_PSDKRA}  && tar -zxvf ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt.tar.gz; \
 	else \
-		echo "- ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt already installed ! "; 	 \
-		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-j721e-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_to_sd_card.sh ;    \
+		echo "- ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt already installed ! "; 	 \
+		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_to_sd_card.sh ;    \
+		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_data_set_to_sd_card.sh $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_$(SJ_VER_SDK)_00_00.tar.gz;    \
 	fi
 	sync
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  rootfs data set install done!!!");
@@ -116,23 +124,23 @@ ra-sd-install-auto-ti-data: check_paths_sd_rootfs  check_paths_sd_boot
 
 ra-sd-linux-fs-install-sd: check_paths_sd_rootfs  check_paths_sd_boot
 	@echo "Do below to copy vision apps binaries to SD card"
-	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_sd
+	$(MAKE) -C ${SJ_PATH_VISION_SDK_BUILD}/ linux_fs_install_sd
 	@echo "install done!!!"	
 
 ra-nfs-linux-fs-install: 
-	@echo "Do below to copy vision apps binaries to nfs targetfs dir"
-	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_nfs
-	@echo "install done!!!"	
+	$(Q)$(call sj_echo_log, 0 , " --- 0. Do below to copy vision apps binaries to nfs targetfs dir ... ");
+	$(MAKE) -C ${SJ_PATH_VISION_SDK_BUILD}/ linux_fs_install_nfs
+	$(Q)$(call sj_echo_log, 0 , " --- 0. Do below to copy vision apps binaries to nfs targetfs dir ... done!!! ");
 
 ra-nfs-linux-fs-install-edgeai: 
-	@echo "Do below to copy vision apps binaries to nfs targetfs dir"
+	$(Q)$(call sj_echo_log, 0 , " --- 0. Do below to copy vision apps binaries to nfs targetfs dir edgeai... ");
 	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps BUILD_EDGEAI=yes linux_fs_install_nfs
-	@echo "install done!!!"	
+	$(Q)$(call sj_echo_log, 0 , " --- 0. Do below to copy vision apps binaries to nfs targetfs dir edgeai ... done!!!");
 
 ra-nfs-linux-fs-install-test-data: 
-	@echo "Do below to copy vision apps binaries to nfs targetfs dir"
-	$(MAKE) -C ${SJ_PATH_PSDKRA}/vision_apps linux_fs_install_nfs_test_data
-	@echo "install done!!!"	
+	$(Q)$(call sj_echo_log, 0 , " --- 0. Do below to copy vision apps binaries to nfs targetfs dir test data ... ");
+	$(MAKE) -C ${SJ_PATH_VISION_SDK_BUILD} linux_fs_install_nfs_test_data
+	$(Q)$(call sj_echo_log, 0 , " --- 0. Do below to copy vision apps binaries to nfs targetfs dir test data ... done!!!");
 
 ra-sd-linux-fs-install-scp:
 	$(Q)$(call sj_echo_log, 0 , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_update_vision_sdk.sh --ip $(SJ_EVM_IP) ------------------------------- start !!!");

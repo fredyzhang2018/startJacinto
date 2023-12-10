@@ -53,6 +53,13 @@ ra-imaging-clean:
 ra-imaging-scrub: 
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) imaging_scrub -s -j$(CPU_NUM)
  
+ra-video-io:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) video_io -s -j$(CPU_NUM)
+ra-video-io-clean:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) video_io_clean -s -j$(CPU_NUM)
+ra-video-io-scrub: 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) video_io_scrub -s -j$(CPU_NUM)
+
 ##########################################
 #                                        #
 # pdk                                    #

@@ -250,8 +250,40 @@ endif
 	scp -r $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/input*                							 root@$(SJ_EVM_IP):/opt/tidl_test/testvecs/models/public/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)
 	$(Q)$(call sj_echo_log, 0 , " --- 1. model setup to  SD /rootfs/home/root done!!! ");
 
+tidl-model-nfs-model-setup:
+	$(eval $(call sj_tidl_path,SJ_TIDL_PATH_FREDY))
+ifeq ($(SJ_TIDL_RUNTIME_TYPE),tflite)
+	$(eval SJ_TIDL_TYPE=tflite)
+	$(eval SJ_TIDL_M_TYPE=tflite)	
+else ifeq ($(SJ_TIDL_RUNTIME_TYPE),tensorflow)
+	$(eval SJ_TIDL_TYPE=tensorflow)
+	$(eval SJ_TIDL_M_TYPE=pb)	
+else ifeq ($(SJ_TIDL_RUNTIME_TYPE),caffe)
+	$(eval SJ_TIDL_TYPE=caffe)
+	$(eval SJ_TIDL_M_TYPE=prototxt)	  # net file
+	$(eval SJ_TIDL_P_TYPE=caffemodel) # parammeter file
+else ifeq ($(SJ_TIDL_RUNTIME_TYPE),onnx)
+	$(eval SJ_TIDL_TYPE=onnx)
+	$(eval SJ_TIDL_M_TYPE=onnx)	
+endif
+	$(Q)$(call sj_echo_log, 0 , " --- 0. model setup to  SD /rootfs/home/root ");
+	cp -v $(SJ_TIDL_PATH_FREDY)/test/testvecs/config/tidl_models/$(SJ_TIDL_TYPE)/tidl_net_$(ti_dl_MODEL).bin   $(SJ_PATH_PSDKRA)/targetfs/home/root
+	cp -v $(SJ_TIDL_PATH_FREDY)/test/testvecs/config/tidl_models/$(SJ_TIDL_TYPE)/tidl_io_$(ti_dl_MODEL)_1.bin  $(SJ_PATH_PSDKRA)/targetfs/home/root
+	cp -v $(SJ_TIDL_PATH_FREDY)/test/testvecs/config/tidl_models/$(SJ_TIDL_TYPE)/tidl_net_$(ti_dl_MODEL).bin   $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/config/tidl_models/$(SJ_TIDL_TYPE)
+	cp -v $(SJ_TIDL_PATH_FREDY)/test/testvecs/config/tidl_models/$(SJ_TIDL_TYPE)/tidl_io_$(ti_dl_MODEL)_1.bin  $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/config/tidl_models/$(SJ_TIDL_TYPE)
+	cp -v $(SJ_TIDL_PATH_FREDY)/test/testvecs/config/config_inference.txt                                      $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/config
+	cp -v $(SJ_TIDL_PATH_FREDY)/test/testvecs/config/config_list.txt                                           $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/config
+ifeq ($(SJ_TIDL_INFERENCE_CONFIG_LIST),yes)
+	cp -v $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/config_inference_evm_list.txt                                $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/config
+endif
+	cp -v $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/$(ti_dl_MODEL_MODEL_INFERENCE_CONFIG) 	         $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/config/infer/public/$(SJ_TIDL_TYPE)
+	cp -rv $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/input*                							 $(SJ_PATH_PSDKRA)/targetfs/opt/tidl_test/testvecs/models/public/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)
+	sync
+	$(Q)$(call sj_echo_log, 0 , " --- 1. model setup to  nfs $(SJ_PATH_PSDKRA)/targetfs done!!! ");
+
 # before run below command , you should run  : tidl-model-setup-import-run
 tidl-model-check-inference-trace:  tidl-model-import-inference-run  tidl-model-sd-model-setup tidl-model-inference-run-evm
+# tidl-model-check-inference-trace: 
 	$(eval $(call sj_tidl_path,SJ_TIDL_PATH_FREDY))
 ifeq ($(SJ_TIDL_RUNTIME_TYPE),tflite)
 	$(eval SJ_TIDL_TYPE=tflite)
@@ -393,8 +425,8 @@ tidl-src-download-setup:
 
 tidl-src-build-pc:
 	$(eval $(call sj_tidl_path,SJ_TIDL_PATH_FREDY))
-	$(Q)$(call sj_echo_log, 0 , " --- 1. build the pdk depency");
-	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build osal_nonos ipc  csl sciclient udma dmautils BOARD=j721e_hostemu CORE=c7x-hostemu BUILD_PROFILE=release  -s -j$(CPU_NUM)
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the pdk depency: pls ----------set : BUILD_EMULATION_MODE = yes------");
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) pdk_emu -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 2. build the pc all");
 	$(MAKE) -C $(SJ_TIDL_PATH_FREDY)/../  all TARGET_PLATFORM=PC -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 3. Tensorflow-lite runtime");
@@ -435,72 +467,107 @@ tidl-src-build-dependent:
 tidl-src-build-evm:
 	$(eval $(call sj_tidl_path,SJ_TIDL_PATH_FREDY))
 	$(Q)$(call sj_echo_log, 0 , " --- 1. build the tidl src code");
-	$(MAKE) -C $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`  all  -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`  tidl  -s -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`  tidl_rt  -s -j$(CPU_NUM)
 	$(Q)$(call sj_echo_log, 0 , " --- 2. build the tidl src code");
 
-tidl-edgeai-tidl-tools-setup: 
+tidl-tools-setup: 
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
-	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -i yes
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -i yes -d $(SJ_PATH_PSDKRA)
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
-tidl-edgeai-tidl-tools-validate: check_paths_EDGEAI_TIDL_TOOLS
+tidl-tools-validate: check_paths_EDGEAI_TIDL_TOOLS
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
 	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -b yes
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
+tidl-tools-run: check_paths_EDGEAI_TIDL_TOOLS
+ifeq ($(SJ_TIDL_RUNTIME_TYPE),tflite)
+	$(eval SJ_TIDL_TYPE=tflite)
+	$(eval SJ_TIDL_M_TYPE=tflite)	
+else ifeq ($(SJ_TIDL_RUNTIME_TYPE),onnx)
+	$(eval SJ_TIDL_TYPE=onnx)
+	$(eval SJ_TIDL_M_TYPE=onnx)	
+endif
+	$(Q)$(call sj_echo_log, 0 , " --- SJ_PATH_EDGEAI_TIDL_TOOLS := $(SJ_PATH_EDGEAI_TIDL_TOOLS) !!!");
+	$(Q)$(call sj_echo_log, 0 , " --- SJ_TIDL_TYPE       := $(SJ_TIDL_TYPE) !!!");
+	$(Q)$(call sj_echo_log, 0 , " --- SJ_TIDL_M_TYPE     := $(SJ_TIDL_M_TYPE) !!!");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the model !!!");  # $(SJ_PATH_EDGEAI_TIDL_TOOLS)/examples/osrt_python/model_configs.py 
+	$(Q)$(call sj_echo_log, 0 , " --- 1.1 prepare the model : $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/setup_env_edgeai.sh");
+	$(Q)if [ ! -f  $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/setup_env_edgeai.sh ]; then \
+		$(call sj_echo_log, 0 , " --- 2.1 setup the scripts setup_env.sh");  \
+		ln -s  $(SJ_PATH_SCRIPTS)/ubuntu/setup_env_tidl_tools_model.sh $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/setup_env_edgeai.sh; \
+		chmod 777 $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/setup_env_edgeai.sh; \
+	fi
+	$(Q)cd $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL) && ./setup_env_edgeai.sh && sync
+	$(Q)$(call sj_echo_log, 0 , " --- 1.1 prepare the model : $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/setup_env_edgeai.sh --done !!!");
+	$(Q)$(call sj_echo_log, 0 , " --- 2. import and inference on the pc ... ");
+ifeq ($(SJ_TIDL_INFERENCE_SET),yes)
+ifeq ($(SJ_TIDL_IMPORT_INTERFERN_WITH_TIDL),yes)
+	$(Q)$(call sj_echo_log, 0 , " --- 2.1 import and interence $(SJ_TIDL_TYPE) model ... with TIDL  $(SJ_PATH_EDGEAI_TIDL_TOOLS)/examples/osrt_python/ort --- python3 onnxrt_ep.py ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) --name $(ti_dl_MODEL) --running yes -m $(SJ_TIDL_TYPE)  --tidl 
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) --name $(ti_dl_MODEL) --running yes -m $(SJ_TIDL_TYPE)  --tidl   > $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/log_$(SJ_SOC_TYPE)_$(SJ_PSDKRA_BRANCH)_tidl_`date +%Y-%m-%d-%H-%M-%S`.txt
+else
+	$(Q)$(call sj_echo_log, 0 , " --- 2.1 import and interence $(SJ_TIDL_TYPE) model ... without TIDL  $(SJ_PATH_EDGEAI_TIDL_TOOLS)/examples/osrt_python/ort --- python3 onnxrt_ep.py ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) --name $(ti_dl_MODEL) --running yes -m $(SJ_TIDL_TYPE) 
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) --name $(ti_dl_MODEL) --running yes -m $(SJ_TIDL_TYPE)  > $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/log_$(SJ_SOC_TYPE)_$(SJ_PSDKRA_BRANCH)_`date +%Y-%m-%d-%H-%M-%S`.txt
+endif 
+	$(Q)$(call sj_echo_log, 0 , " --- 2.1 import and interence $(SJ_TIDL_TYPE) mode ... --done!!!");
+else
+	$(Q)$(call sj_echo_log, 0 , " --- 2.1  SJ_TIDL_INFERENCE_SET : $(SJ_TIDL_INFERENCE_SET) ");
+endif
+	$(Q)$(call sj_echo_log, 0 , " --- 2. import and inference on the pc ... --done!!!");
+	$(Q)$(call sj_echo_log, 0 , " --- 3. check the model and input file");
+	$(Q)$(call sj_echo_log, 0 , "# model   zoo   : $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL) ");
+	$(Q)$(call sj_echo_log, 0 , "# model  output : $(SJ_PATH_EDGEAI_TIDL_TOOLS)/model-artifacts/$(ti_dl_MODEL)-$(SJ_TIDL_RUNTIME_TYPE)");
+	$(Q)$(call sj_echo_log, 0 , "# model  input  : $(SJ_PATH_EDGEAI_TIDL_TOOLS)/models/");
+	$(Q)$(call sj_echo_log, 0 , "# output images : $(SJ_PATH_EDGEAI_TIDL_TOOLS)/output_images/");
+	$(Q)$(call sj_echo_log, 0 , "# network file  : `ls -l $(SJ_PATH_EDGEAI_TIDL_TOOLS)/model-artifacts/$(ti_dl_MODEL)-$(SJ_TIDL_RUNTIME_TYPE)/*.bin`");
+	$(Q)$(call sj_echo_log, 0 , "# output        : `ls -l $(SJ_PATH_EDGEAI_TIDL_TOOLS)/output_images/py_out_$(ti_dl_MODEL)-$(SJ_TIDL_RUNTIME_TYPE)*.jpg`");
+	$(Q)$(call sj_echo_log, 0 , "# User Guide    : https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/$(SJ_PSDKRA_BRANCH)/exports/docs/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/docs/user_guide_html/index.html");
+	$(Q)mkdir $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/log_$(SJ_SOC_TYPE)_$(SJ_PSDKRA_BRANCH)_`date +%Y-%m-%d-%H-%M`; \
+		cp -r $(SJ_PATH_EDGEAI_TIDL_TOOLS)/model-artifacts/$(ti_dl_MODEL)-$(SJ_TIDL_RUNTIME_TYPE) $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/log_$(SJ_SOC_TYPE)_$(SJ_PSDKRA_BRANCH)_`date +%Y-%m-%d-%H-%M`/ ; \
+		cp $(SJ_PATH_EDGEAI_TIDL_TOOLS)/output_images/py_out_$(ti_dl_MODEL)-$(SJ_TIDL_RUNTIME_TYPE)*.jpg $(ti_dl_MODEL_ZOO)/$(SJ_TIDL_TYPE)/$(ti_dl_MODEL)/log_$(SJ_SOC_TYPE)_$(SJ_PSDKRA_BRANCH)_`date +%Y-%m-%d-%H-%M`/ ; 
+	$(Q)$(call sj_echo_log, 0 , " -------------------------------- done !!!");
 
-tidl-edgeai-tidl-tools-run-tensorflow: check_paths_EDGEAI_TIDL_TOOLS
+tidl-tools-run-tflite: check_paths_EDGEAI_TIDL_TOOLS
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
-	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m tensorflow
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m tflite --tidl
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
-tidl-edgeai-tidl-tools-run-onnx: check_paths_EDGEAI_TIDL_TOOLS
+
+tidl-tools-run-tflite-without-tidl: check_paths_EDGEAI_TIDL_TOOLS
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
-	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m onnx
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m tflite 
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
-tidl-edgeai-tflite-env-setup:
-	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source prepare_model_compliation_env.sh"
-	cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source ./prepare_model_compliation_env.sh  &&  python3 ./tflrt_delegate.py -c
-	$(Q)$(ECHO) "# env setup and compile done !!!"
 
-tidl-edgeai-tflite-run-on-pc:
-	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source prepare_model_compliation_env.sh"
-	cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source ./prepare_model_compliation_env.sh  &&  python3 ./tflrt_delegate.py
-	$(Q)$(ECHO) "# env setup and compile done !!!"
+tidl-tools-run-onnx: check_paths_EDGEAI_TIDL_TOOLS
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m onnx --tidl 
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
-tidl-edgeai-onnxrt-env-setup:
-	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/onnxrt/  && source prepare_model_compliation_env.sh"
-	cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/onnxrt/  && source ./prepare_model_compliation_env.sh  && python3 onnxrt_ep.py -c
-	$(Q)$(ECHO) "# env setup and compile done !!!"
+tidl-tools-run-onnx-without-tidl: check_paths_EDGEAI_TIDL_TOOLS
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai : $(SJ_PATH_EDGEAI_TIDL_TOOLS) ");
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the scripts : $(SJ_PATH_SCRIPTS)/j7/install_edgeai.sh ");
+	./scripts/j7/install_edgeai.sh --soctype $(SJ_SOC_TYPE) -r yes -m onnx --tidl
+	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the edgeai sdk --done!!!");
 
-tidl-edgeai-onnxrt-run-on-pc:
-	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source prepare_model_compliation_env.sh"
-	cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/ && source ./prepare_model_compliation_env.sh  &&  python3  python3 onnxrt_ep.py -c
-	$(Q)$(ECHO) "# env setup and compile done !!!"
-
-tidl-edgeai-tvm-dir-env-setup:
-	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/onnxrt/  && source prepare_model_compliation_env.sh"
-	cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/onnxrt/  && source ./prepare_model_compliation_env.sh  && python3 tvm-compilation-tflite-example.py --pc-inference ; \
-	python3 tvm-compilation-onnx-example.py --pc-inference
-	$(Q)$(ECHO) "# env setup and compile done !!!"
-
-tidl-edgeai-tvm-dir-run-on-pc:
-	$(Q)$(ECHO) "cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/  && source prepare_model_compliation_env.sh"
-	cd $(SJ_PATH_PSDKRA)/`ls $(SJ_PATH_PSDKRA) | grep tidl`/ti_dl/test/tflrt/ && source ./prepare_model_compliation_env.sh  &&  python3 dlr-inference-example.py
-	$(Q)$(ECHO) "# env setup and compile done !!!"
-
-tidl-edgeai-tensorflow-env-setup:
-	$(eval $(call sj_tidl_path,SJ_TIDL_PATH_FREDY))
-	$(eval SJ_TIDL_TYPE=tensorflow)
-	$(Q)$(ECHO) "1. Download the model"
-	echo "cd $(SJ_TIDL_PATH_FREDY)/test/tflrt && source prepare_model_compliation_env.sh"
-	cd $(SJ_TIDL_PATH_FREDY)/test/tflrt && source ./prepare_model_compliation_env.sh
-	$(Q)$(ECHO) " Done !!! "
+tidl-tools-docker-build:
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the docker image for edgeai ");
+	cd $(SJ_PATH_EDGEAI_TIDL_TOOLS) && sudo docker build -f Dockerfile -t x86_ubuntu_22 .
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the docker image for edgeai --done ! ");
+	
+tidl-tools-docker-run:	
+	$(Q)$(call sj_echo_log, 0 , " --- 1. run docker image for edgeai : /home/root/startjacinto/sdks/edgeai* ");
+	sudo docker run --rm -it x86_ubuntu_22 env
+	sudo docker run -it --shm-size=4096m --mount source=$(SJ_PATH_JACINTO),target=/home/root/startjacinto,type=bind x86_ubuntu_22
+	$(Q)$(call sj_echo_log, 0 , " --- 1. run docker image for edgeai : /home/root/startjacinto/sdks/edgeai* ");
 
 tidl-notebooks-setup:
 	$(Q)$(ECHO) "# 1. ifconfig check the EVM ip: "

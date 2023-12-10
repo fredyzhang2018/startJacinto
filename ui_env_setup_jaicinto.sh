@@ -136,7 +136,15 @@ sj_sdk_setting()
 			SJ_SOC_TYPE=`echo $Var1 | awk -F "-" '{print $3}'`
 			echo "[ $(date) ] >>> SOC TYPE: $SJ_SOC_TYPE"
 			# For AM62axx using xx.xx.xx.xx tda4x using xx_xx_xx_xx, pls install the am62x as the xx_xx_xx_xx
-			Temp_SJ_PATH_PSDKLA=$SJ_PATH_JACINTO/sdks/ti-processor-sdk-linux-j7-evm-$Var2
+			psdkra_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
+			if [ $(($psdkra_ver)) -gt $(("9000000")) ];then
+				# echo "version > $(($psdkra_ver))  vs $(("9000000"))"
+				Temp_SJ_PATH_PSDKLA=$SJ_PATH_JACINTO/sdks/ti-processor-sdk-linux-adas-j7-evm-$Var2
+			else
+				# echo "version <= $(($psdkra_ver)) vs $(("9000000"))"
+				Temp_SJ_PATH_PSDKLA=$SJ_PATH_JACINTO/sdks/ti-processor-sdk-linux-j7-evm-$Var2
+			fi
+			
 			
 			if [ $SJ_PROJECT == "SDK-WORKAREA" ];then
 				Temp_SJ_PATH_PSDKRA=/ti/j7/workarea 
@@ -155,6 +163,12 @@ sj_sdk_setting()
 			local Var2=`echo $rows | awk -F "=" '{print $2}'` # Value 
 			# echo "-------------$Var1 $Var2"
 			SJ_EVM_IP=$Var2 # SJ_SOC_TYPE=J721
+		elif [ `echo $rows| awk -F "=" '{ print $1 }'` == "SJ_SERVER_IP" ];then
+			# echo "- SDK: $rows"
+			local Var1=`echo $rows | awk -F "=" '{print $1}'` # SJ_SERVER_IP
+			local Var2=`echo $rows | awk -F "=" '{print $2}'` # Value 
+			# echo "-------------$Var1 $Var2"
+			SJ_SERVER_IP=$Var2 # SJ_SOC_TYPE=J721
 		elif [ `echo $rows| awk -F "=" '{ print $1 }'` == "SJ_LOG_LEVEL" ];then
 			# echo "- SDK: $rows"
 			local Var1=`echo $rows | awk -F "=" '{print $1}'` # SJ_LOG_LEVEL
@@ -185,8 +199,19 @@ sj_sdk_setting()
 		echo "- update the am62xx"
 		SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/am62xx/g`
 		SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/-j721e-evm-/_am62x_/g | sed s/ti-processor-sdk-rtos/mcu_plus_sdk/g`
-	elif [ $SJ_SOC_TYPE == "j721s84" ];then
-		echo "please add"
+	elif [ $SJ_SOC_TYPE == "j784s4" ];then
+		SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/j784s4/g`
+		SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/j721e/j784s4/g`
+	elif [ $SJ_SOC_TYPE == "j721e" ];then
+		psdkra_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
+		if [ $(($psdkra_ver)) -gt $(("9000000")) ];then
+			SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/j721e/g`
+			SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/j721e/j721e/g`
+		else
+			SJ_PATH_PSDKLA=`echo $Temp_SJ_PATH_PSDKLA | sed s/j7/j7/g`
+			SJ_PATH_PSDKRA=`echo $Temp_SJ_PATH_PSDKRA | sed s/j721e/j721e/g`
+		fi
+
 	else
 		SJ_PATH_PSDKLA=$Temp_SJ_PATH_PSDKLA
 		SJ_PATH_PSDKRA=$Temp_SJ_PATH_PSDKRA
@@ -209,6 +234,7 @@ sj_sdk_setting()
 	export_variable SJ_PATH_JACINTO
 	export_variable SJ_SOC_TYPE
 	export_variable SJ_EVM_IP
+	export_variable SJ_SERVER_IP
 	export_variable SJ_LOG_LEVEL
 
 	# Main PATH
@@ -217,12 +243,21 @@ sj_sdk_setting()
 	SJ_PATH_DOWNLOAD=$SJ_PATH_JACINTO/downloads
 	SJ_PATH_TOOLS=$SJ_PATH_JACINTO/tools
 	SJ_PATH_SDK=$SJ_PATH_JACINTO/sdks
+	SJ_PATH_SDK1=$SJ_PATH_JACINTO/sdks1
 	export_variable SJ_PATH_RESOURCE
 	export_variable SJ_PATH_SCRIPTS
 	export_variable SJ_PATH_DOWNLOAD
 	export_variable SJ_PATH_TOOLS
 	export_variable SJ_PATH_SDK
-
+	export_variable SJ_PATH_SDK1
+	# New path for SDK version. this is used for different sdks's selection. 
+	SJ_VER_SDK=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 1-2`
+	export_variable SJ_VER_SDK
+	# update env setting
+	sed -i "/^SJ_PSDKRA_BRANCH=/c SJ_PSDKRA_BRANCH=\"$SJ_PSDKRA_BRANCH\""  $SJ_PATH_JACINTO/env_setup_jaicinto.sh
+	sed -i "/^SJ_PSDKLA_BRANCH=/c SJ_PSDKLA_BRANCH=\"$SJ_PSDKLA_BRANCH\""  $SJ_PATH_JACINTO/env_setup_jaicinto.sh
+	sed -i "/^SJ_SOC_TYPE=/c SJ_SOC_TYPE=$SJ_SOC_TYPE"                 $SJ_PATH_JACINTO/env_setup_jaicinto.sh
+	
 	echo "Yocto ENV Setting : $SJ_YOCTO_CONFIG_FILE"
 
 }

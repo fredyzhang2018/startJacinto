@@ -1,6 +1,7 @@
 downloads/ti-*
 sdks/ti-*
 sdks/*
+sdks1/*
 downloads/*
 tools/*
 .sj_log
@@ -11,4 +12,6 @@ scripts/j7/nfs/bin/setupBoard.minicom
 *__pycache__*
 .vscode/settings.json
 .Trash-1000/
-sdks1/*
+docs/devices/
+understand.udb
+

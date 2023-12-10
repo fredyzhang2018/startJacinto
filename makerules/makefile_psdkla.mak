@@ -61,7 +61,7 @@
 la-uboot:     
 	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot
 la-uboot-clean:
-	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot-clean
+	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot_clean
 la-sd-install-uboot:
 	$(Q)if [ ! -d $(SJ_BOOT) ] ; then \
 		echo "hello world "; \

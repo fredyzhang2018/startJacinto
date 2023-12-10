@@ -489,6 +489,11 @@ cd yocto-layers
 
 # Release notes
 
+## 202312 Release: 30_20_00
+
+1. support SDK9.1 J721S2 and J784s4.
+2. support nfs: different boot media.
+
 ## 202307 Release : 30_10_00
 
 1. suppot am6x device.
