@@ -232,10 +232,19 @@ update_args_value $*
 
 if [ $SJ_SOC_TYPE == "j721e" ];then
 	LINK_ADDR="MD-U6uMjOroyO"
-	SOC_TYPE_temp="j7"
+	psdkla_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
+	if [ $(($psdkla_ver)) -gt $(("9000000")) ];then
+		SOC_TYPE_temp=$SJ_SOC_TYPE
+	else
+		SOC_TYPE_temp="j7"
+	fi
 	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR $SOC_TYPE_temp"
 elif [ $SJ_SOC_TYPE == "j721s2" ];then
 	LINK_ADDR="MD-Snl3iJzGTW"
+	SOC_TYPE_temp=$SJ_SOC_TYPE
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR  $SOC_TYPE_temp"
+elif [ $SJ_SOC_TYPE == "j784s4" ];then
+	LINK_ADDR="MD-lOshtRwR8P"
 	SOC_TYPE_temp=$SJ_SOC_TYPE
 	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR  $SOC_TYPE_temp"
 elif [ $SJ_SOC_TYPE == "am62axx" ];then
@@ -252,13 +261,24 @@ else
 fi
 
 # AM62Axx version using xx.xx.xx.xx , TDA4 using xx_xx_xx_xx
+psdkla_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
 if [ $SJ_SOC_TYPE == "am62axx" ];then
 	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-`echo $VERSION | sed s/_/./g`-Linux-x86-Install.bin"
 elif [ $SJ_SOC_TYPE == "am62xx" ];then
 	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-`echo $VERSION | sed s/_/./g`-Linux-x86-Install.bin"
 else 
-	APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-$VERSION-Linux-x86-Install.bin" 
+	if [ $(($psdkla_ver)) -gt $(("9000000")) ];then
+		echo "version > $(($psdkla_ver))  vs $(("9000000"))"
+		APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-adas-$SOC_TYPE_temp-evm-$VERSION-Linux-x86-Install.bin" 
+	else
+		echo "version <= $(($psdkla_ver)) vs $(("9000000"))"
+		APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/$LINK_ADDR/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-$SOC_TYPE_temp-evm-$VERSION-Linux-x86-Install.bin" 
+	fi
 fi
+
+psdkla_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
+
+
 # APP_DOWNLOAD_URL="https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/$VERSION/exports/ti-processor-sdk-linux-j7-evm-$VERSION-Linux-x86-Install.bin" # github repo
 # APP_DOWNLOAD_URL="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-U6uMjOroyO/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-j7-evm-$VERSION-Linux-x86-Install.bin" # github repo
 # APP_DOWNLOAD_URL1="https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-Snl3iJzGTW/`echo $VERSION | sed s/_/./g`/ti-processor-sdk-linux-j721s2-evm-$VERSION-Linux-x86-Install.bin" # github rep

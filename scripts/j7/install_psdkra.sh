@@ -6,7 +6,7 @@
 # @date   ：2022-02-26                                                                      # 
 # @update : fredy  V1                                                                        # 
 ##############################################################################################
-VALID_ARGS=( --help -h --install -i --verbose -v --version -s --PATH  -p )
+VALID_ARGS=( --help -h --install -i --verbose -v --version -s --PATH  -p --dataset -d )
 
 # LOG _LEVEL: debug or no
 LOG_LEVEL=debug
@@ -184,13 +184,13 @@ launch()
 setup_release_app()
 {
 	echo_log "[ $(date) ] --- ${FUNCNAME[0]}: args --- $#" 
-	echo_log "[ $(date) ] - 1. download the package" 
+	echo_log "[ $(date) ] - 1. download the package: $APP_DOWNLOAD_URL" 
 	if [ $SJ_SOC_TYPE == "j721e" ];then
 		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
 	elif [ $SJ_SOC_TYPE == "am62xx" ];then
 		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8` #TODO please check 
 	else 
-		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8 | sed s/j7/j721s2/g` #TODO please check 
+		local Pkg_name=`echo $APP_DOWNLOAD_URL | cut -d / -f 8 ` #TODO please check 
 	fi
 	echo " ---------------------- $Pkg_name"
 
@@ -239,7 +239,9 @@ setup_release_app()
 			cd $APP_INSTALL_PATH/$Pkg_Dir
 			if [ ! -d $APP_INSTALL_PATH/$Pkg_Dir/.git ] ; then 
 				cd $APP_INSTALL_PATH/$Pkg_Dir && git init;
-				ln -s $APP_INSTALL_PATH/../resource/psdkra/gitignore $APP_INSTALL_PATH/$Pkg_Dir/.gitignore ; 
+				#TODO too mandy level 
+				# ln -s $APP_INSTALL_PATH/../resource/psdkra/gitignore $APP_INSTALL_PATH/$Pkg_Dir/.gitignore ; 
+				cp $APP_INSTALL_PATH/../resource/psdkra/gitignore $APP_INSTALL_PATH/$Pkg_Dir/.gitignore ; 
 				cd $APP_INSTALL_PATH/$Pkg_Dir && git add -A ;
 				cd $APP_INSTALL_PATH/$Pkg_Dir && git commit -m "repo init" ;
 			else 
@@ -255,7 +257,7 @@ setup_release_app()
 	fi
 	echo_log "[ $(date) ] - 3. setup the prebuilt images: $SJ_PATH_PSDKLA  $SJ_PATH_PSDKRA" 
 	if [ ! -f $SJ_PATH_PSDKRA/ti-processor-sdk-rtos-$SJ_SOC_TYPE-evm-$VERSION-prebuilt.tar.gz ] ; then
-		cd $SJ_PATH_PSDKRA && wget $APP_DOWNLOAD_URL2 ; 
+			cd $SJ_PATH_PSDKRA && wget $APP_DOWNLOAD_URL2 ; 
 	else 
 		echo "prebuild image already setup:$SJ_PATH_PSDKRA/ti-processor-sdk-rtos-$SJ_SOC_TYPE-evm-$VERSION-prebuilt.tar.gz "; 
 	fi
@@ -268,28 +270,50 @@ setup_release_app()
 			echo "- boot image already setup:$SJ_PATH_PSDKRA/boot-j7-evm.tar.gz "; 
 		fi
 	else
-		if [ ! -f $SJ_PATH_PSDKRA/boot-$SJ_SOC_TYPE-evm.tar.gz ] ; then
-			cp $SJ_PATH_PSDKLA/board-support/prebuilt-images/boot-$SJ_SOC_TYPE-evm.tar.gz $SJ_PATH_PSDKRA ; 
-		else 
-			echo "- boot image already setup:$SJ_PATH_PSDKRA/boot-$SJ_SOC_TYPE-evm.tar.gz "; 
-		fi
+		psdkla_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
+		if [ $(($psdkla_ver)) -gt $(("9000000")) ];then
+			if [ ! -f $SJ_PATH_PSDKRA/boot-adas-$SJ_SOC_TYPE-evm.tar.gz ] ; then
+				cp $SJ_PATH_PSDKLA/board-support/prebuilt-images/boot-adas-$SJ_SOC_TYPE-evm.tar.gz $SJ_PATH_PSDKRA ; 
+			else 
+				echo "- boot image already setup:$SJ_PATH_PSDKRA/boot-adas-$SJ_SOC_TYPE-evm.tar.gz "; 
+			fi
+		else
+
+			if [ ! -f $SJ_PATH_PSDKRA/boot-$SJ_SOC_TYPE-evm.tar.gz ] ; then
+				cp $SJ_PATH_PSDKLA/board-support/prebuilt-images/boot-$SJ_SOC_TYPE-evm.tar.gz $SJ_PATH_PSDKRA ; 
+			else 
+				echo "- boot image already setup:$SJ_PATH_PSDKRA/boot-$SJ_SOC_TYPE-evm.tar.gz "; 
+			fi
+		fi		
+	fi
+
+	if [ $SJ_VER_SDK == “09” ];then
+		Temp_SDK_NAME="tisdk-default-image"
+	else
+		Temp_SDK_NAME="tisdk-adas-image"
 	fi
 
 	if [ $SJ_SOC_TYPE == "j721e" ];then
-		if [ ! -f $SJ_PATH_PSDKRA/tisdk-default-image-j7-evm.tar.xz ] ; then 
-			cp $SJ_PATH_PSDKLA/board-support/prebuilt-images/tisdk-default-image-j7-evm.tar.xz $SJ_PATH_PSDKRA ; 
+		if [ ! -f $SJ_PATH_PSDKRA/$Temp_SDK_NAME-j7-evm.tar.xz ] ; then 
+			cp $SJ_PATH_PSDKLA/board-support/prebuilt-images/$Temp_SDK_NAME-j7-evm.tar.xz $SJ_PATH_PSDKRA ; 
 		else 
-			echo "- filesystem already setup: $SJ_PATH_PSDKRA/tisdk-default-image-j7-evm.tar.xz "; 
+			echo "- filesystem already setup: $SJ_PATH_PSDKRA/$Temp_SDK_NAME-j7-evm.tar.xz "; 
 		fi
 	else
-		if [ ! -f $SJ_PATH_PSDKRA/tisdk-default-image-$SJ_SOC_TYPE-evm.tar.xz ] ; then 
-			cp $SJ_PATH_PSDKLA/filesystem/tisdk-default-image-$SJ_SOC_TYPE-evm.tar.xz $SJ_PATH_PSDKRA ; 
+		if [ ! -f $SJ_PATH_PSDKRA/$Temp_SDK_NAME-$SJ_SOC_TYPE-evm.tar.xz ] ; then 
+			cp $SJ_PATH_PSDKLA/filesystem/$Temp_SDK_NAME-$SJ_SOC_TYPE-evm.tar.xz $SJ_PATH_PSDKRA ; 
 		else 
-			echo "- filesystem already setup: $SJ_PATH_PSDKRA/tisdk-default-image-j7-evm.tar.xz "; 
+			echo "- filesystem already setup: $SJ_PATH_PSDKRA/$Temp_SDK_NAME-j7-evm.tar.xz "; 
 		fi
 	fi
 	echo_log "[ $(date) ] - 5. install dependcy tools " 
-	cd $SJ_PATH_PSDKRA && ./psdk_rtos/scripts/setup_psdk_rtos.sh
+	# SDK0900: changed the build scripts. under SDK0900 , used old. 
+	psdkla_ver=`echo $SJ_PSDKRA_BRANCH |sed  s/_//g | cut -c 2-8`
+	if [ $(($psdkla_ver)) -gt $(("9000000")) ];then
+		cd $SJ_PATH_PSDKRA && ./sdk_builder/scripts/setup_psdk_rtos.sh
+	else
+		cd $SJ_PATH_PSDKRA && ./psdk_rtos/scripts/setup_psdk_rtos.sh
+	fi
 	echo_log "[ $(date) ] - 6.  Ready to compiling. " 
 	echo_log "- download the sdk from secure SW: install add on package for run PC demo. "
 	echo_log "- chmod a+x ./$Pkg_Dir-addon-linux-x64-SJ_INSTALLER.run "	
@@ -368,6 +392,9 @@ if [ $SJ_SOC_TYPE == "j721e" ];then
 	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
 elif [ $SJ_SOC_TYPE == "j721s2" ];then
 	LINK_ADDR="MD-50weZVBfzl"
+	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
+elif [ $SJ_SOC_TYPE == "j784s4" ];then
+	LINK_ADDR="MD-zv2DZbDzFz"
 	echo_log "[ $(date) ] - link_addr:  $SJ_SOC_TYPE $LINK_ADDR"
 elif [ $SJ_SOC_TYPE == "am62axx" ];then
 	LINK_ADDR="MD-b4i0McWpWx"
