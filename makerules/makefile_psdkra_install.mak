@@ -11,11 +11,9 @@ ra-install-dependencies:
 
 ra-ccs-setup-steps:
 	$(Q)$(ECHO) "1. Please run below in scripts";
-	$(Q)$(ECHO) "load(\"/home/fredy/j7/psdk_rtos_auto_j7_06_01_00_15/pdk/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
-	$(Q)$(ECHO) "load(\"/home/fredy/j7/ti-processor-sdk-rtos-j721e-evm-07_03_00_07/pdk_jacinto_07_03_00_29/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/launch.js\");"
-	$(Q)$(ECHO) "2. make sure the M3 has the gel file";
+	$(Q)$(ECHO) "loadJSFile(\"$(SJ_PATH_PDK)/packages/ti/drv/sciclient/tools/ccsLoadDmsc/$(SJ_SOC_TYPE)/launch.js\");"
+	$(Q)$(ECHO) "2. make sure the M3/M4 has the gel file";
 	$(Q)$(ECHO) "3. check the log happey debugging !";
-	
 
 ra-install-targetfs:
 ifeq ($(SJ_VER_SDK),09) 
