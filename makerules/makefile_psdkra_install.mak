@@ -91,7 +91,7 @@ ra-sd-install-prebuild-rootfs: check_paths_sd_boot check_paths_sd_rootfs
 	else \
 		echo "- ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt already installed ! "; 	 \
 		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_to_sd_card.sh ;    \
-		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_data_set_to_sd_card.sh $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_$(SJ_VER_SDK)_00_00.tar.gz;    \
+		cd ${SJ_PATH_PSDKRA}/ti-processor-sdk-rtos-$(SJ_SOC_TYPE)-evm-$(SJ_PSDKRA_BRANCH)-prebuilt && ./install_data_set_to_sd_card.sh $(SJ_PATH_DOWNLOAD)/psdk_rtos_ti_data_set_`echo $(SJ_PSDKRA_BRANCH) | cut -c 1-8`.tar.gz;    \
 	fi
 	sync
 	$(Q)$(call sj_echo_log, 0 , " --- 1.  rootfs data set install done!!!");

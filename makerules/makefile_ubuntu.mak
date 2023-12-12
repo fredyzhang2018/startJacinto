@@ -60,9 +60,16 @@ ubuntu-install-geany:
 
 ubuntu-launch-conky:
 	$(Q)$(call sj_echo_log, 0 , "ubuntu: launch the conky monitor!!!");
+	$(Q)if [ -d /sys/bus/platform/devices/coretemp.0/hwmon/hwmon4 ]; then sed -i '/PacTemp/c \$$\{offset 15\}\$$\{font\}\$$\{color FFFDE2\}PacTemp: \$$\{platform coretemp.0/hwmon/hwmon4 temp 1\}°C CPUTemp: \$$\{platform coretemp.0/hwmon/hwmon4 temp 2\}°C HW' $(SJ_PATH_SCRIPTS)/ubuntu/conkyrc; fi
+	$(Q)if [ -d /sys/bus/platform/devices/coretemp.0/hwmon/hwmon3 ]; then sed -i '/PacTemp/c \$$\{offset 15\}\$$\{font\}\$$\{color FFFDE2\}PacTemp: \$$\{platform coretemp.0/hwmon/hwmon3 temp 1\}°C CPUTemp: \$$\{platform coretemp.0/hwmon/hwmon3 temp 2\}°C HW' $(SJ_PATH_SCRIPTS)/ubuntu/conkyrc; fi
 	conky -c $(SJ_PATH_SCRIPTS)/ubuntu/conkyrc &
 	$(Q)$(call sj_echo_log, 0 , "ubuntu: launch the conky monitor --done!!!");
-	
+
+
+ubuntu-launch-proxy:
+	@echo "export http_proxy='http://127.0.0.1:8118'"
+	@echo "export https_proxy=$http_proxy"
+
 
 ubuntu-jupyter-start: 
 	# install ubuntu18
