@@ -63,6 +63,19 @@ la-uboot:
 la-uboot-clean:
 	cd $(SJ_PATH_PSDKLA) && $(MAKE)  u-boot_clean
 la-sd-install-uboot:
+ifeq ($(SJ_VER_SDK),09)
+	$(Q)if [ ! -d $(SJ_BOOT) ] ; then \
+		install $(SJ_PATH_UBOOT)/build/r5/tiboot3.bin  $(SJ_BOOT1); \
+		install $(SJ_PATH_UBOOT)/build/a72/tispl.bin   $(SJ_BOOT1); \
+		install $(SJ_PATH_UBOOT)/build/a72/u-boot.img  $(SJ_BOOT1); \
+		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
+	else \
+		install $(SJ_PATH_UBOOT)/build/r5/tiboot3.bin  $(SJ_BOOT); \
+		install $(SJ_PATH_UBOOT)/build/a72/tispl.bin   $(SJ_BOOT); \
+		install $(SJ_PATH_UBOOT)/build/a72/u-boot.img  $(SJ_BOOT); \
+		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
+	fi 
+else
 	$(Q)if [ ! -d $(SJ_BOOT) ] ; then \
 		echo "hello world "; \
 		install $(SJ_PATH_PSDKLA)/board-support/u-boot_build/a72/tispl.bin  $(SJ_BOOT1); \
@@ -76,6 +89,7 @@ la-sd-install-uboot:
 		echo "new world: update the tispl.bin tiboot3.bin u-boot.img"; \
 	fi 
 	sync
+endif
 	
 la-sd-install-uboot-a53:
 	$(Q)if [ ! -d $(SJ_BOOT) ] ; then \
@@ -139,9 +153,8 @@ la-linux-clean:
 la-linux-install:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux_install -j$(CPU_NUM)	
 la-sd-linux-install:
-	$(MAKE) -C $(SJ_PATH_PSDKLA) linux_install_sd -j$(CPU_NUM)
+	sudo $(MAKE) -C $(SJ_PATH_PSDKLA) linux_install ROOTFS_PART=$(SJ_ROOTFS) -j$(CPU_NUM)
 	sync
-	#$(MAKE) -C $(SJ_PATH_PSDKLA) linux_install_sd_rootfs DESTDIR=/media/fredy/rootfs -j$(CPU_NUM)		
 ##########################################
 #                                        #
 # linux dtb                              #
