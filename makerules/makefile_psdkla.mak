@@ -166,10 +166,8 @@ la-linux-dtbs-clean:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_clean -j$(CPU_NUM)	
 la-linux-dtbs-install:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_install -j$(CPU_NUM)		
-la-sd-install-linux-dtbs-0601:
-	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs-sd-install-0601 
 la-sd-install-linux-dtbs:
-	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs-sd-install  -j$(CPU_NUM)
+	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_install ROOTFS_PART=$(SJ_ROOTFS) -j$(CPU_NUM)
 
 ##########################################
 #                                        #
