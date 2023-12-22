@@ -8,7 +8,7 @@ glew-2.0.0/
 glm/
 opkg-utils-master/
 targetfs/
-tisdk-default-image-j7-evm.tar.xz
+tisdk-default-image-*-evm.tar.xz
 *.dep
 *.a
 ti-processor-sdk-rtos-*-prebuilt/
@@ -28,11 +28,11 @@ tisdk-edgeai-image-j7-evm.tar.xz
 trusted-firmware-a/
 edgeai-tiovx-kernels/
 optee_os/
-boot-adas-j721s2-evm.tar.gz
+boot-adas-*-evm.tar.gz
 protobuf-3.11.3/
-tisdk-adas-image-j721s2-evm.tar.xz
+tisdk-adas-image-*-evm.tar.xz
 ti-perception-toolkit/out/
-.component_versions_j721s2_env
+.component_versions_*_env
 tiovx/conformance_tests/test_data/
 fredy-understand.ann
 understand.udb
@@ -45,6 +45,11 @@ understand.udb
 *.P
 *.oer5f
 *.d
+*.map
+tiadalg/lib/x86_64/
+*.aa72fg
+*.aer5f
+*.ae71
 app_utils/out/
 c7x-mma-tidl/arm-tidl/tiovx_kernels/out/
 c7x-mma-tidl/out/
@@ -55,8 +60,3 @@ video_io/out/
 vxlib/out/
 c7x-mma-tidl/arm-tidl/rt/out/
 c7x-mma-tidl/arm-tidl/tfl_delegate/out/
-*.map
-tiadalg/lib/x86_64/
-*.aa72fg
-*.aer5f
-*.ae71
