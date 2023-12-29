@@ -168,6 +168,7 @@ la-linux-dtbs-install:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_install -j$(CPU_NUM)		
 la-sd-install-linux-dtbs:
 	$(MAKE) -C $(SJ_PATH_PSDKLA) linux-dtbs_install ROOTFS_PART=$(SJ_ROOTFS) -j$(CPU_NUM)
+	ls -l $(SJ_ROOTFS)/boot/dtb/ti/
 
 ##########################################
 #                                        #

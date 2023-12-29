@@ -167,6 +167,16 @@ ra-hs-check-uart-boot-log:
 	python3 $(SJ_PATH_SCRIPTS)/j7/hs/uart_boot_socid.py $(SJ_PATH_SCRIPTS)/j7/hs/default_uart_hs.log
 	$(Q)$(call sj_echo_log, 0 , " 0. anlysis hs log : uart_boot_socid.py uart_log_file")
 
+ra-memory-update:
+	$(Q)$(call sj_echo_log, 0 , " 0. start to update the memory ... : $(SJ_PATH_PSDKRA)/vision_apps/platform/$(SJ_SOC_TYPE)/rtos/app_mem_map.h");
+	$(Q)$(call sj_echo_log, 0 , " 1. install the tools ...");
+	cd $(SJ_PATH_PSDKRA)/vision_apps/tools/PyTI_PSDK_RTOS && pip3 install -e . --user
+	$(Q)$(call sj_echo_log, 0 , " 1. install the tools ... done!!!");
+	$(Q)$(call sj_echo_log, 0 , " 2. update memory ...");
+	cd $(SJ_PATH_PSDKRA)/vision_apps/platform/$(SJ_SOC_TYPE)/rtos && ./gen_linker_mem_map.py
+	ls -l $(SJ_PATH_PSDKRA)/vision_apps/platform/$(SJ_SOC_TYPE)/rtos
+	$(Q)$(call sj_echo_log, 0 , " 2. update memory ... done!!!");
+	$(Q)$(call sj_echo_log, 0 , " 0. start to update the memory ... done!!!");
 
 
 
