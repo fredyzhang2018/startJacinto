@@ -32,17 +32,14 @@ la-install-addon-makefile: check_paths_PSDKLA
 la-yocto-install: check_paths_PSDKLA 
 	$(Q)if [ ! -d  $(SJ_PATH_PSDKLA)/yocto-build/sources ] ; then \
 		cd $(SJ_PATH_PSDKLA)/yocto-build/      && ./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(SJ_YOCTO_CONFIG_FILE); \
-		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "INHERIT += \"own-mirrors\"" >> conf/local.conf; \
-		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "SOURCE_MIRROR_URL = \"http://software-dl.ti.com/processor-sdk-mirror/sources/\"" >> conf/local.conf ;\
-		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "ARAGO_BRAND  = \"psdkla\"" >> conf/local.conf ;\
-		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "DISTRO_FEATURES_append = \" virtualization\"" >> conf/local.conf ;\
-		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo "IMAGE_INSTALL_append = \" docker\"">> conf/local.conf ;\
+		cd $(SJ_PATH_PSDKLA)/yocto-build/      && . conf/setenv;\
+		cd $(SJ_PATH_PSDKLA)/yocto-build/build && echo 'ARAGO_BRAND = "adas"' >> conf/local.conf; \
 	else \
 		echo "# Yocto already installed, continue...  "; \
 	fi
 
 la-yocto-build: check_paths_PSDKLA check_paths_PSDKLA 
-	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv && TOOLCHAIN_BASE=$(SJ_PATH_PSDKRA) MACHINE=j7-evm bitbake -k tisdk-default-image
+	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv && TOOLCHAIN_BASE=/home/`whoami`/ti MACHINE=$(SJ_SOC_TYPE)-evm bitbake -k tisdk-default-image
 	echo "Finished, congratulations !!!"
 
 ##########################################
