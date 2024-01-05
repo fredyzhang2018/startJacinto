@@ -49,6 +49,11 @@ ra-install-sdk-addon:check_paths_downloads check_paths_PSDKLA check_paths_PSDKRA
 	fi
 	$(Q)$(call sj_echo_log, 0 , " --- 1. setup the PSDKRA sdk add on done");
 
+ra-sd-install-all: la-sd-linux-install  la-sd-install-linux-dtbs ra-sd-linux-fs-install-sd la-sd-install-uboot
+ra-sd-install-sdk: ra-sd-linux-fs-install-sd la-sd-install-uboot la-sd-install-uboot
+	cp -rv $(SJ_PATH_RESOURCE)/psdkra/0901/opt/* $(SJ_ROOTFS)/opt/
+	sync
+
 ra-sd-mk-partition-method:
 	@echo " >>>>> do SD mk partition as below:"
 	@echo " >>>>> Use the command "df -h" to identify the device used by SD card"
