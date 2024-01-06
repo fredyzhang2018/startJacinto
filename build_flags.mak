@@ -28,7 +28,7 @@ SJ_BUILD_INCLUDE_DEMO            ?=no
 SJ_BUILD_INCLUDE_NFS             ?=yes
 SJ_BUILD_INCLUDE_TIDL            ?=yes
 SJ_BUILD_INCLUDE_PC_RUN_DEMO     ?=yes
-
+SJ_BUILD_INCLUDE_SDK_GIT         ?=yes
 
 print_config:
 	$(Q)$(ECHO)
@@ -52,6 +52,7 @@ print_config:
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_NFS                 = $(SJ_BUILD_INCLUDE_NFS)"
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_TIDL                = $(SJ_BUILD_INCLUDE_TIDL)"
 	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PC_RUN_DEMO         = $(SJ_BUILD_INCLUDE_PC_RUN_DEMO)"
+	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_SDK_GIT             = $(SJ_BUILD_INCLUDE_SDK_GIT)"
 ifeq  ($(SJ_BUILD_INCLUDE_PSDKRA_INSTALL),yes)
 	$(Q)$(ECHO) "# SJ_PSDKRA_BRANCH                --> $(SJ_PSDKRA_BRANCH)"
 endif
@@ -168,4 +169,8 @@ endif
 
 ifeq ($(SJ_BUILD_INCLUDE_PC_RUN_DEMO),yes)
 include makerules/makefile_pc_run_demo.mak
+endif
+
+ifeq ($(SJ_BUILD_INCLUDE_PC_RUN_DEMO),yes)
+include makerules/makefile_sdk_git.mak
 endif
