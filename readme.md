@@ -489,6 +489,9 @@ cd yocto-layers
 
 # Release notes
 
+## 202401 Release: 30_20_01
+1. support sdk git management. you can use `make sdk-git-help`
+
 ## 202312 Release: 30_20_00
 
 1. support SDK9.1 J721S2 and J784s4.
