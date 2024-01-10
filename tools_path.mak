@@ -64,6 +64,7 @@ print_env:
 	$(Q)$(ECHO) "# SJ_PATH_JACINTO:                    $(SJ_PATH_JACINTO)"
 	$(Q)$(ECHO) "# SJ_PATH_SDK                         $(SJ_PATH_SDK)"	
 	$(Q)$(ECHO) "# SJ_PATH_SDK1                        $(SJ_PATH_SDK1)"	
+	$(Q)$(ECHO) "# SJ_PATH_TOOLS                       $(SJ_PATH_TOOLS)"	
 	$(Q)$(ECHO) "# SJ_SOC_TYPE                         $(SJ_SOC_TYPE)"	
 	$(Q)$(ECHO) "-------------Common Env------------------------------"
 	$(Q)$(ECHO) "# SJ_BOOT SJ_BOOT1 and SJ_ROOTFS:     $(SJ_BOOT) $(SJ_BOOT1) $(SJ_ROOTFS)"
