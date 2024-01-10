@@ -51,7 +51,7 @@ ra-install-sdk-addon:check_paths_downloads check_paths_PSDKLA check_paths_PSDKRA
 
 ra-sd-install-all: la-sd-linux-install  la-sd-install-linux-dtbs ra-sd-linux-fs-install-sd la-sd-install-uboot
 ra-sd-install-sdk: ra-sd-linux-fs-install-sd la-sd-install-uboot la-sd-install-uboot
-	cp -rv $(SJ_PATH_RESOURCE)/psdkra/0901/opt/* $(SJ_ROOTFS)/opt/
+	cp -rv $(SJ_PATH_RESOURCE)/psdkra/$(SJ_PSDKRA_BRANCH)/opt/* $(SJ_ROOTFS)/opt/
 	sync
 
 ra-sd-mk-partition-method:

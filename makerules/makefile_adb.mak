@@ -9,7 +9,16 @@ adb-device:
 	adb devices
 	$(Q)$(call sj_echo_log, 0 , "adb: adb devices. --done !!!");
 
-
+adb-shell: 
+	$(Q)$(call sj_echo_log, 0 , "adb: adb devices.  !!!");
+	adb shell
+	$(Q)$(call sj_echo_log, 0 , "adb: adb devices. --done !!!");
+	
+adb-run-cmd: 
+	$(Q)$(call sj_echo_log, 0 , "adb: adb-run-cmd  $(CMD) !!!");
+	adb shell $(CMD)
+	$(Q)$(call sj_echo_log, 0 , "adb: adb devices. --done !!!");
+	
 adb-reboot: 
 	$(Q)$(call sj_echo_log, 0 , "adb: adb devices.  !!!");
 	adb shell reboot
@@ -39,6 +48,11 @@ adb-push-applications:
 	$(Q)$(call sj_echo_log, 0 , "adb: updating applications...  !!!");
 	adb push $(SJ_PATH_PSDKRA)/vision_apps/out/J721S2/A72/LINUX/release/*.out /opt/vision_apps/
 	$(Q)$(call sj_echo_log, 0 , "adb: updating applications...  !!!");
+
+adb-push-resources:
+	$(Q)$(call sj_echo_log, 0 , "adb: updating resources...  !!!");
+	adb push $(SJ_PATH_RESOURCE)/psdkra/$(SJ_PSDKRA_BRANCH)/*  /
+	$(Q)$(call sj_echo_log, 0 , "adb: updating resources... done !!!");
 
 adb-help:
 	$(Q)$(ECHO)
