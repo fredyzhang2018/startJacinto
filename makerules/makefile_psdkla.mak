@@ -246,6 +246,15 @@ la-install_yocto_env:
 	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv
 	@echo "please use below command to compile"
 	@echo "TOOLCHAIN_BASE=/home/fredy/j7/psdk_rtos_auto_j7_06_00_00_00/ MACHINE=j7-evm bitbake -k tisdk-rootfs-image"
+	
+#==============================================================================
+# QT the staus. 
+#==============================================================================	
+la-qt-showimage-build:
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the QT show image: $(SJ_PATH_SDK)/QT/showImage ");
+	cd $(SJ_PATH_PSDKLA)/ && source linux-devkit/environment-setup && cd $(SJ_PATH_SDK)/QT/showImage && ./makeImgShow
+	$(Q)$(call sj_echo_log, 0 , " --- 1. build the QT show image: $(SJ_PATH_SDK)/QT/showImage --done!!! ");	
+
 #==============================================================================
 # A help message target.
 #==============================================================================
