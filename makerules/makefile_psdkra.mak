@@ -84,6 +84,19 @@ ra-ethfw-clean:
 ra-ethfw-scrub: 
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) ethfw_scrub -s -j$(CPU_NUM)
 
+
+##########################################
+#                                        #
+# App Utils                                  #
+#                                        #
+##########################################
+ra-app-utils:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) app_utils -s -j$(CPU_NUM)
+ra-app-utils-clean:
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) app_utils_clean -s -j$(CPU_NUM)
+ra-app-utils-scrub: 
+	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) app_utils_scrub -s -j$(CPU_NUM)
+
 ##########################################
 #                                        #
 # imaging                                #
