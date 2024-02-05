@@ -172,6 +172,27 @@ la-sd-install-linux-dtbs:
 
 ##########################################
 #                                        #
+# GPU build                              #
+#                                        #
+##########################################
+la-gpu:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) ti-img-rogue-driver -j$(CPU_NUM)
+la-gpu-clean:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) ti-img-rogue-driver_clean -j$(CPU_NUM)	
+la-gpu-install:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) ti-img-rogue-driver_install -j$(CPU_NUM)		
+la-gpu-install-sd:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) ti-img-rogue-driver_install ROOTFS_PART=$(SJ_ROOTFS) -j$(CPU_NUM)
+
+la-gpu-install-nfs-psdkla:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) ti-img-rogue-driver_install ROOTFS_PART=$(SJ_PATH_PSDKLA)/targetNFS/ -j$(CPU_NUM)
+
+la-gpu-install-nfs-psdkra:
+	$(MAKE) -C $(SJ_PATH_PSDKLA) ti-img-rogue-driver_install ROOTFS_PART=$(SJ_PATH_PSDKRA)/targetfs/ -j$(CPU_NUM)
+
+
+##########################################
+#                                        #
 # uboot-r5                               #
 #                                        #
 ##########################################
