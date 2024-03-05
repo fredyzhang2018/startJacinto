@@ -154,3 +154,9 @@ tiovx-pyovx-generate-new-app:
 tiovx-pyovx-generate-new-app-run:
 	cd $(SJ_PATH_VISION_SDK_BUILD)//out/PC/x86_64/LINUX/$(SJ_PROFILE)/ &&  ./vx_app_vx_tutorial_graph_$(SJ_TIOVX_APP_DEMO_NAME)
 
+
+apps-basic-demo: 
+	$(Q)$(call sj_echo_log, 0 , " --- start to build the basic demos ...... ");
+	cd $(SJ_PATH_PSDKRA)/vision_apps && make apps.basic_demos.app_c7x_kernel.c7x.J721S2.FREERTOS.C7120.release
+	ls -l $(SJ_PATH_PSDKRA)/vision_apps/out/J721S2/A72/LINUX/release/vx_app_c7x*
+	$(Q)$(call sj_echo_log, 0 , " --- start to build the basic demos ...... done!!!");
