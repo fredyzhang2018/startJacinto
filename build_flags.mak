@@ -16,7 +16,6 @@ SJ_BUILD_INCLUDE_PSDKLA          ?=yes
 SJ_BUILD_INCLUDE_PSDKLA_INSTALL  ?=yes
 SJ_BUILD_INCLUDE_PSDKRA          ?=yes
 SJ_BUILD_INCLUDE_PSDKRA_INSTALL  ?=yes
-SJ_BUILD_INCLUDE_SD_INSTALL      ?=yes
 SJ_BUILD_INCLUDE_CHECK_PATHS     ?=yes
 SJ_BUILD_INCLUDE_MCUSS           ?=yes
 SJ_BUILD_INCLUDE_K3_BOOTSWITCH   ?=yes
@@ -24,10 +23,9 @@ SJ_BUILD_INCLUDE_PDK             ?=yes
 SJ_BUILD_INCLUDE_UBUNTU          ?=yes
 SJ_BUILD_INCLUDE_MANIFEST        ?=no
 SJ_BUILD_INCLUDE_GATEWAYDEMO     ?=yes
-SJ_BUILD_INCLUDE_DEMO            ?=no
 SJ_BUILD_INCLUDE_NFS             ?=yes
 SJ_BUILD_INCLUDE_TIDL            ?=yes
-SJ_BUILD_INCLUDE_PC_RUN_DEMO     ?=yes
+SJ_BUILD_INCLUDE_APPS_DEMO       ?=yes
 SJ_BUILD_INCLUDE_SDK_GIT         ?=yes
 SJ_BUILD_INCLUDE_ADB             ?=yes
 print_config:
@@ -35,32 +33,32 @@ print_config:
 	$(Q)$(ECHO) "### Below make variables control how the SDK is built. Modify as required."
 	$(Q)$(ECHO) "#"
 	$(Q)$(ECHO) "### Build flags in include build"
-	$(Q)$(ECHO) "# SJ_PROJECT_VERSION                   = $(SJ_PROJECT_VERSION)"
-	$(Q)$(ECHO) "# SJ_BUILD_FLAG_VERBOSE                = $(SJ_BUILD_FLAG_VERBOSE)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PSDKLA              = $(SJ_BUILD_INCLUDE_PSDKLA)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PSDKLA_INSTALL      = $(SJ_BUILD_INCLUDE_PSDKLA_INSTALL)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PSDKRA              = $(SJ_BUILD_INCLUDE_PSDKRA)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PSDKRA_INSTALL      = $(SJ_BUILD_INCLUDE_PSDKRA_INSTALL)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_SD_INSTALL          = $(SJ_BUILD_INCLUDE_SD_INSTALL)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_MCUSS               = $(SJ_BUILD_INCLUDE_MCUSS)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_K3_BOOTSWITCH       = $(SJ_BUILD_INCLUDE_K3_BOOTSWITCH)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PDK                 = $(SJ_BUILD_INCLUDE_PDK)"	
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_UBUNTU              = $(SJ_BUILD_INCLUDE_UBUNTU)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_MANIFEST            = $(SJ_BUILD_INCLUDE_MANIFEST)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_GATEWAYDEMO         = $(SJ_BUILD_INCLUDE_GATEWAYDEMO)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_DEMO                = $(SJ_BUILD_INCLUDE_DEMO)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_NFS                 = $(SJ_BUILD_INCLUDE_NFS)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_TIDL                = $(SJ_BUILD_INCLUDE_TIDL)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_PC_RUN_DEMO         = $(SJ_BUILD_INCLUDE_PC_RUN_DEMO)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_SDK_GIT             = $(SJ_BUILD_INCLUDE_SDK_GIT)"
-	$(Q)$(ECHO) "# SJ_BUILD_INCLUDE_ADB                 = $(SJ_BUILD_INCLUDE_ADB)"
+	$(Q)$(ECHO) "# $(YEL)SJ_PROJECT_VERSION                   $(RES)== $(PUR)$(SJ_PROJECT_VERSION)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_FLAG_VERBOSE                $(RES)== $(PUR)$(SJ_BUILD_FLAG_VERBOSE)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_PSDKLA              $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_PSDKLA)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_PSDKLA_INSTALL      $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_PSDKLA_INSTALL)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_PSDKRA              $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_PSDKRA)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_PSDKRA_INSTALL      $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_PSDKRA_INSTALL)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_SD_INSTALL          $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_SD_INSTALL)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_MCUSS               $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_MCUSS)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_K3_BOOTSWITCH       $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_K3_BOOTSWITCH)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_PDK                 $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_PDK)"	
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_UBUNTU              $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_UBUNTU)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_MANIFEST            $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_MANIFEST)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_GATEWAYDEMO         $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_GATEWAYDEMO)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_NFS                 $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_NFS)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_TIDL                $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_TIDL)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_APPS_DEMO           $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_APPS_DEMO)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_SDK_GIT             $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_SDK_GIT)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_ADB                 $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_ADB)"
+	$(Q)$(ECHO) "# $(YEL)SJ_BUILD_INCLUDE_AIMODEL             $(RES)== $(PUR)$(SJ_BUILD_INCLUDE_AIMODEL)"
 ifeq  ($(SJ_BUILD_INCLUDE_PSDKRA_INSTALL),yes)
-	$(Q)$(ECHO) "# SJ_PSDKRA_BRANCH                --> $(SJ_PSDKRA_BRANCH)"
+	$(Q)$(ECHO) "# $(YEL)SJ_PSDKRA_BRANCH                     $(RES)== $(PUR)$(SJ_PSDKRA_BRANCH)"
 endif
 ifeq  ($(SJ_BUILD_INCLUDE_PSDKLA_INSTALL),yes)
-	$(Q)$(ECHO) "# SJ_PSDKLA_BRANCH                --> $(SJ_PSDKLA_BRANCH)"
+	$(Q)$(ECHO) "# $(YEL)SJ_PSDKLA_BRANCH                     $(RES)== $(PUR)$(SJ_PSDKLA_BRANCH)"
 endif
-	$(Q)$(ECHO) "# SJ_VER_SDK                      --> $(SJ_VER_SDK)"
+	$(Q)$(ECHO) "# $(YEL)SJ_VER_SDK                           $(RES)== $(PUR)$(SJ_VER_SDK)"
 #==============================================================================
 # config make used tools
 #==============================================================================
@@ -71,7 +69,7 @@ else
 endif
 
 MAKE := make
-ECHO := echo
+ECHO := echo -e
 INSTALL := install
 RM := rm 
 CPU_NUM := $(shell nproc)
@@ -81,19 +79,19 @@ CPR := cp -r
 
 print_variable:
 	$(Q)$(ECHO)
-	$(Q)$(ECHO) "### Below variable is used for building the system."
-	$(Q)$(ECHO) "#"
-	$(Q)$(ECHO) "### Build variable in include build"
-	$(Q)$(ECHO) "# Q = $(Q)"
-	$(Q)$(ECHO) "# MAKE = $(MAKE)"
-	$(Q)$(ECHO) "# ECHO = $(ECHO)"
-	$(Q)$(ECHO) "# INSTALL = $(INSTALL)"
-	$(Q)$(ECHO) "# RM = $(RM)"
-	$(Q)$(ECHO) "# CPU_NUM = $(CPU_NUM)"
-	$(Q)$(ECHO) "# MV = $(MV)"
-	$(Q)$(ECHO) "# CP = $(CP)"
-	$(Q)$(ECHO) "# CPR = $(CPR)"
-	$(Q)$(ECHO) "### --------------------------------------------->>>>>>>>>>>>>>>>>"
+	$(Q)$(ECHO) "$(GRE)### Below variable is used for building the system."
+	$(Q)$(ECHO) "$(GRE)#"
+	$(Q)$(ECHO) "$(GRE)### Build variable in include build"
+	$(Q)$(ECHO) "# $(YEL)Q        $(RES)== $(PUR)$(Q)"
+	$(Q)$(ECHO) "# $(YEL)MAKE     $(RES)== $(PUR)$(MAKE)"
+	$(Q)$(ECHO) "# $(YEL)ECHO     $(RES)== $(PUR)$(ECHO)"
+	$(Q)$(ECHO) "# $(YEL)INSTALL  $(RES)== $(PUR)$(INSTALL)"
+	$(Q)$(ECHO) "# $(YEL)RM       $(RES)== $(PUR)$(RM)"
+	$(Q)$(ECHO) "# $(YEL)CPU_NUM  $(RES)== $(PUR)$(CPU_NUM)"
+	$(Q)$(ECHO) "# $(YEL)MV       $(RES)== $(PUR)$(MV)"
+	$(Q)$(ECHO) "# $(YEL)CP       $(RES)== $(PUR)$(CP)"
+	$(Q)$(ECHO) "# $(YEL)CPR      $(RES)== $(PUR)$(CPR)"
+	$(Q)$(ECHO) "$(GRE)### --------------------------------------------->>>>>>>>>>>>>>>>>"
 
 
 #==============================================================================
@@ -107,10 +105,6 @@ endif
 
 ifeq ($(SJ_BUILD_INCLUDE_PSDKRA),yes)
 include makerules/makefile_psdkra.mak
-endif
-
-ifeq ($(SJ_BUILD_INCLUDE_SD_INSTALL),yes)
-include makerules/makefile_sd_install.mak
 endif
 
 ifeq ($(SJ_BUILD_INCLUDE_CHECK_PATHS),yes)
@@ -153,11 +147,6 @@ ifeq ($(SJ_BUILD_INCLUDE_GATEWAYDEMO),yes)
 include makerules/makefile_gateway_demo.mak
 endif
 
-ifeq ($(SJ_BUILD_INCLUDE_DEMO),yes)
-include makerules/makefile_demo.mak
-endif
-
-
 ifeq ($(SJ_BUILD_INCLUDE_NFS),yes)
 include makerules/makefile_nfs.mak
 endif
@@ -168,11 +157,11 @@ include makerules/makefile_tidl.mak
 endif
 
 
-ifeq ($(SJ_BUILD_INCLUDE_PC_RUN_DEMO),yes)
-include makerules/makefile_pc_run_demo.mak
+ifeq ($(SJ_BUILD_INCLUDE_APPS_DEMO),yes)
+include makerules/makefile_apps_demo.mak
 endif
 
-ifeq ($(SJ_BUILD_INCLUDE_PC_RUN_DEMO),yes)
+ifeq ($(SJ_BUILD_INCLUDE_SDK_GIT),yes)
 include makerules/makefile_sdk_git.mak
 endif
 

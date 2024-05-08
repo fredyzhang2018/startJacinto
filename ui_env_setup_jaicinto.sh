@@ -3,6 +3,14 @@ SJ_WORK_PATH=$(pwd)
 SJ_PATH_JACINTO=$(pwd)
 export SJ_PATH_JACINTO
 
+# ANI color format. 
+GRE="\\033[0;32m"
+YEL="\\033[0;33m"
+RED="\\033[0;31m"
+BLU="\\033[0;34m"
+RES="\\033[0m"
+
+
 sj_usage()
 {
 	echo "# source env_setup_jacinto.sh - To launch the startJacinto tools"
@@ -169,6 +177,12 @@ sj_sdk_setting()
 			local Var2=`echo $rows | awk -F "=" '{print $2}'` # Value 
 			# echo "-------------$Var1 $Var2"
 			SJ_SERVER_IP=$Var2 # SJ_SOC_TYPE=J721
+		elif [ `echo $rows| awk -F "=" '{ print $1 }'` == "SJ_GIT_SERVER" ];then
+			# echo "- SDK: $rows"
+			local Var1=`echo $rows | awk -F "=" '{print $1}'` # SJ_GIT_SERVER
+			local Var2=`echo $rows | awk -F "=" '{print $2}'` # Value 
+			# echo "-------------$Var1 $Var2"
+			SJ_GIT_SERVER=$Var2 
 		elif [ `echo $rows| awk -F "=" '{ print $1 }'` == "SJ_LOG_LEVEL" ];then
 			# echo "- SDK: $rows"
 			local Var1=`echo $rows | awk -F "=" '{print $1}'` # SJ_LOG_LEVEL
@@ -235,6 +249,7 @@ sj_sdk_setting()
 	export_variable SJ_SOC_TYPE
 	export_variable SJ_EVM_IP
 	export_variable SJ_SERVER_IP
+	export_variable SJ_GIT_SERVER
 	export_variable SJ_LOG_LEVEL
 
 	# Main PATH
@@ -274,11 +289,11 @@ sj_launch_ui()
 		300 100 20 ${SJ_SDKS_SELECTION[@]}`
 	echo "[ $(date) ] >>> Selected SDK: $sj_selected_sdk" >> $SJ_PATH_JACINTO/.sj_log
 	sj_sdk_setting $sj_selected_sdk
-	echo "############################################################################################"
-    echo "#                                                                                          #"
-    echo "#                       starting $sj_selected_sdk , Happy Debugging                  #"
-    echo "#                                                                                          #"
-    echo "############################################################################################"
+	echo -e "$GRE############################################################################################"
+    echo -e "$GRE#                                                                                          #"
+    echo -e "$GRE#                     starting $YEL $sj_selected_sdk , $GRE Happy Debugging                  #"
+    echo -e "$GRE#                                                                                          #"
+    echo -e "$GRE############################################################################################"
 }
 
 sj_check_args $1

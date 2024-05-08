@@ -6,114 +6,161 @@
 
 SJ_PDK_BOARD          ?= j721s2_evm
 # mpu1_0, mcu1_0, mcu1_1, mcu2_0, mcu2_1, mcu3_0, mcu3_1, c66xdsp_1, c66xdsp_2, c7
-SJ_PDK_CORE           ?= mcu2_0
+SJ_PDK_CORE           ?= mcu1_0
 # csl osal_nonos sciclient udma dmautils pdk_examples csl_uart_test_app csl_uart_test_app csl_i2c_led_blink_app sciserver_testapp_freertos  ipc_echo_testb_freertos boot_app_mmcsd_linux
-#  pdk_libs pdk_app_libs 
-SJ_PDK_MODULES        ?= pdk_examples
- # PROFILE: debug or release
-SJ_PDK_BUILD_PROFILE  ?= release
+#  pdk_libs pdk_app_libs  dss_display_testapp_freertos pdk_examples ipc_echo_testb_freertos
+#SJ_PDK_MODULES        ?= pdk_libs pdk_app_libs  pdk_examples
+#SJ_PDK_MODULES        ?= dss_display_testapp_freertos
+SJ_PDK_MODULES        ?=  ipc_echo_testb_freertos
+# PROFILE: debug or release
+SJ_PDK_BUILD_PROFILE  ?= debug
 
 
-pdk-build: check_paths_PSDKRA pdk-build-configure
-	$(Q)$(call sj_echo_log, 0 ,"--- 0 board : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  ");
+pdk_build: check_paths_PSDKRA pdk-build-configure
+	$(Q)$(call sj_echo_log, info , "1. pdk_build ... "); 
+	$(Q)$(call sj_echo_log, info ,"--- 0 board : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  ");
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES) SOC=$(SJ_SOC_TYPE) BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) -s BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM) 
-	$(Q)$(call sj_echo_log, 0 ,"--- 1 build SJ_PDK_BOARD : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE) done!");
+	$(Q)$(call sj_echo_log, info ,"--- 1 build SJ_PDK_BOARD : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE) done!");
+	$(Q)$(call sj_echo_log, info , "1. pdk_build ... done!"); 
 
-pdk-build-configure: check_paths_PSDKRA
+pdk_build_configure: check_paths_PSDKRA
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_configure ... "); 
 	$(Q)echo "build configuration: $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) "
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_configure ... done!"); 
 
-pdk-build-clean: check_paths_PSDKRA pdk-build-configure
+
+pdk_build_clean: check_paths_PSDKRA pdk-build-configure
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_clean ... "); 
 	$(Q)echo "board : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  "
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES)_clean SOC=j721e BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) -s TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM)
 	$(Q)echo "build SJ_PDK_BOARD : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE) done!"
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_clean ... done!"); 
 
-pdk-clean:
+pdk_clean:
+	$(Q)$(call sj_echo_log, info , "1. pdk_clean ... "); 
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build allclean
+	$(Q)$(call sj_echo_log, info , "1. pdk_clean ... done!"); 
 
-pdk-scrub: check_paths_PSDKRA
+pdk_scrub: check_paths_PSDKRA
+	$(Q)$(call sj_echo_log, info , "1. pdk_scrub ... "); 
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build allclean
 	rm -rf $(SJ_PATH_PDK)/packages/ti/binary
 	rm -rf $(SJ_PATH_PDK)/packages/ti/boot/sbl/binary
 	$(MAKE) pdk-build-configure
+	$(Q)$(call sj_echo_log, info , "1. pdk_scrub ... done!"); 
 	
-pdk-sbl-mmcsd-img:
+pdk_sbl_mmcsd_img:
+	$(Q)$(call sj_echo_log, info , "1. pdk_sbl_mmcsd_img ... "); 
 	$(Q)echo "start build sbl for mmcsd ";
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build BOARD=j721e_evm CORE=mcu1_0 BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) pdk_libs      -s -j$(CPU_NUM)
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build BOARD=j721e_evm CORE=mcu1_0 BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) sbl_mmcsd_img -s -j$(CPU_NUM)
 	$(Q)echo "test !!!";
+	$(Q)$(call sj_echo_log, info , "1. pdk_sbl_mmcsd_img ... done!"); 
 
-pdk-sbl-boot-mcu-setup: check_paths_sd_boot # This command is only for boot MCU. for others, please check the MCUSW
-	$(Q)$(call sj_echo_log, 0 , " --- 0. pdk-sbl-boot-setup :  setup the SBL boot !!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Copy SBL binary sbl_mmcsd_img_mcu1_0_release.tiimage as tiboot3.bin !!!");
+pdk_sbl_boot_mcu_setup: check_paths_sd_boot # This command is only for boot MCU. for others, please check the MCUSW
+	$(Q)$(call sj_echo_log, info , "1. pdk_sbl_boot_mcu_setup ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0. pdk-sbl-boot-setup :  setup the SBL boot !!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Copy SBL binary sbl_mmcsd_img_mcu1_0_release.tiimage as tiboot3.bin !!!");
 	$(INSTALL) $(SJ_PATH_PDK)/packages/ti/boot/sbl/binary/j721e_evm/mmcsd/bin/sbl_mmcsd_img_mcu1_0_release.tiimage $(SJ_BOOT)/tiboot3.bin
 ifeq ($(SJ_SOC_TYPE), J721E)
-	$(Q)$(call sj_echo_log, 0 , " --- 2. Copy the tifs.bin form PDK/packages/ti/drv/sciclient/soc/V1/tifs.bin as tifs.bin in case of J721E !!!");
+	$(Q)$(call sj_echo_log, info , " --- 2. Copy the tifs.bin form PDK/packages/ti/drv/sciclient/soc/V1/tifs.bin as tifs.bin in case of J721E !!!");
 	$(INSTALL) $(SJ_PATH_PDK)/packages/ti/drv/sciclient/soc/V1/tifs.bin $(SJ_BOOT)/
 else ifeq ($(SJ_SOC_TYPE), J7200)
-	$(Q)$(call sj_echo_log, 0 , " --- 2. Copy the tifs.bin form PDK/packages/ti/drv/sciclient/soc/V2/tifs.bin as tifs.bin in case of J7200 !!!");
+	$(Q)$(call sj_echo_log, info , " --- 2. Copy the tifs.bin form PDK/packages/ti/drv/sciclient/soc/V2/tifs.bin as tifs.bin in case of J7200 !!!");
 	$(INSTALL) $(SJ_PATH_PDK)/packages/ti/drv/sciclient/soc/V2/tifs.bin $(SJ_BOOT)/
 endif
-	$(Q)$(call sj_echo_log, 0 , " --- 3. Copy the application from /mcusw/binary/appname_app/bin/j721e_evm/appimage to the SD card boot partition as app !!!");
+	$(Q)$(call sj_echo_log, info , " --- 3. Copy the application from /mcusw/binary/appname_app/bin/j721e_evm/appimage to the SD card boot partition as app !!!");
 	$(INSTALL) $(SJ_PATH_PDK)/packages/ti/binary/sciserver_testapp_freertos/bin/j721e/sciserver_testapp_freertos_mcu1_0_debug.appimage $(SJ_BOOT)/app
-	$(Q)$(call sj_echo_log, 0 , " --- 4. finish !!!");
+	$(Q)$(call sj_echo_log, info , " --- 4. finish !!!");
+	$(Q)$(call sj_echo_log, info , "1. pdk_sbl_boot_mcu_setup ... done!"); 
 
-pdk-spl-boot-mcu-setup: check_paths_sd_boot  check_paths_sd_rootfs
-	$(Q)$(call sj_echo_log, 0 , " --- 0. Copy the application from /mcusw/binary/appname_app/bin/j721e_evm/appimage to the SD card boot partition as app j7-mcu-r5f0_0-fw !!!");
+pdk_spl_boot_mcu_setup: check_paths_sd_boot  check_paths_sd_rootfs
+	$(Q)$(call sj_echo_log, info , "1. pdk_spl_boot_mcu_setup ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0. Copy the application from /mcusw/binary/appname_app/bin/j721e_evm/appimage to the SD card boot partition as app j7-mcu-r5f0_0-fw !!!");
 	$(INSTALL) $(SJ_PATH_PDK)/packages/ti/binary/sciserver_testapp_freertos/bin/j721e/sciserver_testapp_freertos_mcu1_0_debug.xer5f $(SJ_ROOTFS)/lib/firmware/
 	$(INSTALL) $(SJ_PATH_PDK)/packages/ti/binary/sciserver_testapp_freertos/bin/j721e/sciserver_testapp_freertos_mcu1_0_debug.xer5f $(SJ_ROOTFS)/lib/firmware/ipc_echo_testb_mcu1_0_release_strip.xer5f
 	rm $(SJ_ROOTFS)/lib/firmware/j7-mcu-r5f0_0-fw
 	#cd $(SJ_ROOTFS)/lib/firmware/ && ln -s $(SJ_ROOTFS)/lib/firmware/ipc_echo_testb_mcu1_0_release_strip.xer5f  ./j7-mcu-r5f0_0-fw
+	$(Q)$(call sj_echo_log, info , "1. pdk_spl_boot_mcu_setup ... done!"); 
 
-pdk-help:
+pdk_help:
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_configure ... "); 
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build help BOARD=$(SJ_PDK_BOARD)
-	$(Q)$(ECHO) " Variable Setting : "
-	$(Q)$(ECHO) "#   SJ_PDK_BOARD = $(SJ_PDK_BOARD)"
-	$(Q)$(ECHO) "#   SJ_PDK_CORE  = $(SJ_PDK_CORE)"
-	$(Q)$(ECHO) "#   SJ_PDK_MODULES = $(SJ_PDK_MODULES)"
-	$(Q)$(ECHO) "#   SJ_PDK_BUILD_PROFILE = $(SJ_PDK_BUILD_PROFILE)"
+	$(Q)$(call sj_echo_log, help ,"Variable Setting -------------------------------------------");
+	$(Q)$(call sj_echo_log, help ,"#   SJ_PDK_BOARD ", "$(SJ_PDK_BOARD)");
+	$(Q)$(call sj_echo_log, help ,"#   SJ_PDK_CORE  ", "$(SJ_PDK_CORE)");
+	$(Q)$(call sj_echo_log, help ,"#   SJ_PDK_MODULES ", " $(SJ_PDK_MODULES)");
+	$(Q)$(call sj_echo_log, help ,"#   SJ_PDK_BUILD_PROFILE", "$(SJ_PDK_BUILD_PROFILE)");
+	$(Q)$(call sj_echo_log, info ,"# Available build targets are:"); 
+	$(Q)$(call sj_echo_log, help , "#########################################################"); 
+	$(Q)$(call sj_echo_log, help , "pdk_build","update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_build_clean", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_build_configure", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_clean", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_sbl_boot_mcu_setup", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_sbl_mmcsd_img", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_scrub", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "pdk_spl_boot_mcu_setup", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "#########################################################"); 
+	$(Q)$(call sj_echo_log, info , "1. sbl_help ... done!"); 
 
-sbl-bootimage-sd:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_mcusw_bootimage_sd !!!");
+sbl_bootimage_sd:
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_sd ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_pdk_sd sbl_mcusw_bootimage_sd !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_sd -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_mcusw_bootimage_sd done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_pdk_sd sbl_mcusw_bootimage_sd done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_sd ... done!"); 
 
-sbl-bootimage-emmc-boot0:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_bootimage_emmc_boot0 !!!");
+sbl_bootimage_emmc_boot0:
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_emmc_boot0 ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_pdk_sd sbl_bootimage_emmc_boot0 !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) 	sbl_bootimage_emmc_boot0 -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_bootimage_emmc_boot0 done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_pdk_sd sbl_bootimage_emmc_boot0 done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_emmc_boot0 ... done!"); 
 
-sbl-bootimage-emmc-uda:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_bootimage_emmc_uda !!!");
+sbl_bootimage_emmc_uda:
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_emmc_uda ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_pdk_sd sbl_bootimage_emmc_uda !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) 	sbl_bootimage_emmc_uda -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_bootimage_emmc_uda done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_pdk_sd sbl_bootimage_emmc_uda done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_emmc_uda ... done!"); 
 
-sbl-bootimage-ospi:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_pdk_sd sbl_mcusw_bootimage_sd !!!");
+sbl_bootimage_ospi:
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_ospi ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_pdk_sd sbl_mcusw_bootimage_sd !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_ospi -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_pdk_sd sbl_mcusw_bootimage_sd done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_pdk_sd sbl_mcusw_bootimage_sd done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_ospi ... done!"); 
 
-sbl-vision_apps-bootimage:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   sbl_vision_apps_bootimage !!!");
+sbl_vision_apps_bootimage:
+	$(Q)$(call sj_echo_log, info , "1. sbl_vision_apps_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   sbl_vision_apps_bootimage !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_vision_apps_bootimage -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.   sbl_vision_apps_bootimage done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.   sbl_vision_apps_bootimage done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_vision_apps_bootimage ... done!"); 
 
 # build the linux: dtb kernel etc 
-sbl-linux-bootimage:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  linux boot image !!!");
+sbl_linux_bootimage:
+	$(Q)$(call sj_echo_log, info , "1. sbl_linux_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  linux boot image !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_linux_bootimage -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  linux boot image done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  linux boot image done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_linux_bootimage ... done!"); 
 
 # This should run on UART BOOT Mode
-sbl-ospi-bootimage-install-tftp:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   update sd boot partition images for ospi boot!!!");
+sbl_ospi_bootimage_install_tftp:
+	$(Q)$(call sj_echo_log, info , "1. sbl_ospi_bootimage_install_tftp ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   update sd boot partition images for ospi boot!!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_bootimage_install_ospi -s -j$(CPU_NUM)
 	cp -r $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/* /tftpboot
 	ls -l /tftpboot
 	sync
-	$(Q)$(call sj_echo_log, 0 , " --- 1.   update sd boot partition images for ospi boot--done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.   update sd boot partition images for ospi boot--done!!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_ospi_bootimage_install_tftp ... done!"); 
 
-hs-ospi-bootimage-install-tftp:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   update sd boot partition images for ospi boot!!!");
+hs_ospi_bootimage_install_tftp:
+	$(Q)$(call sj_echo_log, info , "1. hs_ospi_bootimage_install_tftp ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   update sd boot partition images for ospi boot!!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_bootimage_install_ospi_hs -s -j$(CPU_NUM)
 	$(Q)sync
 	cp -r $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/* /tftpboot
@@ -128,58 +175,72 @@ hs-ospi-bootimage-install-tftp:
 	$(Q)cp -v /tftpboot/tikernelimage_linux.appimage.signed /tftpboot/tikernelimage_linux.appimage
 	$(Q)cp -v /tftpboot/tidtb_linux.appimage.signed         /tftpboot/tidtb_linux.appimage
 	$(Q)sync
-	$(Q)$(call sj_echo_log, 0 , " --- 1.   update sd boot partition images for ospi boot--done!!!");	
+	$(Q)$(call sj_echo_log, info , " --- 1.   update sd boot partition images for ospi boot--done!!!");	
+	$(Q)$(call sj_echo_log, info , "1. hs_ospi_bootimage_install_tftp ... done!"); 
 
 
-hs-sbl-bootimage-sd:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   build the image for HS chip: SBL APP TIFS  !!!");
+hs_sbl_bootimage_sd:
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_bootimage_sd ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   build the image for HS chip: SBL APP TIFS  !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_bootimage_sd_hs -s -j$(CPU_NUM)
 	$(Q)ls -l $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   build the image for HS chip: SBL APP TIFS --done  !!!");
+	$(Q)$(call sj_echo_log, info , " --- 0.   build the image for HS chip: SBL APP TIFS --done  !!!");
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_bootimage_sd ... done!"); 
 
-hs-sbl-linux-bootimage:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   hs linux boot image  !!!");
+hs_sbl_linux_bootimage:
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_linux_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   hs linux boot image  !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_linux_bootimage_hs -s -j$(CPU_NUM)
 	$(Q)ls -l $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   hs linux boot image --done  !!!");
+	$(Q)$(call sj_echo_log, info , " --- 0.   hs linux boot image --done  !!!");
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_linux_bootimage ... done!"); 
 
-hs-sbl-vision-apps-bootimage:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   build the image for HS chip: lateapp1 lateapp2 !!!");
+hs_sbl_vision_apps_bootimage:
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_vision_apps_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   build the image for HS chip: lateapp1 lateapp2 !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_vision_apps_bootimage_hs -s -j$(CPU_NUM)
 	$(Q)ls -l $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   build the image for HS chip: lateapp1 lateapp2 --done !!!");
+	$(Q)$(call sj_echo_log, info , " --- 0.   build the image for HS chip: lateapp1 lateapp2 --done !!!");
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_vision_apps_bootimage ... done!"); 
 
-hs-sbl-linux-combined-bootimage:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   build the image for HS chip: combined app for linux !!!");
+hs_sbl_linux_combined_bootimage:
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_linux_combined_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   build the image for HS chip: combined app for linux !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_linux_combined_bootimage_hs -s -j$(CPU_NUM)
 	$(Q)ls -l $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   build the image for HS chip: combined app for linux --done !!!");
+	$(Q)$(call sj_echo_log, info , " --- 0.   build the image for HS chip: combined app for linux --done !!!");
+	$(Q)$(call sj_echo_log, info , "1. hs_sbl_linux_combined_bootimage ... done!"); 
 
-hs-sd-sbl-combined-bootimage:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   update sd card for combined image !!!");
+hs_sd_sbl_combined_bootimage:
+	$(Q)$(call sj_echo_log, info , "1. hs_sd_sbl_combined_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   update sd card for combined image !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_combined_bootimage_install_sd_hs -s -j$(CPU_NUM)
 	$(Q)ls -l  $(SJ_BOOT)
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   update sd card for combined image --done !!!");
+	$(Q)$(call sj_echo_log, info , " --- 0.   update sd card for combined image --done !!!");
+	$(Q)$(call sj_echo_log, info , "1. hs_sd_sbl_combined_bootimage ... done!"); 
 
-hs-sd-sbl-bootimage-install-sd:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   update sd boot partition images for linux boot!!!");
+hs_sd_sbl_bootimage_install_sd:
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_configure ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   update sd boot partition images for linux boot!!!");
 	$(Q)cat  $(SJ_PATH_PSDKRA)/vision_apps/vision_apps_build_flags.mak | grep "J7ES_SR?="
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD)  sbl_bootimage_hs_install_sd -s -j$(CPU_NUM)
 	$(Q)cat  $(SJ_PATH_PSDKRA)/vision_apps/vision_apps_build_flags.mak | grep "J7ES_SR?="
 	$(Q)ls -l  $(SJ_BOOT)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.   update sd boot partition images for linux boot--done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.   update sd boot partition images for linux boot--done!!!");
+	$(Q)$(call sj_echo_log, info , "1. pdk_build_configure ... done!"); 
 
 # sbl_bootimage: 
-# 	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
+# 	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
 # 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage 
-# 	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
+# 	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
 
 # mcusw-sbl-mmcsd-img-hlos :  kernel build 
 # sbl_bootimage_sd         :  SBL boot image
 # sbl_vision_apps_bootimage:  vision apps image. 
 SJ_SBL_PREBUILT?=no
-sbl-sd-bootimage:  check_paths_sd_boot
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  update boot image to SD !!!");
+sbl_sd_bootimage:  check_paths_sd_boot
+	$(Q)$(call sj_echo_log, info , "1. sbl_sd_bootimage ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  update boot image to SD !!!");
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/tiboot3.bin $(SJ_BOOT)
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/tifs.bin    $(SJ_BOOT)
 ifeq ($(SJ_SBL_PREBUILT), yes)
@@ -193,82 +254,119 @@ endif
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/lateapp1                                 $(SJ_BOOT)
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_bootfiles/lateapp2                                 $(SJ_BOOT)
 	sync
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  update boot image to SD done!!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , " --- 1.  update boot image to SD done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , "1. sbl_sd_bootimage ... done!"); 
 	
-sbl-sd-combined-image-opt: check_paths_sd_boot
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  update boot image to SD !!!");
+sbl_sd_combined_image_opt: check_paths_sd_boot
+	$(Q)$(call sj_echo_log, info , "1. sbl_sd_combined_image_opt ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  update boot image to SD !!!");
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tiboot3.bin              $(SJ_BOOT)
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tifs.bin                 $(SJ_BOOT)
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/combined_opt.appimage    $(SJ_BOOT)/app
 	sync
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  update boot image to SD done!!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , " --- 1.  update boot image to SD done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , "1. sbl_sd_combined_image_opt ... done!"); 
 
 
-sbl-sd-combined-image-dev: check_paths_sd_boot
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  update boot image to SD !!!");
+sbl_sd_combined_image_dev: check_paths_sd_boot
+	$(Q)$(call sj_echo_log, info , "1. sbl_sd_combined_image_dev ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  update boot image to SD !!!");
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tiboot3.bin              $(SJ_BOOT)
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/tifs.bin                 $(SJ_BOOT)
 	$(INSTALL) $(SJ_PATH_PSDKRA)/vision_apps/out/sbl_combined_bootfiles/combined_dev.appimage    $(SJ_BOOT)/app
 	$(INSTALL) $(SJ_PATH_PSDKLA)/board-support/prebuilt-images/u-boot.img                        $(SJ_BOOT)/
 	$(INSTALL) $(SJ_PATH_PSDKLA)/board-support/prebuilt-images/uEnv.txt                          $(SJ_BOOT)/
 	sync
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  update boot image to SD done!!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , " --- 1.  update boot image to SD done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , "1. sbl_sd_combined_image_dev ... done!"); 
 
 
 
-sbl-bootimage-clean:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_clean !!!");
+sbl_bootimage_clean:
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_clean ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_bootimage_clean !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_bootimage_clean 
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_bootimage_clean !!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_bootimage_clean !!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_bootimage_clean ... done!"); 
 
-sbl-combined-bootimage-opt: 
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
+sbl_combined_bootimage_opt: 
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_opt ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
 	$(Q)sed -i '/^HLOS_BOOT ?=/c HLOS_BOOT ?= optimized'  $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage -s -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1. sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , " --- 1. sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_opt ... done!"); 
 
 
-sbl-combined-bootimage-dev: 
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
+sbl_combined_bootimage_dev: 
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_dev ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage !!!");
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
 	$(Q)sed -i '/^HLOS_BOOT ?=/c HLOS_BOOT ?= development'  $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk
 	$(Q)cat $(SJ_PATH_PDK)/packages/ti/boot/sbl/tools/combined_appimage/config.mk | grep "HLOS_BOOT ?=" 
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_linux_combined_bootimage_dev -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1. sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , " --- 1. sbl_bootimage_sd sbl_bootimage_ospi sbl_atf_optee sbl_vision_apps_bootimage sbl_qnx_bootimage sbl_linux_bootimage done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_dev ... done!"); 
 
-sbl-combined-bootimage-emmc-boot0: 
-	$(Q)$(call sj_echo_log, 0 , " --- 0.   atf_optee  sbl_vision_apps sbl_linux_combined_bootimage sbl_emmc_boot0 !!!");
+sbl_combined_bootimage_emmc_boot0: 
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_emmc_boot0 ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.   atf_optee  sbl_vision_apps sbl_linux_combined_bootimage sbl_emmc_boot0 !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_emmc_boot0  -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.    atf_optee  sbl_vision_apps sbl_linux_combined_bootimage sbl_emmc_boot0 done!!!");
-	$(Q)$(call sj_echo_log, 0 , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , " --- 1.    atf_optee  sbl_vision_apps sbl_linux_combined_bootimage sbl_emmc_boot0 done!!!");
+	$(Q)$(call sj_echo_log, info , " --- 1. Docs: $(SJ_PATH_JACINTO)/docs/jacinto7/jacinto7_optimization_boot_flow.md done !!! ");
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_emmc_boot0 ... done!"); 
 
-sbl-combined-bootimage-install-sd:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_bootimage_clean !!!");
+sbl_combined_bootimage_install_sd:
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_install_sd ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_bootimage_clean !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_install_sd  -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_bootimage_clean !!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_bootimage_clean !!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_install_sd ... done!"); 
 
-sbl-combined-bootimage-clean:
-	$(Q)$(call sj_echo_log, 0 , " --- 0.  sbl_combined_bootimage_clean !!!");
+sbl_combined_bootimage_clean:
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_clean ... "); 
+	$(Q)$(call sj_echo_log, info , " --- 0.  sbl_combined_bootimage_clean !!!");
 	$(MAKE) -C $(SJ_PATH_VISION_SDK_BUILD) sbl_combined_bootimage_clean -j$(CPU_NUM)
-	$(Q)$(call sj_echo_log, 0 , " --- 1.  sbl_combined_bootimage_clean !!!");
+	$(Q)$(call sj_echo_log, info , " --- 1.  sbl_combined_bootimage_clean !!!");
+	$(Q)$(call sj_echo_log, info , "1. sbl_combined_bootimage_clean ... done!"); 
 
-sbl-help:
-	# sbl_bootimage_sd
-	# sbl_bootimage_install_sd
-	# sbl_bootimage_clean
-	# sbl_bootimage_clean
-	# sbl-linux-combined-bootimage
-	# sbl_combined_bootimage_install_sd
-	# sbl_combined_bootimage_clean
+sbl_help:
+	$(Q)$(call sj_echo_log, info , "1. sbl_help ... "); 
+	$(Q)$(call sj_echo_log, info , "# Available build targets are:"); 
+	$(Q)$(call sj_echo_log, help , "#########################################################"); 
+	$(Q)$(call sj_echo_log, help , "sbl_bootimage_clean","update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_bootimage_emmc_boot0", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_bootimage_emmc_uda", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_bootimage_sd", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_combined_bootimage_clean", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_combined_bootimage_dev", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_combined_bootimage_emmc_boot0", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_combined_bootimage_install_sd", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_combined_bootimage_opt", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_linux_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_ospi_bootimage_install_tftp", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_sd_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_sd_combined_image_dev", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_sd_combined_image_opt", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "sbl_vision_apps_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_ospi_bootimage_install_tftp", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_sbl_bootimage_sd", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_sbl_linux_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_sbl_linux_combined_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_sbl_vision_apps_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_sd_sbl_bootimage_install_sd", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "hs_sd_sbl_combined_bootimage", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "#########################################################"); 
+	$(Q)$(call sj_echo_log, info , "# nfs_help ... done!"); 
+	$(Q)$(call sj_echo_log, info , "1. sbl_help ... done!"); 
 	
-
 # ------------------------------------------------------
 # # PDK make help
 # ------------------------------------------------------

@@ -15,7 +15,6 @@ set Install_PATH  [lindex $argv 1]
   
 set Pkg_Name       [exec echo $Install_PATH | cut -d / -f 6 ]
 
-
 set timeout 600
 # set time [exec date +%Y%m%d]
 # set PSDKLA [exec echo "$SJ_PATH_PSDKRA"]
@@ -39,6 +38,11 @@ while {$count > 0 } {
         "Press return to continue" { send "\r";  exp_continue }
         "(o) overwrite (s) skip copy" { send "o\r";  exp_continue }
         "Do you want to continue?" { send "Y\r"; exp_continue }
+        "Do you wish to install required" { send "Y\r"; exp_continue }
+        "Do you wish to run nfs setup" { send "n\r"; exp_continue }
+        "Do you wish to run tftp setup" { send "n\r"; exp_continue }
+        "Do you wish to run minicom setup" { send "n\r"; exp_continue }
+        "Do you wish to run uboot setup" { send "n\r"; exp_continue }
         "View Readme file?" { send "Y\r"; exp_continue }
        eof { }
        timeout { puts "timeout waiting for response" ; close ; exit }

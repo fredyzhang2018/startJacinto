@@ -19,44 +19,57 @@ SJ_G_ETH1_MAC = 00:68:eb:87:17:b3
 SJ_G_GATEWAY_MAC = 70:ff:76:1d:92:c3
 
 # Build the demo
-gateway-build: check_paths_PSDKRA
+gateway_build: check_paths_PSDKRA
+	$(Q)$(call sj_echo_log, info , "1. gateway-build ....."); 
 	$(Q)echo "board : $(SJ_G_BOARD)  modules: $(SJ_G_MODULES)  cores: $(SJ_G_CORE) BUILD_PROFILE=$(SJ_G_BUILD_PROFILE)  "
 	$(MAKE) -C $(SJ_PATH_PSDKRA)/gateway-demos can_eth_gateway_app        BOARD=$(SJ_G_BOARD)                   BUILD_PROFILE=$(SJ_G_BUILD_PROFILE)	-j$(CPU_NUM)
 	$(MAKE) -C $(SJ_PATH_PSDKRA)/gateway-demos can_traffic_generator_app  BOARD=$(SJ_G_BOARD) CORE=$(SJ_G_CORE) BUILD_PROFILE=$(SJ_G_BUILD_PROFILE) -j$(CPU_NUM)
 	$(Q)echo "build board : $(SJ_G_BOARD)  modules: $(SJ_G_MODULES)  cores: $(SJ_G_CORE) BUILD_PROFILE=$(SJ_G_BUILD_PROFILE) done!"
-
-gateway-install-pc-tools: check_paths_PSDKRA
+	$(Q)$(call sj_echo_log, info , "1. gateway-build ..... done!"); 
+	
+gateway_install_pc_tools: check_paths_PSDKRA
+	$(Q)$(call sj_echo_log, info , "1. gateway-install-pc-tools ....."); 
 	$(Q)echo "board : $(SJ_G_BOARD)  modules: $(SJ_G_MODULES)  cores: $(SJ_G_CORE) BUILD_PROFILE=$(SJ_G_BUILD_PROFILE)  "
 	$(MAKE) -C $(SJ_PATH_PSDKRA)/gateway-demos/pctools    all 	 -j$(CPU_NUM)
 	$(Q)$(CPR)  $(SJ_PATH_PSDKRA)/gateway-demos/pctools  $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test
 	$(Q)echo "build board : $(SJ_G_BOARD)  modules: $(SJ_G_MODULES)  cores: $(SJ_G_CORE) BUILD_PROFILE=$(SJ_G_BUILD_PROFILE) done!"
+	$(Q)$(call sj_echo_log, info , "1. gateway-install-pc-tools ..... done!"); 
 
 # run CAN2ETH Demo : CAN ID is 208
-gateway-can2eth:
+gateway_can2eth:
+	$(Q)$(call sj_echo_log, info , "1. gateway-can2eth ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/pctools ; \
 	sudo ./recv_1722.out --eth_interface $(SJ_G_ETH0) --timeout 12 --pipes 0 --verbosity verbose &
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test; \
 	./pcanfdtst tx ETH_ONLY --bitrate 1000000 --dbitrate 5000000 --clock 80000000 -n 100 -ie 0xD0 --fd -l 64 --tx-pause-us 1 /dev/pcanusbfd32
-gateway-sent-can-frame:
+	$(Q)$(call sj_echo_log, info , "1. gateway-can2eth ..... done!"); 
+
+gateway_sent_can_frame:
+	$(Q)$(call sj_echo_log, info , "1. gateway-sent-can-frame ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test; \
 	./pcanfdtst tx ETH_ONLY --bitrate 1000000 --dbitrate 5000000 --clock 80000000 -n 1000 -ie 0xD0 --fd -l 64 --tx-pause-us 1000 /dev/pcanusbfd32
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test; \
 	./pcanfdtst tx ETH_ONLY --bitrate 1000000 --dbitrate 5000000 --clock 80000000 -n 1000 -ie 0xE0 --fd -l 64 --tx-pause-us 1000 /dev/pcanusbfd32
+	$(Q)$(call sj_echo_log, info , "1. gateway-sent-can-frame .....done!"); 
 
-gateway-receive-can-frame-over-ethernet:
+gateway_receive_can_frame_over_ethernet:
+	$(Q)$(call sj_echo_log, info , "1. gateway-receive-can-frame-over-ethernet ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/pctools ; \
 	sudo ./recv_1722.out --eth_interface $(SJ_G_ETH0) --timeout 12 --pipes 0 --verbosity verbose
 	# cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/pctools; \
 	# sudo ./recv_1722.out --eth_interface $(SJ_G_ETH1) --timeout 12 --pipes 0 --verbosity verbose
-
+	$(Q)$(call sj_echo_log, info , "1. gateway-receive-can-frame-over-ethernet ..... done!"); 
 # ETH2ETH Demo CANID is 240
-gateway-eth2eth: 
+gateway_eth2eth: 
+	$(Q)$(call sj_echo_log, info , "1. gateway eth2eth ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	sudo ./pctools/recv_1722.out --eth_interface $(SJ_G_ETH1) --timeout 12 --pipes 0 --verbosity verbose &
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	sudo ./pctools/send_1722.out --eth_interface $(SJ_G_ETH0)       --gateway_mac $(SJ_G_GATEWAY_MAC) --dst_mac $(SJ_G_ETH1_MAC) --ipg 1000 --route ETH --num_packets 10 
+	$(Q)$(call sj_echo_log, info , "1. gateway eth2eth ..... done!"); 
 
-gateway-eth2eth-sent: 
+gateway_eth2eth_sent: 
+	$(Q)$(call sj_echo_log, info , "1. gateway eth2eth sent ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	sudo ./pctools/recv_1722.out --eth_interface $(SJ_G_ETH1) --timeout 12 --pipes 0 --verbosity verbose &
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
@@ -67,11 +80,13 @@ gateway-eth2eth-sent:
 	# sudo ./pctools/send_1722.out --eth_interface $(SJ_G_ETH1) --gateway_mac $(SJ_G_GATEWAY_MAC) --dst_mac $(SJ_G_ETH0_MAC) --ipg 1000 --route ETH --num_packets 10 
 	# cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	# sudo ./pctools/recv_1722.out --eth_interface $(SJ_G_ETH0) --timeout 12 --pipes 0 --verbosity verbose
+	$(Q)$(call sj_echo_log, info , "1. gateway eth2eth sent ..... done!"); 
 
-gateway-eth2eth-receive: 
+gateway_eth2eth_receive: 
+	$(Q)$(call sj_echo_log, info , "1. gateway eth2eth receive ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	sudo ./pctools/recv_1722.out --eth_interface $(SJ_G_ETH1) --timeout 12 --pipes 0 --verbosity verbose
-
+	$(Q)$(call sj_echo_log, info , "1. gateway eth2eth receive ..... done!"); 
 # Set Hash Table
 # lookup table inside the gateway application with 256 entries. 
 #	Each entry has two masks: The masks tell which ports are open for Transmit. 
@@ -79,29 +94,35 @@ gateway-eth2eth-receive:
 #       one for CAN.
 # eth2eth CANID is 0xf0 
 # can2eth CANID is 0xd0
-gateway-set-hash-table: 
+gateway_set_hash_table: 
+	$(Q)$(call sj_echo_log, info , "1. gateway demo set hash table ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	sudo ./pctools/send_1722.out --eth_interface $(SJ_G_ETH0)  --can_id  0xf0  --update_hash_table 1 --can_mask 0x0 --eth_mask 0xf 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	sudo ./pctools/send_1722.out --eth_interface $(SJ_G_ETH1)  --can_id  0xD0  --update_hash_table 1 --can_mask 0x0 --eth_mask 0xf
+	$(Q)$(call sj_echo_log, info , "1. gateway demo set hash table .....done!"); 
 # run out of box demo
-gateway-run-oob:
+gateway_run_oob:
+	$(Q)$(call sj_echo_log, info , "1. gateway demo run oob ....."); 
 	cd $(SJ_PATH_JACINTO)/tools/peak-linux-driver-8.9.3/test/; \
 	python3 pctools/run_demo.py --iterations 1 --run_time 30 --system_test 0 --gui_enabled 0 --oob_mode 1
+	$(Q)$(call sj_echo_log, info , "1. gateway demo run oob ..... done!"); 
 
-
-gateway-clean:
+gateway_clean:
+	$(Q)$(call sj_echo_log, info , "1. gateway demo clean ....."); 
 	$(MAKE) -C $(SJ_PATH_PSDKRA)/gateway-demos allclean
+	$(Q)$(call sj_echo_log, info , "1. gateway demo clean ..... done!"); 
 
-gateway-help:
-	$(MAKE) -C $(SJ_PATH_PSDKRA)/gateway-demos help
-	# -------------start Jacinto---------------------
-	# gateway-clean： clean the demo
-	# gateway-build:  build the demo. 
-	# gateway-can2eth : run can2eth demo
-	# gateway-eth2eth : run eth2eth demo
-	# -------------start Jacinto---------------------done!
-
-
-
+gateway_help:
+	$(Q)$(call sj_echo_log, info , "# gateway_help....."); 
+	$(Q)$(call sj_echo_log, info , "# Available build targets are:"); 
+	$(Q)$(call sj_echo_log, help , "#########################################################"); 
+	# $(MAKE) -C $(SJ_PATH_PSDKRA)/gateway-demos help
+	$(Q)$(call sj_echo_log, help , "gateway-clean", " "); 
+	$(Q)$(call sj_echo_log, help , "gateway-build", " "); 
+	$(Q)$(call sj_echo_log, help , "gateway-can2eth", " "); 
+	$(Q)$(call sj_echo_log, help , "gateway-eth2eth", " "); 
+	$(Q)$(call sj_echo_log, info , "# gateway-help..... done!"); 
+	$(Q)$(call sj_echo_log, help , "#########################################################"); 
+	$(Q)$(call sj_echo_log, info , "# gateway_help..... done!"); 
 

@@ -62,7 +62,7 @@ on your setup.
 
 EOM
 
-portdefault=/dev/ttyS0
+portdefault=/dev/ttyUSB0
 
 echo ""
 echo "NOTE: If your using any of the above boards simply hit enter"

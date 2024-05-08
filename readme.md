@@ -488,6 +488,11 @@ cd yocto-layers
 `make ubuntu-install-opencv`
 
 # Release notes
+## 202405 Release: 30_30_00
+1. support color mode for log and make. 
+2. make rules clear. 
+3. make help clear. 
+4. support 0902 sdk. 
 
 ## 202401 Release: 30_20_01
 1. support sdk git management. you can use `make sdk-git-help`

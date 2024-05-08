@@ -426,6 +426,8 @@ ffmpeg -i test.mp3 test.wav
 # convert image to YUV
 ffmpeg -i tmp.bmp -pix_fmt yuv420p 0001.yuv
 
+# convert image to rgb888
+ffmpeg -vcodec bmp -i 4.bmp -vcodec rawvideo -f rawvideo -pix_fmt rgb24 0001.raw
 # convert jpg image to bmp
 ffmpeg  -i ./img_2368_352.jpg -f image2 -pix_fmt rgb24 rgb888 image.bmp
 # convert mp4 to yuv420p

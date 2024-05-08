@@ -1,77 +1,40 @@
 #!/bin/sh
+#############################################################################################
+# This script is using for sphinx environment setup and using sphinx                        #    
+# @Author : Fredy Zhang                                                                     #
+# @email  ：fredyzhang2018@gmail.com															#				
+# @date   ：2024-03-16                                                                      # 
+# @update : fredy  V2                                                                       # 
+##############################################################################################
 
-# This distribution contains contributions or derivatives under copyright
-# as follows:
-#
-# Copyright (c) 2010, Texas Instruments Incorporated
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-# - Redistributions of source code must retain the above copyright notice,
-#   this list of conditions and the following disclaimer.
-# - Redistributions in binary form must reproduce the above copyright
-#   notice, this list of conditions and the following disclaimer in the
-#   documentation and/or other materials provided with the distribution.
-# - Neither the name of Texas Instruments nor the names of its
-#   contributors may be used to endorse or promote products derived
-#   from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# including common tools. 
+. $SJ_PATH_JACINTO/scripts/ubuntu/common_ubuntu.sh
 
-cwd=`dirname $0`
-. $cwd/common.sh
+# LOG _LEVEL:  0 (error), 1 (info) , 2(debug) , 3 (debug_plus)
+LOG_LEVEL=3
 
-
+# minicomcfg files
 minicomcfg=${HOME}/.minirc.dfl
 
 cat << EOM
-
 --------------------------------------------------------------------------------"
 This step will set up minicom (serial communication application) for
 SDK development
 
 
 For boards that contain a USB-to-Serial converter on the board such as:
-	* BeagleBone
-	* Beaglebone Black
-	* AM335x EVM-SK
-	* AM57xx EVM
-	* K2H, K2L, and K2E EVMs
-
-the port used for minicom will be automatically detected. By default Ubuntu
-will not recognize this device. Setup will add a udev rule to
-/etc/udev/ so that from now on it will be recognized as soon as the board is
-plugged in.
-
-For other boards, the serial will defualt to /dev/ttyS0. Please update based
-on your setup.
+	* J721S2  EVM 4 main port and 2 uart port. 
+	* J721E EVM 4 main port and 2 uart port. 
 
 --------------------------------------------------------------------------------
-
 EOM
 
 portdefault=/dev/ttyUSB0
 
-echo ""
-echo "NOTE: If your using any of the above boards simply hit enter"
-echo "and the correct port will be determined automatically at a"
-echo "later step.  For all other boards select the serial port"
-echo "that the board is connected to."
-echo "Which serial port do you want to use with minicom?"
+sh_log info  "------------------------config the port -------------------------------------"
+sh_log info "Which serial port do you want to use with minicom?"
 
-ls /dev/ttyUSB*
+ls -l /dev/ttyUSB*
 
 read -p "[ $portdefault ] " port
 
@@ -81,8 +44,8 @@ fi
 
 if [ -f $minicomcfg ]; then
     cp $minicomcfg $minicomcfg.old
-    echo
-    echo "Copied existing $minicomcfg to $minicomcfg.old"
+    sh_log info ""
+    sh_log info "Copied existing $minicomcfg to $minicomcfg.old"
 fi
 
 echo "pu port             $port
@@ -106,7 +69,11 @@ pu mnocon4          VOICE
 pu rtscts           No" | tee $minicomcfg > /dev/null
 check_status
 
-echo
-echo "Configuration saved to $minicomcfg. You can change it further from inside"
-echo "minicom, see the Software Development Guide for more information."
-echo "--------------------------------------------------------------------------------"
+sh_log info 
+sh_log warning "pls notice the port config for k3 host tools "
+sh_log file "k3bootswitch" "$HOME/.config/k3bootswitch.conf"
+sh_log file "Configuration saved to You can change it further from inside" "$PUR $minicomcfg"
+sh_log file "Configuration common" "$PUR $SJ_PATH_JACINTO/scripts/ubuntu/common_ubuntu.sh."
+sh_log file "shell scripts running" "$PUR $basename/$0"
+sh_log info "minicom, see the Software Development Guide for more information."
+sh_log info "--------------------------------------------------------------------------------"

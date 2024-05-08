@@ -64,7 +64,7 @@ if [ -f $cwd/bin/common.sh ]; then
     get_major_host_version host_upper
 else
     echo "common.sh does not exist in the bin directory"
-    exit 1
+    # exit 1
 fi
 
 if [ -f $cwd/bin/setup-host-check.sh ]; then
@@ -90,9 +90,10 @@ fi
 # update the tftpboot 
 echo "[ `date` ]: update PSDKRA NFS BOOT /tftpboot images: "
 rm -f  /tftpboot/*
+cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/Image-$SJ_SOC_TYPE-evm.bin               /tftpboot
 cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/Image-j7-evm.bin               /tftpboot
-cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/k3-j721e-common-proc-board.dtb /tftpboot
-cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/k3-j721e-vision-apps.dtbo      /tftpboot
+cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/k3-$SJ_SOC_TYPE-common-proc-board.dtb    /tftpboot
+cp -v $SJ_PATH_PSDKLA/board-support/prebuilt-images/k3-$SJ_SOC_TYPE-vision-apps.dtbo         /tftpboot
 ls -l /tftpboot
 echo "[ `date` ]: update /tftpboot images --done "
 

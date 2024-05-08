@@ -1,0 +1,11 @@
+[user] 
+	email = fredyzhang2018@gmail.com
+	name = fredy zhang
+ 
+[core]
+	gitproxy = /home/fredy/git-proxy.sh
+ 
+[http]
+	proxy = http://192.168.1.4:8118
+[https]
+	proxy = http://192.168.1.4:8118

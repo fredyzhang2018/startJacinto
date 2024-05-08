@@ -12,10 +12,10 @@ DICTORY_NAME=$script_dir
 RUNTIME_TYPE=$modle_type
 
 
-
+# TODO Check the below setting before running the demo. 
 if [ -d $script_path/input_images ];then 
-    MODEL_INPUT_SET="no"  # model input data setting. 
-    MODEL_YUV_INPUT="yes"
+    MODEL_INPUT_SET="yes"  # model input data setting. 
+    MODEL_YUV_INPUT="no"
 else 
     MODEL_INPUT_SET="no"  # model input data setting. 
 fi 
@@ -96,7 +96,8 @@ if [ $MODEL_YUV_INPUT == "yes" ];then
 else
     ls  ./input_images/*  >   ./config_inference.txt
 fi 
-sed -i "s/^./testvecs\/models\/public\/$RUNTIME_TYPE\/$DICTORY_NAME/g"  ./config_inference.txt
+
+sed -i "s/^/.\/testvecs\/models\/public\/$RUNTIME_TYPE\/$DICTORY_NAME\/&/g"  ./config_inference.txt
 
 # 2. update the import configration file. 
 echo "[ `date` ] >>> 2. configure  $DICTORY_NAME import file"
