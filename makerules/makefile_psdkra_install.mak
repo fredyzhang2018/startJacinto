@@ -31,8 +31,9 @@ else
 endif
 	$(Q)$(call sj_echo_log, info , "1. ra_install_targetfs ... done!"); 
 
-ra_sd_install_all: la-sd-linux-install la-sd-install-linux-dtbs la-gpu la-gpu-install-sd  ra-sd-linux-fs-install-sd la-sd-install-uboot
-ra_nfs_install_all: la-nfs-linux-install la-nfs-install-linux-dtbs la-gpu la-gpu-install-nfs-psdkra ra-nfs-linux-fs-install-sd la-nfs-install-uboot
+ra_sd_install_all: la_sd_linux_install la_sd_install_linux_dtbs la_gpu la_gpu_install_sd  ra_sd_linux_fs_install_sd la_sd_install_uboot
+ra_nfs_install_all: la_nfs_linux_install la_nfs_install_linux_dtbs la_gpu la_gpu_install_nfs_psdkra ra_nfs_linux_fs_install_sd la_nfs_install_uboot
+
 ra_install_sdk:check_paths_downloads check_paths_PSDKLA
 	$(Q)$(call sj_echo_log, info , "1. ra_install_sdk ... "); 
 	$(Q)$(call sj_echo_log, info , " --- 1. setup the PSDKRA sdk");
