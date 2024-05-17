@@ -1,18 +1,22 @@
 # StartJacinto Project
 
-startJacinto project is used to manage the Jacinto6,Jacinto7,Sitara AM62x/AM62Ax SDK, include Ubuntu.
+**startJacinto** project is used to manage the Jacinto6,Jacinto7,Sitara AM62x/AM62Ax SDK, including Ubuntu.
 
-- manage different SDKs.
-- update image to SD card.
+Using this tool can effectively improve your work efficiency , you can develop all the work in one terminal, it's my target to make this tools. 
+- Automate repetitive tasks
+- Simplify complex tasks.
+
+If you have any suggestions, please share, we can work together to make this tools easier  and smart. Thanks
+
+Below are function list: 
+- Manage different SDKs.
+- Ppdate images to SD card.
 - AUTO download and install SDK.
-- manage develop resouces(tools, patches),etc.
+- Manage develop resouces(tools, patches),etc.
 - Yocto environment support.
-- Ubuntu Envrionment Support
+- Ubuntu Envrionment setup.
 - etc.
-  If you have any suggestions, please share, we can work together to make this tools eaiser , smart. Thanks.
-
 # Rules
-
 ## Variable Name
 
 1. all the global variable: `SJ_*`
@@ -21,18 +25,32 @@ startJacinto project is used to manage the Jacinto6,Jacinto7,Sitara AM62x/AM62Ax
 
 ## rules
 
-```
----env     --------------- makerules   
----scripts ---------------
----patch   ---------------  
-```
+- Makefile support different model, like psdkra, psdkla. etc. 
+- Scripts support. 
+- Variable support for different branch, like J721S2/J784S4, etc. 
+
 
 # usage
 
-## please configure the sdk path first
+## please configure the sdks first
 
-check the env_setup_jacinto.sh first. make sure the SDK path.
-
+check the `.sj_config_sdks` first. make sure the SDK path.
+```
+[SDK-0902-j721s2-DRA829]:~/startjacinto> cat .sj_config_sdks 
+CONFIG_NAME,PSDKLA_NAME,PSDKRA_NAME
+SDK-0902-j721s2-DRA829,09_02_00_05,09_02_00_05
+SDK-0901-j721s2-DRA829,09_01_00_06,09_01_00_06
+SDK-0900-j721s2-DRA829,09_01_00_00,09_01_00_00
+SDK-0901-j784s4-DRA829,09_01_00_06,09_01_00_06
+# j721e j7200 j721s2 j784s4, This setting should match with the Soc Name. remove from config. 
+SJ_EVM_IP=10.85.130.131
+# below is tftp and NFS server ip. 
+SJ_SERVER_IP=192.168.10.61
+SJ_GIT_SERVER=https://github.com/
+SJ_LOG_LEVEL=1
+# Yocto Env Setting
+SJ_YOCTO_CONFIG_FILE=processor-sdk-linux-09_00_00_06.txt
+```
 ## Start Jacinto Tools
 
 `$ source ui_env_setup_*`
@@ -41,103 +59,26 @@ After you run this command, you will see the below contect in your console. Plea
 
 ![img](https://github.com/fredyzhang2018/startJacinto/blob/master/docs/.pictures/Screenshot%20from%202022-10-23%2011-05-25.png "StartJacinto")
 
-## run command to build the system
+## help info
 
-Print variable :
-`make print_all       print_config    print_env   print_variable`
+- make help : basic info for normally used command. 
+- make help_all : print all available command and info.
+- make print : print startjacinto config/tools path/soc ti.com link.
+- make print_config : print tools config. 
+- make print_env : print viriable for tools use.
+- make print_variable : print viariable use for make rules.
+- make log_help : log help info for make rules.
+- make check_cmd CMD="*" : check command. 
+- make check_cmd_content  CMD="*" : search the cmd content.
+- make check_doc_jacinto7  CMD="*": search the jacinto7 docs
+- make check_scipts  CMD="*": search the scripts
 
 ## TIDL
 
-### Inference and import
+use below command to get more info:
+- make tidl_help
 
-Fredy Tools model zoos support import the images list. Two model
-
-1. input_imges
-   1. this mode, need to create a dictory on model dictory.
-   2. startjacinto tools : TIDL makefile set :  SJ_TIDL_INFERENCE_CONFIG_LIST as no.
-   3. EVM inference should set to no also .
-2. input_imges_list
-   1. if  the dictory of input_images_list is exist, then model will import follow the list \.
-   2. Startjacinto tools : TIDL makefile setting : SJ_TIDL_INFERENCE_CONFIG_LIST as yes
-   3. EVM inference scripts should set to : yes .
-3. check the trace /feature map ,etc
-   1. tidl-model-check-feature-map
-   2. tidl-model-check-inference-trace
-
-- Import the model and run on pc, you should check the makefile_tidl.mk for configure.
-  `tidl-model-import-inference-run`
-- imnet onnx example
-
-  `tidl-model-onnx-imnet`
-- set up the model to sd card over scp: `tidl-model-sd-model-setup`
-
-### Run Inference on PC
-
-1. Import and run inference on PC: `tidl-model-import-inference-run`
-
-### Run Inference on EVM
-
-tidl-model-inference-run-evm    :  Run inference on EVM
-tidl-model-run-on-evm-setup     :  evm run command
-tidl-model-zoo-download         :  Model  download
-
-1. SD card model setup: `tidl-model-sd-model-setup`
-2. Run inference on EVM: `tidl-model-inference-run-evm`
-3. Compare the result: `tidl-model-check-inference-trace`
-
-### TIDL BULD
-
-* Download and setup :  `make tidl-src-download-setup `
-* Download and setup adds on package: `tidl-src-addon-packages`
-* Build the TIDL dependent: `tidl-src-build-dependent`
-* Build the TIDL SRC: `tidl-src-build-pc`
-* Build the TIDL SRC: `tidl-src-build-pc`
-
-```
-tidl-src-addon-packages  # install the protobuf  FlatBuffer FlatBuffer
-tidl-src-build-evm       # build all TIDL Runtime
-tidl-src-build-pc        # build all TIDL for PC emulation
-tidl-src-download-setup  # Download Repo
-tidl-src-build-dependent # graphviz build 
-```
-
-## Edge AI
-
-- ra-edgeai               : build the edgeai.
-- ra-edgeai-install       : install teh edgeai to sdk.
-- ra-edgeai-scrub         : clean the edgeai build.
-- ra-sdk-edgeai            : setup the SDK for edgeai
-- ra-nfs-linux-fs-install-edgeai
-
-### Steps to setup edge AI SDK.
-
-Method 1 :  use the edge ai filesystem, this already setuped .
-
-Method 2 :  follow the steps: [https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/index.html](https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/index.html)
-
-- Setup the PSDKLA
-- Setup the PSDKRA
-- Build the edgeAI : ra-sdk-edgeai
-- build the edgeai:  ra-edgeai
-- PC 👍
-
-  ```shell
-  /media/<user-name>/rootfs/opt#git clone --single-branch --branch master git://git.ti.com/edgeai/edge_ai_apps.git
-  /media/<user-name>/rootfs/opt/edge_ai_apps#./setup_script.sh
-  /media/<user-name>/rootfs/opt/edge_ai_apps#./download_models.sh --recommended
-  ```
-- Setup the edgeai: ra-nfs-linux-fs-install-edgeai
-- Setup the edgeai: ra-edgeai-install
-- boot the board :  only need to run once 👍 setup_script.sh
-
-### Run the Demo
-
-```shell
-cd /opt/edge_ai_apps
-source ./init_scripts.sh. 
-```
-
-Running :Gst treamer demo :  [https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/end_to_end_gstreamer_demos.html](https://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-sk-tda4vm/08_05_00/exports/docs/end_to_end_gstreamer_demos.html%E2%80%B8)
+TODO : list the steps to import and run model.
 
 ## BOOT FLow
 
@@ -250,50 +191,24 @@ Combined Image:
 
 ## Build PSDKLA
 
-Simalar as SDK.
+use below command to get more info:
+- make la_help : hlep info for psdkla.
+- make la_help_install : help info for psdkla install. 
 
-```
-make la-*
-```
 
 ### Install the SDK
 
-`make la-install-sdk`
+`make la_install_sdk` : auto install psdkla sdk. 
 
 ## Build PSDKRA
 
-Similar as SDK.
-
-```
-make ra-*
-```
+use below command to get more info:
+- make ra_help : hlep info for psdkla.
+- make ra_help_install : help info for psdkla install. 
 
 ### Install the PSDKRA
 
-`make ra-install-sdk`
-
-### minifest
-
-#### Manifest Setup
-
-```
-	manifest-update-local-repo    : update repo from remote to local(Internal using)"
-	manifest-repo-init            : init repo in SJ_PATH_PSDKRA"
-	manifest-repo-sync            : Sync the repo"
-	manifest-install              : install the repo minifest to sdks  "
-```
-
-#### Manifest Build
-
-1. Enable PSDK RTOS for Linux+RTOS mode (NOTE: this is default and documented here for reference only)
-   Edit `tiovx/build_flags.mak` and modify below variable, `BUILD_LINUX_A72?=yes`
-2. Build PSDK RTOS by doing below in "vision_apps" `make sdk -j8`
-3. Copy application related files to target filesystem in SD card, by doing below in "vision_apps"
-   `make linux_fs_install_sd`
-   OR
-   `make linux_fs_install_sd PROFILE=debug` (to copy the debug versions to the filesystem)
-4. Copy test data files to SD card (required for some demos, typically needs to be done once)
-   `make linux_fs_install_sd_test_data`
+`make ra_install_sdk`
 
 ### install
 
