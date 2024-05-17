@@ -29,6 +29,9 @@ Below are function list:
 - Scripts support. 
 - Variable support for different branch, like J721S2/J784S4, etc. 
 
+## Log info
+You can check terminal info in `.sj_log`. 
+- log info : .sj_log file recoding the command that you are running. 
 
 # usage
 
