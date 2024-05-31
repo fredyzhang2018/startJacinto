@@ -419,59 +419,8 @@ la_jailhouse_distclean:
 	$(Q)$(call sj_echo_log, info , "1. la_jailhouse_distclean ... "); 
 	$(MAKE) -C $(SJ_PATH_PSDKLA) jailhouse_distclean -j$(CPU_NUM)	
 	$(Q)$(call sj_echo_log, info , "1. la_jailhouse_distclean ... done!"); 
-#==============================================================================
-# install the staus. 
-#==============================================================================	
-la_yocto_install_layer:	
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_install_layer ... "); 
-	cd $(SJ_PATH_PSDKLA)/yocto-build && ./oe-layertool-setup.sh -f $(SJ_PATH_PSDKLA)/yocto-build/configs/psdkla/la-06_00_01_00.txt
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_install_layer ... done!"); 
 
-la_yocto_install__env:
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_install__env ... "); 
-	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv
-	@echo "please use below command to compile"
-	@echo "TOOLCHAIN_BASE=/home/fredy/j7/psdk_rtos_auto_j7_06_00_00_00/ MACHINE=j7-evm bitbake -k tisdk-rootfs-image"
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_install__env ... done!"); 
 	
-#==============================================================================
-# QT the staus. 
-#==============================================================================	
-la_app_qt_showimage_build:
-	$(Q)$(call sj_echo_log, info , "1. la_app_qt_showimage_build ... "); 
-	$(Q)$(call sj_echo_log, info , " --- 1. build the QT show image: $(SJ_PATH_SDK)/QT/showImage ");
-	cd $(SJ_PATH_PSDKLA)/ && source linux-devkit/environment-setup && cd $(SJ_PATH_SDK)/QT/showImage && ./makeImgShow
-	$(Q)$(call sj_echo_log, info , " --- 1. build the QT show image: $(SJ_PATH_SDK)/QT/showImage --done!!! ");	
-	$(Q)$(call sj_echo_log, info , "1. la_app_qt_showimage_build ... done!"); 
-
-la_app_helloworld_build:
-	$(Q)$(call sj_echo_log, info , "1. la_app_helloworld_build ... "); 
-	$(Q)$(call sj_echo_log, info , " --- 1. build the hello world:  $(SJ_PATH_SDK)/app/helloworld/ ");
-	cd $(SJ_PATH_PSDKLA)/ && source linux-devkit/environment-setup && cd $(SJ_PATH_SDK)/app/helloworld/ && make
-	$(Q)$(call sj_echo_log, info , " --- 1. build the hello world:  $(SJ_PATH_SDK)/app/helloworld/ --done!!! ");	
-	$(Q)$(call sj_echo_log, info , "1. la_app_helloworld_build ... done!"); 
-
-la_app_helloworld_clean:
-	$(Q)$(call sj_echo_log, info , "1. la_app_helloworld_clean ... "); 
-	$(Q)$(call sj_echo_log, info , " --- 1. build the hello world:  $(SJ_PATH_SDK)/app/helloworld/  ");
-	cd $(SJ_PATH_PSDKLA)/ && source linux-devkit/environment-setup && cd $(SJ_PATH_SDK)/app/helloworld/ && make clean
-	$(Q)$(call sj_echo_log, info , " --- 1. build the hello world:  $(SJ_PATH_SDK)/app/helloworld/ --done!!! ");	
-	$(Q)$(call sj_echo_log, info , "1. la_app_helloworld_clean ... done!");  
-
-la_app_fbimagesave_build:
-	$(Q)$(call sj_echo_log, info , "1. la_app_fbimagesave_build ... "); 
-	$(Q)$(call sj_echo_log, info , " --- 1. build the fb_image_save: $(SJ_PATH_SDK)/app/fb_image_save/   ");
-	cd $(SJ_PATH_PSDKLA)/ && source linux-devkit/environment-setup && cd $(SJ_PATH_SDK)/app/fb_image_save/ && make
-	$(Q)$(call sj_echo_log, info , " --- 1. build the fb_image_save: $(SJ_PATH_SDK)/app/fb_image_save/ --done!!! ");	
-	$(Q)$(call sj_echo_log, info , "1. la_app_fbimagesave_build ... done!"); 
-
-la_app_fbimagesave_clean:
-	$(Q)$(call sj_echo_log, info , "1. la_app_fbimagesave_clean ... "); 
-	$(Q)$(call sj_echo_log, info , " --- 1. build the fb_image_save: $(SJ_PATH_SDK)/app/fb_image_save/ ");
-	cd $(SJ_PATH_PSDKLA)/ && source linux-devkit/environment-setup && cd $(SJ_PATH_SDK)/app/fb_image_save/ && make clean
-	$(Q)$(call sj_echo_log, info , " --- 1. build the fb_image_save: $(SJ_PATH_SDK)/app/fb_image_save/ --done!!! ");	
-	$(Q)$(call sj_echo_log, info , "1. la_app_fbimagesave_clean ... done!"); 
-
 #==============================================================================
 # evm case running. 
 #==============================================================================	
@@ -534,11 +483,6 @@ la_help:
 	$(Q)$(call sj_echo_log, help , "la_remote_run_helloworld", "remote run command -  helloworld ... "); 
 	$(Q)$(call sj_echo_log, help , "la_remote_run_ssh", "remote run command -  ssh ... "); 
 	$(Q)$(call sj_echo_log, help , "la_remote_run_vfb_usecase",  "remote run command -  vfb usecase ... "); 
-	$(Q)$(call sj_echo_log, help , "la_app_fbimagesave_build","app building ... "); 
-	$(Q)$(call sj_echo_log, help , "la_app_fbimagesave_clean", "app cleanning ... "); 
-	$(Q)$(call sj_echo_log, help , "la_app_helloworld_build", "app building ... "); 
-	$(Q)$(call sj_echo_log, help , "la_app_helloworld_clean", "app cleanning ... "); 
-	$(Q)$(call sj_echo_log, help , "la_app_qt_showimage_build", "app qt image building ... "); 
 	$(Q)$(call sj_echo_log, help , "la_evm_app_testing_eth", "OpenVx usecase runnning - ethernet ... "); 
 	$(Q)$(call sj_echo_log, help , "la_evm_app_testing_minicom", "OpenVx usecase runnning - minicom ... "); 
 	$(Q)$(call sj_echo_log, help , "#########################################################"); 

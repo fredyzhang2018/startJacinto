@@ -10,4 +10,4 @@ SJ_SERVER_IP=192.168.10.61
 SJ_GIT_SERVER=https://github.com/
 SJ_LOG_LEVEL=1
 # Yocto Env Setting
-SJ_YOCTO_CONFIG_FILE=processor-sdk-linux-09_00_00_06.txt
+SJ_YOCTO_CONFIG_FILE=processor-sdk-linux-09_01_00_06.txt

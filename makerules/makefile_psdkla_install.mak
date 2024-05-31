@@ -36,6 +36,9 @@ la_install_addon_makefile: check_paths_PSDKLA
 
 la_yocto_install: check_paths_PSDKLA 
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_install ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
 	$(Q)if [ ! -d  $(SJ_PATH_PSDKLA)/yocto-build/sources ] ; then \
 		cd $(SJ_PATH_PSDKLA)/yocto-build/      && ./oe-layertool-setup.sh -f configs/processor-sdk-linux/$(SJ_YOCTO_CONFIG_FILE); \
 		cd $(SJ_PATH_PSDKLA)/yocto-build/      && . conf/setenv;\
@@ -45,11 +48,92 @@ la_yocto_install: check_paths_PSDKLA
 	fi
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_install ... done! "); 
 
-la_yocto_build: check_paths_PSDKLA check_paths_PSDKLA 
+la_yocto_build: check_paths_PSDKLA  
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_build ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
 	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv && MACHINE=$(SJ_SOC_TYPE)-evm bitbake -k tisdk-default-image
 	echo "Finished, congratulations !!!"
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_build ... done! "); 
+
+la_yocto_module_clean: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_module_clean MOD=? ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv && MACHINE=$(SJ_SOC_TYPE)-evm bitbake $(MOD)  -c do_cleanall
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_module_clean ... done! "); 
+
+la_yocto_module_build: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_module_build MOD=? ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/build && . conf/setenv && MACHINE=$(SJ_SOC_TYPE)-evm bitbake $(MOD)
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_module_build ... done! "); 
+
+la_yocto_sources_check: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_source_check CMD=? ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources && $(CMD)
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_source_check ... done! "); 
+
+
+la_yocto_build_check: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_build_check CMD=? ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/build && $(CMD)
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_build_check ... done! "); 
+
+
+la_yocto_sources_status: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_status CMD=? ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/bitbake/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arago/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arm/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-aws/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-openembedded/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-psdkla/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-qt5/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-ti/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-virtualization/ && git status
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/oe-core/ && git status
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_status ... done! "); 
+
+la_yocto_sources_branch: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_branch CMD=? ... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/bitbake/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arago/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arm/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-aws/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-openembedded/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-psdkla/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-qt5/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-ti/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-virtualization/ && git branch
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/oe-core/ && git branch
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_branch ... done! "); 
+
+la_yocto_sources_git: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_git MOD=? CMD=?... "); 
+	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
+	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
+	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
+	$(Q)$(call sj_echo_log, info , "MOD: bitbake  meta-arago  meta-arm  meta-aws  meta-openembedded  meta-psdkla  meta-qt5  meta-ti  meta-virtualization  oe-core"); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/$(MOD) && $(CMD)
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_git ... done! "); 
+
 
 ##########################################
 # sd install                             #
@@ -169,7 +253,15 @@ la_help_install:
 	$(Q)$(call sj_echo_log, help , "la_install_ubuntu_lib","update later ... "); 
 	$(Q)$(call sj_echo_log, help , "la_install_sdk", "update later ... "); 
 	$(Q)$(call sj_echo_log, help , "la_install_addon_makefile", "update later ... "); 
-	$(Q)$(call sj_echo_log, help , "la_yocto_install", "update later ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_install", "install the yocto ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_build  ", "build the yocto ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_build_check", " check the build ditionary content ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_module_clean", "yocto module clean ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_module_build", "yocto module build ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_sources_status", "check yocoto sources git status... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_sources_check", " check the yocto sources content ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_sources_git", " MOD=? CMD=?  ... "); 
+	$(Q)$(call sj_echo_log, help , "la_yocto_sources_branch", "check the yocto sources git branch ... "); 
 	$(Q)$(call sj_echo_log, help , "la_sd_mk_partition", "update later ... "); 
 	$(Q)$(call sj_echo_log, help , "la_sd_install_all", "update later ... "); 
 	$(Q)$(call sj_echo_log, help , "la_sd_install_rootfs", "update later ... "); 
