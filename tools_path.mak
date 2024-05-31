@@ -85,6 +85,7 @@ print_env:
 	$(Q)$(ECHO) "# $(YEL)SJ_PSDKLA_BRANCH:                   $(RES)== $(PUR)$(SJ_PSDKLA_BRANCH)"
 	$(Q)$(ECHO) "# $(YEL)SJ_EVM_IP:                          $(RES)== $(PUR)$(SJ_EVM_IP)"
 	$(Q)$(ECHO) "# $(YEL)SJ_SERVER_IP:                       $(RES)== $(PUR)$(SJ_SERVER_IP)"
+	$(Q)$(ECHO) "# $(YEL)SJ_YOCTO_CONFIG_FILE:               $(RES)== $(PUR)$(SJ_YOCTO_CONFIG_FILE)"
 	$(Q)$(ECHO) "-------------PSDKRA PATH------------------------------"	
 	$(Q)$(ECHO) "# $(YEL)SJ_PATH_VX_TEST_DATA:               $(RES)== $(PUR)$(SJ_PATH_VX_TEST_DATA)"
 	$(Q)$(ECHO) "# $(YEL)SJ_PATH_MCUSS:                      $(RES)== $(PUR)$(SJ_PATH_MCUSS)"
