@@ -106,8 +106,8 @@ log_help:
 	$(Q)$(call sj_echo_log, debug , "debug example"); 
 	$(Q)$(call sj_echo_log, error , "error example"); 
 	$(Q)$(call sj_echo_log, critical , "critical example"); 
-	$(Q)$(call sj_echo_log, help , "1. contencts","2. comments"); 
-	$(Q)$(call sj_echo_log, file , "1. comments" ,"2. file or link"); 
+	$(Q)$(call sj_echo_log, help , "1. help","2. comments"); 
+	$(Q)$(call sj_echo_log, file , "1. file" ,"2. file or link"); 
 
 CMD ?= ubuntu
 check_cmd:

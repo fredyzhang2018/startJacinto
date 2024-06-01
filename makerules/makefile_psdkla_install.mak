@@ -90,40 +90,42 @@ la_yocto_build_check: check_paths_PSDKLA
 	cd $(SJ_PATH_PSDKLA)/yocto-build/build && $(CMD)
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_build_check ... done! "); 
 
-
-la_yocto_sources_status: check_paths_PSDKLA  
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_status CMD=? ... "); 
+la_yocto_sources_all: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_all CMD=? ... "); 
 	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
 	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
 	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/bitbake/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arago/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arm/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-aws/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-openembedded/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-psdkla/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-qt5/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-ti/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-virtualization/ && git status
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/oe-core/ && git status
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_status ... done! "); 
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/bitbake/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arago/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arm/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-aws/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-openembedded/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-psdkla/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-qt5/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-ti/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-virtualization/ && $(CMD)
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/oe-core/ && $(CMD)
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_all ... done! "); 
 
-la_yocto_sources_branch: check_paths_PSDKLA  
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_branch CMD=? ... "); 
-	$(Q)$(call sj_echo_log, file , "--- env","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/setenv"); 
-	$(Q)$(call sj_echo_log, file , "--- local conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/local.conf"); 
-	$(Q)$(call sj_echo_log, file , "--- layer conf","$(SJ_PATH_PSDKLA)/yocto-build/build/conf/bblayers.conf"); 
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/bitbake/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arago/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arm/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-aws/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-openembedded/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-psdkla/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-qt5/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-ti/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-virtualization/ && git branch
-	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/oe-core/ && git branch
-	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_branch ... done! "); 
+
+
+la_yocto_sources_setlocalurl: check_paths_PSDKLA  
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_setlocalurl ... "); 
+	$(eval T_TYPE=set-url) # add or set-url
+	$(eval T_URL_NAME=ssh) # ssh or http
+	$(Q)$(call sj_echo_log, help , "T_TYPE ", "$(T_TYPE)");
+	$(Q)$(call sj_echo_log, help , "T_URL_NAME ", "$(T_URL_NAME)");
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/bitbake/           && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/bitbake.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arago/        && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-arago.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-arm/          && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-arm.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-aws/          && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-aws.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-openembedded/ && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-openembedded.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-psdkla/       && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-psdkla.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-qt5/          && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-qt5.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-ti/           && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-ti.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/meta-virtualization/ && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/meta-virtualization.git
+	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/oe-core/           && git remote $(T_TYPE) $(T_URL_NAME) $(SJ_GIT_SERVER)/psdk/oe-core.git
+	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_setlocalurl ... done! "); 
 
 la_yocto_sources_git: check_paths_PSDKLA  
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_git MOD=? CMD=?... "); 
@@ -133,7 +135,6 @@ la_yocto_sources_git: check_paths_PSDKLA
 	$(Q)$(call sj_echo_log, info , "MOD: bitbake  meta-arago  meta-arm  meta-aws  meta-openembedded  meta-psdkla  meta-qt5  meta-ti  meta-virtualization  oe-core"); 
 	cd $(SJ_PATH_PSDKLA)/yocto-build/sources/$(MOD) && $(CMD)
 	$(Q)$(call sj_echo_log, info , "1. la_yocto_sources_git ... done! "); 
-
 
 ##########################################
 # sd install                             #
@@ -258,10 +259,10 @@ la_help_install:
 	$(Q)$(call sj_echo_log, help , "la_yocto_build_check", " check the build ditionary content ... "); 
 	$(Q)$(call sj_echo_log, help , "la_yocto_module_clean", "yocto module clean ... "); 
 	$(Q)$(call sj_echo_log, help , "la_yocto_module_build", "yocto module build ... "); 
-	$(Q)$(call sj_echo_log, help , "la_yocto_sources_status", "check yocoto sources git status... "); 
 	$(Q)$(call sj_echo_log, help , "la_yocto_sources_check", " check the yocto sources content ... "); 
 	$(Q)$(call sj_echo_log, help , "la_yocto_sources_git", " MOD=? CMD=?  ... "); 
-	$(Q)$(call sj_echo_log, help , "la_yocto_sources_branch", "check the yocto sources git branch ... "); 
+	$(Q)$(call sj_echo_log, help , "+la_yocto_sources_setlocalurl", "set yocto new url ... "); 
+	$(Q)$(call sj_echo_log, help , "+la_yocto_sources_all", "run same command for all git ... "); 
 	$(Q)$(call sj_echo_log, help , "la_sd_mk_partition", "update later ... "); 
 	$(Q)$(call sj_echo_log, help , "la_sd_install_all", "update later ... "); 
 	$(Q)$(call sj_echo_log, help , "la_sd_install_rootfs", "update later ... "); 
