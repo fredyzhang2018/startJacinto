@@ -7,7 +7,8 @@ SDK-0901-j784s4-DRA829,09_01_00_06,09_01_00_06
 SJ_EVM_IP=10.85.130.131
 # below is tftp and NFS server ip. 
 SJ_SERVER_IP=192.168.10.61
-SJ_GIT_SERVER=https://github.com/
+# SJ_GIT_SERVER=https://github.com/
+SJ_GIT_SERVER=ssh://git@192.168.1.10:7999
 SJ_LOG_LEVEL=1
 # Yocto Env Setting
 SJ_YOCTO_CONFIG_FILE=processor-sdk-linux-09_01_00_06.txt

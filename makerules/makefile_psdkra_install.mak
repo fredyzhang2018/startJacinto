@@ -183,23 +183,44 @@ ra_sd_linux_fs_install_scp:
 	$(Q)$(call sj_echo_log, info , " 0. Run the ssh $(SJ_PATH_SCRIPTS)/j7/remote_update_vision_sdk.sh --ip $(SJ_EVM_IP) ------------------------------- done !!!");
 	$(Q)$(call sj_echo_log, info , "1. ra_sd_linux_fs_install_scp ... done!"); 
 
+
 # KEY_WRITER_VERSION ?=OTP_KEYWRITER_ADD_ON_j721e_v2021.05b-linux-installer.run
-KEY_WRITER_VERSION ?=OTP_KEYWRITER_ADD_ON_j721e_sr1_1_v2021.05b-linux-installer.run
-KEY_WRITER_ADDON ?=https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/$(SJ_PSDKRA_BRANCH)/exports/keywriter_patch.tar.gz
-ra_install_keywriter: check_paths_PSDKRA #check_paths_sd_boot
+KEY_WRITER_VERSION ?=OTP_KEYWRITER_ADD_ON_j721s2_08_04_00_02-linux-installer.run
+ra_keywriter_install_adds_on: check_paths_PSDKRA #check_paths_sd_boot
 	$(Q)$(call sj_echo_log, info , "1. ra_install_keywriter ... "); 
-	$(Q)$(call sj_echo_log, info , " 0. downnload the keywriter: https://www.ti.com/securesoftware/docs/securesoftware download from here !!!");
-	$(Q)$(call sj_echo_log, info , " 1. install the keywriter: cd $(SJ_PATH_SCRIPTS)/j7/install_keywriter.sh  !!!");
-	$(Q)cd $(SJ_PATH_SCRIPTS)/j7/ && ./install_keywriter.sh  --ver $(SJ_PATH_DOWNLOAD)/$(KEY_WRITER_VERSION) -p $(SJ_PATH_PDK) -a $(KEY_WRITER_ADDON)
-	# $(Q)cd $(SJ_PATH_SCRIPTS)/j7/ && ./install_keywriter.sh  --ver $(SJ_PATH_DOWNLOAD)/$(KEY_WRITER_VERSION) -p $(SJ_PATH_PDK) # test for SDK8.2
+	$(Q)$(call sj_echo_log, file , "downnload the keywriter","https://www.ti.com/securesoftware/docs/securesoftware");
+	$(Q)$(call sj_echo_log, file , "install the keywriter scripts","$(SJ_PATH_SCRIPTS)/j7/install_keywriter.sh");
+	# below tested for SDK0802. 
+	$(Q)cd $(SJ_PATH_SCRIPTS)/j7/ && ./install_keywriter.sh  --ver $(SJ_PATH_DOWNLOAD)/$(KEY_WRITER_VERSION) -p $(SJ_PATH_PDK)
 	$(Q)$(call sj_echo_log, info , " 1. install key keywriter done   !!!");
-	$(Q)$(call sj_echo_log, info , " 2. update the image to SD card  !!!");
-	# cp $(SJ_PATH_PDK)/packages/ti/boot/keywriter/binary/j721e/keywriter_img_j721e_release.bin $(SJ_BOOT)/tiboot3.bin
-	# cp $(SJ_PATH_PDK)/packages/ti/boot/keywriter/tifs_bin/j721e/ti-fs-keywriter.bin           $(SJ_BOOT)/tifs.bin
-	$(Q)$(call sj_echo_log, info , " 2. update the image to SD card --done !!!");
 	$(Q)$(call sj_echo_log, info , " 3. Userguide :  https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/08_01_00_13/exports/docs/pdk_jacinto_08_01_00_36/docs/userguide/jacinto/modules/keywriter.html  !!!");
 	$(Q)$(call sj_echo_log, info , "1. ra_install_keywriter ... done!"); 
 
+ra_keywriter_build:
+	$(Q)$(call sj_echo_log, info , "1. ra_keywriter_build ... "); 
+	$(Q)$(call sj_echo_log, info , "2. checking keys ... "); 
+	$(Q)ls -l $(SJ_PATH_PDK)/packages/ti/boot/keywriter/scripts/keys/
+	$(Q)$(call sj_echo_log, warning , "updating the TI dummy key ... "); 
+	cp -v $(SJ_PATH_PDK)/packages/ti/build/makerules/k3_dev_mpk.pem $(SJ_PATH_PDK)/packages/ti/boot/keywriter/scripts/keys/smpk.pem
+	xxd -p -r $(SJ_PATH_PDK)/packages/ti/build/makerules/k3_dev_mek.txt > $(SJ_PATH_PDK)/packages/ti/boot/keywriter/scripts/keys/smek.key
+	$(Q)$(call sj_echo_log, warning , "updating the TI dummy key ... done!"); 
+	$(Q)$(call sj_echo_log, info , "2. create dummy key ... done!"); 
+	$(Q)$(call sj_echo_log, info , "3. generate x509 certificate ... "); 
+	cd $(SJ_PATH_PDK)/packages/ti/boot/keywriter/scripts && ./gen_keywr_cert.sh -s keys/smpk.pem -s-wp --smek keys/smek.key --smek-wp -t ti_fek_public.pem -a keys/aes256.key --msv 0xC0FFE --msv-wp --keycnt 1 --keyrev 1
+	$(Q)$(call sj_echo_log, info , "3. generate x509 certificate ... done!"); 
+	$(Q)$(call sj_echo_log, info , "4. generate key writter image ..."); 
+	make pdk_build SJ_PDK_BOARD=$(SJ_SOC_TYPE)_evm  SJ_PDK_CORE=mcu1_0  SJ_PDK_MODULES=keywriter_img  SJ_PDK_BUILD_PROFILE=release
+	$(Q)$(call sj_echo_log, info , "4. generate key writter image ... done!"); 
+	$(Q)$(call sj_echo_log, info , "4. update the below images to your filesystem ..."); 
+	$(Q)ls -l $(SJ_PATH_PDK)/packages/ti/boot/keywriter/binary/j721s2/keywriter_img_j721s2_release.tiimage
+	$(Q)$(call sj_echo_log, info , "4. update the below images to your filesystem ... done!");
+	$(Q)$(call sj_echo_log, info , "1. ra_keywriter_build ... done! ");
+
+ra_keywriter_update_img_sd: check_paths_sd_boot
+	$(Q)$(call sj_echo_log, info , "1. ra_keywriter_update_img_sd ... "); 
+	cp $(SJ_PATH_PDK)/packages/ti/boot/keywriter/binary/$(SJ_SOC_TYPE)/keywriter_img_$(SJ_SOC_TYPE)_release.bin $(SJ_BOOT)/tiboot3.bin
+	cp $(SJ_PATH_PDK)/packages/ti/boot/keywriter/tifs_bin/$(SJ_SOC_TYPE)//ti-fs-keywriter.bin            $(SJ_BOOT)/tifs.bin
+	$(Q)$(call sj_echo_log, info , "1. ra_keywriter_update_img_sd ... "); 
 ra_memory_update:
 	$(Q)$(call sj_echo_log, info , "1. ra_memory_update ... "); 
 	$(Q)$(call sj_echo_log, info , " 0. start to update the memory ... : $(SJ_PATH_PSDKRA)/vision_apps/platform/$(SJ_SOC_TYPE)/rtos/app_mem_map.h");

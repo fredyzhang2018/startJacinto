@@ -11,12 +11,12 @@ SJ_PDK_CORE           ?= mcu1_0
 #  pdk_libs pdk_app_libs  dss_display_testapp_freertos pdk_examples ipc_echo_testb_freertos
 #SJ_PDK_MODULES        ?= pdk_libs pdk_app_libs  pdk_examples
 #SJ_PDK_MODULES        ?= dss_display_testapp_freertos
-SJ_PDK_MODULES        ?=  ipc_echo_testb_freertos
+SJ_PDK_MODULES        ?=  pdk_libs pdk_app_libs 
 # PROFILE: debug or release
-SJ_PDK_BUILD_PROFILE  ?= debug
+SJ_PDK_BUILD_PROFILE  ?= release
 
 
-pdk_build: check_paths_PSDKRA pdk-build-configure
+pdk_build: check_paths_PSDKRA pdk_build_configure
 	$(Q)$(call sj_echo_log, info , "1. pdk_build ... "); 
 	$(Q)$(call sj_echo_log, info ,"--- 0 board : $(SJ_PDK_BOARD)  modules: $(SJ_PDK_MODULES)  cores = $(SJ_PDK_CORE)  ");
 	$(MAKE) -C $(SJ_PATH_PDK)/packages/ti/build $(SJ_PDK_MODULES) SOC=$(SJ_SOC_TYPE) BOARD=$(SJ_PDK_BOARD) CORE=$(SJ_PDK_CORE) TOOLS_INSTALL_PATH=$(SJ_PDK_TOOLS_PATH) -s BUILD_PROFILE=$(SJ_PDK_BUILD_PROFILE) -j$(CPU_NUM) 
